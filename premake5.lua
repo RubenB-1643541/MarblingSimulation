@@ -75,6 +75,7 @@ project "RenderEngine"
 		defines
 		{
 			"PLATFORM_WINDOWS",
+			"MAKEDLL",
 			"GLEW_STATIC"
 		}
 

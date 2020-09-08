@@ -59,7 +59,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>PLATFORM_WINDOWS;GLEW_STATIC;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PLATFORM_WINDOWS;MAKEDLL;GLEW_STATIC;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>dep\GLEW\include;dep\GLFW\include;dep\GLM\include;dep\ImGui;dep\stb_image;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -83,7 +83,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>PLATFORM_WINDOWS;GLEW_STATIC;RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PLATFORM_WINDOWS;MAKEDLL;GLEW_STATIC;RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>dep\GLEW\include;dep\GLFW\include;dep\GLM\include;dep\ImGui;dep\stb_image;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -107,9 +107,27 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Consts\Keys.h" />
+    <ClInclude Include="src\Consts\Macros.h" />
+    <ClInclude Include="src\Consts\Mouse.h" />
+    <ClInclude Include="src\Core.h" />
+    <ClInclude Include="src\Events\Event.h" />
+    <ClInclude Include="src\Events\Events.h" />
+    <ClInclude Include="src\Events\KeyEvent.h" />
+    <ClInclude Include="src\Events\MouseEvent.h" />
+    <ClInclude Include="src\Events\WindowEvent.h" />
+    <ClInclude Include="src\Window\ImGuiRenderer.h" />
+    <ClInclude Include="src\Window\WindowBase.h" />
+    <ClInclude Include="src\Window\WindowCursor.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Events\Event.cpp" />
+    <ClCompile Include="src\Events\KeyEvent.cpp" />
+    <ClCompile Include="src\Events\MouseEvent.cpp" />
+    <ClCompile Include="src\Events\WindowEvent.cpp" />
+    <ClCompile Include="src\Window\ImGuiRenderer.cpp" />
+    <ClCompile Include="src\Window\WindowBase.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
