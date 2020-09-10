@@ -1,6 +1,7 @@
 #pragma once
-#include "../Consts/Keys.h"
-#include "../Consts/Macros.h"
+#include "Consts/Keys.h"
+#include "Consts/Macros.h"
+#include <functional>
 
 namespace RenderEngine {
 

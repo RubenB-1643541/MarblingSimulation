@@ -4,11 +4,11 @@
     <Filter Include="Consts">
       <UniqueIdentifier>{1F913FAC-0B33-6A82-F4ED-7DD6E02EF1D2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Events">
-      <UniqueIdentifier>{3A8963B1-262B-8E87-0FE6-A1DBFB2615D8}</UniqueIdentifier>
+    <Filter Include="Core">
+      <UniqueIdentifier>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Window">
-      <UniqueIdentifier>{3DEA79DA-298C-A4B0-1247-B804FE872B01}</UniqueIdentifier>
+    <Filter Include="Core\Events">
+      <UniqueIdentifier>{52201B74-BED5-9369-47CA-8D40B37E8A6D}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -22,50 +22,62 @@
       <Filter>Consts</Filter>
     </ClInclude>
     <ClInclude Include="src\Core.h" />
-    <ClInclude Include="src\Events\Event.h">
-      <Filter>Events</Filter>
+    <ClInclude Include="src\Core\Application.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Events\Events.h">
-      <Filter>Events</Filter>
+    <ClInclude Include="src\Core\Events\Event.h">
+      <Filter>Core\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Events\KeyEvent.h">
-      <Filter>Events</Filter>
+    <ClInclude Include="src\Core\Events\Events.h">
+      <Filter>Core\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Events\MouseEvent.h">
-      <Filter>Events</Filter>
+    <ClInclude Include="src\Core\Events\KeyEvent.h">
+      <Filter>Core\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Events\WindowEvent.h">
-      <Filter>Events</Filter>
+    <ClInclude Include="src\Core\Events\MouseEvent.h">
+      <Filter>Core\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Window\ImGuiRenderer.h">
-      <Filter>Window</Filter>
+    <ClInclude Include="src\Core\Events\WindowEvent.h">
+      <Filter>Core\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Window\WindowBase.h">
-      <Filter>Window</Filter>
+    <ClInclude Include="src\Core\ImGuiRenderer.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Window\WindowCursor.h">
-      <Filter>Window</Filter>
+    <ClInclude Include="src\Core\Log.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\WindowBase.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\WindowCursor.h">
+      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Events\Event.cpp">
-      <Filter>Events</Filter>
+    <ClCompile Include="src\Core\Application.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Events\KeyEvent.cpp">
-      <Filter>Events</Filter>
+    <ClCompile Include="src\Core\Events\Event.cpp">
+      <Filter>Core\Events</Filter>
     </ClCompile>
-    <ClCompile Include="src\Events\MouseEvent.cpp">
-      <Filter>Events</Filter>
+    <ClCompile Include="src\Core\Events\KeyEvent.cpp">
+      <Filter>Core\Events</Filter>
     </ClCompile>
-    <ClCompile Include="src\Events\WindowEvent.cpp">
-      <Filter>Events</Filter>
+    <ClCompile Include="src\Core\Events\MouseEvent.cpp">
+      <Filter>Core\Events</Filter>
     </ClCompile>
-    <ClCompile Include="src\Window\ImGuiRenderer.cpp">
-      <Filter>Window</Filter>
+    <ClCompile Include="src\Core\Events\WindowEvent.cpp">
+      <Filter>Core\Events</Filter>
     </ClCompile>
-    <ClCompile Include="src\Window\WindowBase.cpp">
-      <Filter>Window</Filter>
+    <ClCompile Include="src\Core\ImGuiRenderer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Log.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\WindowBase.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
   </ItemGroup>

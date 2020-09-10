@@ -1,0 +1,3 @@
+[submodule "RenderEngine/dep/GLFW"]
+	path = RenderEngine/dep/GLFW
+	url = git@github.com:ruben-ballet/glfw.git

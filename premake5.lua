@@ -1,20 +1,35 @@
 workspace "MarblingSimulation"
 	architecture "x64"
+	startproject "Simulation"
 
 	configurations
 	{
 		"Debug",
 		"Release"
 	}
+
+	flags
+	{
+		"MultiProcessorCompile"
+	}
 	
-	startproject "Simulation"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- include directories
+IncludeDir = {}
+IncludeDir["GLFW"] = "RenderEngine/dep/GLFW/include"
+IncludeDir["GLEW"] = "RenderEngine/dep/GLEW/include"
+IncludeDir["SPDLOG"] = "RenderEngine/dep/spdlog/include"
+
+include "RenderEngine/dep/GLFW"
+
 project "RenderEngine"
 	location "RenderEngine"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -30,8 +45,9 @@ project "RenderEngine"
 
 	includedirs
 	{
-		"%{prj.name}/dep/GLEW/include",
-		"%{prj.name}/dep/GLFW/include",
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.GLEW}",
+		"%{IncludeDir.SPDLOG}",
 		"%{prj.name}/dep/GLM/include",
 		"%{prj.name}/dep/ImGui",
 		"%{prj.name}/dep/stb_image",
@@ -41,17 +57,16 @@ project "RenderEngine"
 	libdirs 
 	{
 		"%{prj.name}/dep/GLEW/lib/Release/x64",
-		"%{prj.name}/dep/GLFW/lib64-vc2019",
 		"%{prj.name}/dep/GLM/lib",
 		"%{prj.name}/dep/ImGui/lib"
 	}
 
 	links
 	{
+		"GLFW",
 		"opengl32.lib",
 		"glm_static.lib",
 		"glew32s.lib",
-		"glfw3.lib",
 		"ImGui.lib",
 		"kernel32.lib",
 		"user32.lib",
@@ -75,13 +90,12 @@ project "RenderEngine"
 		defines
 		{
 			"PLATFORM_WINDOWS",
-			"MAKEDLL",
 			"GLEW_STATIC"
 		}
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Simulation")
+			--("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Simulation")
 		}
 
 	filter "configurations:Debug"
@@ -110,11 +124,68 @@ project "Simulation"
 	
 	includedirs
 	{
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.GLEW}",
+		"%{IncludeDir.SPDLOG}",
 		"RenderEngine/src"
 	}
 
 	links
 	{
-		"RenderEngine.dll"
+		"RenderEngine",
+		"FluidLib"
 	}
 
+	filter "configurations:Debug"
+		defines "DEBUG"
+		symbols "On"
+		buildoptions "/MDd"
+
+	filter "configurations:Release"
+		defines "RELEASE"
+		optimize "On"
+		buildoptions "/MD"
+
+project "FluidLib"
+	location "FluidLib"
+	kind "StaticLib"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp",
+	}
+	
+	includedirs
+	{
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.GLEW}",
+		"%{IncludeDir.SPDLOG}",
+		"RenderEngine/src"
+	}
+
+	filter "system:windows"
+		cppdialect "C++17"
+		staticruntime "On"
+		systemversion "latest"
+
+		defines
+		{
+			"PLATFORM_WINDOWS"
+		}
+
+	filter "configurations:Debug"
+		defines "DEBUG"
+		symbols "On"
+		buildoptions "/MDd"
+
+	filter "configurations:Release"
+		defines "RELEASE"
+		optimize "On"
+		buildoptions "/MD"

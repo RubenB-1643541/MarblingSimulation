@@ -2,6 +2,7 @@
 
 #include "Consts/Mouse.h"
 #include "Event.h"
+#include <sstream>
 
 namespace RenderEngine {
 

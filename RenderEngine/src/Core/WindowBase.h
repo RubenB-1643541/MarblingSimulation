@@ -2,10 +2,11 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "../Events/Events.h"
+#include "Events/Events.h"
 #include "WindowCursor.h"
 #include "Consts/Mouse.h"
 #include "Core.h"
+#include <map>
 
 namespace RenderEngine {
 
@@ -15,7 +16,7 @@ namespace RenderEngine {
 		EventCallBackFn callback; //Callback function
 	};
 
-	class EXPORT WindowBase
+	class WindowBase
 	{
 	public:
 		using EventCallBackFn = std::function<void(Event&)>;
