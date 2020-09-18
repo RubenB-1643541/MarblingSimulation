@@ -1,0 +1,21 @@
+TODO Fluids
+
+X Simulation
+
+Grids (SSB)
+GridManager
+
+TOOLS!!!
+X ToolManager
+CustomTool
+	Predefined CustomTools
+FigureTool
+SelectionTool
+
+Actions
+
+Clipboard
+
+Control Update frequencie
+
+X Events

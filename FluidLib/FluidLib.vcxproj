@@ -11,10 +11,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Test.cpp" />
+    <ClCompile Include="src\Events\SimulationEvent.cpp" />
+    <ClCompile Include="src\Events\ToolEvent.cpp" />
+    <ClCompile Include="src\Grids\GridManager.cpp" />
+    <ClCompile Include="src\Simulation.cpp" />
+    <ClCompile Include="src\Tools\ToolBase.cpp" />
+    <ClCompile Include="src\Tools\ToolManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Test.h" />
+    <ClInclude Include="src\Events\Event.h" />
+    <ClInclude Include="src\Events\Events.h" />
+    <ClInclude Include="src\Events\SimulationEvent.h" />
+    <ClInclude Include="src\Events\ToolEvent.h" />
+    <ClInclude Include="src\Grids\GridManager.h" />
+    <ClInclude Include="src\Simulation.h" />
+    <ClInclude Include="src\Tools\ToolBase.h" />
+    <ClInclude Include="src\Tools\ToolManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Todo.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{90E6D4A7-7CB3-2FB3-A5CC-1D5B91F86441}</ProjectGuid>
