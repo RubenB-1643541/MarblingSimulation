@@ -116,9 +116,16 @@
     <ClInclude Include="src\Core\Events\WindowEvent.h" />
     <ClInclude Include="src\Core\ImGuiRenderer.h" />
     <ClInclude Include="src\Core\Log.h" />
+    <ClInclude Include="src\Core\Timer.h" />
     <ClInclude Include="src\Core\WindowBase.h" />
     <ClInclude Include="src\Core\WindowCursor.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Rendering\ComputeShaderProgram.h" />
+    <ClInclude Include="src\Rendering\CountBuffer.h" />
+    <ClInclude Include="src\Rendering\IndexBuffer.h" />
+    <ClInclude Include="src\Rendering\ShaderProgram.h" />
+    <ClInclude Include="src\Rendering\ShaderStorageBuffer.h" />
+    <ClInclude Include="src\Rendering\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Application.cpp" />
@@ -128,15 +135,25 @@
     <ClCompile Include="src\Core\Events\WindowEvent.cpp" />
     <ClCompile Include="src\Core\ImGuiRenderer.cpp" />
     <ClCompile Include="src\Core\Log.cpp" />
+    <ClCompile Include="src\Core\Timer.cpp" />
     <ClCompile Include="src\Core\WindowBase.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Rendering\ComputeShaderProgram.cpp" />
+    <ClCompile Include="src\Rendering\CountBuffer.cpp" />
+    <ClCompile Include="src\Rendering\IndexBuffer.cpp" />
+    <ClCompile Include="src\Rendering\ShaderProgram.cpp" />
+    <ClCompile Include="src\Rendering\ShaderStorageBuffer.cpp" />
+    <ClCompile Include="src\Rendering\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="dep\GLFW\GLFW.vcxproj">
       <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

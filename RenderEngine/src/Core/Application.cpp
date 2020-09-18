@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Application.h"
 
+#include "Timer.h"
+
 namespace RenderEngine {
 
 	Application* Application::_instance = nullptr;
@@ -62,18 +64,30 @@ namespace RenderEngine {
 		_stop = true;
 	}
 
-	inline void Application::Run()
+	bool Application::OnEvent(Event& e)
 	{
-		double lastTime = glfwGetTime();
-		int nbFrames = 0;
-		while (!_stop) {
-			if (_props.window != nullptr) {
+		EventDisplatcher dispatcher(e);
+		dispatcher.Dispatch<KeyPressEvent>(BIND_EVENT(OnKeyPressEvent));
+		dispatcher.Dispatch<KeyReleaseEvent>(BIND_EVENT(OnKeyReleaseEvent));
+		dispatcher.Dispatch<MouseMoveEvent>(BIND_EVENT(OnMouseMoveEvent));
+		dispatcher.Dispatch<MousePressEvent>(BIND_EVENT(OnMousePressEvent));
+		dispatcher.Dispatch<MouseReleaseEvent>(BIND_EVENT(OnMouseReleaseEvent));
+		dispatcher.Dispatch<MouseScrollEvent>(BIND_EVENT(OnMouseScrollEvent));
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT(OnWindowCloseEvent));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT(OnWindowResizeEvent));
+		return true;
+	}
+
+	void Application::Run()
+	{
+		if (_props.window != nullptr) {
+			while (!_stop) {
 				_props.window->Update();
 				_props.window->StartDraw();
-			}
-			OnUpdate();
-			if (_props.window != nullptr)
+				
+				OnUpdate();
 				_props.window->EndDraw();
+			}
 		}
 	}
 }

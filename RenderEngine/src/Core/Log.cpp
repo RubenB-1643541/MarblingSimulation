@@ -5,7 +5,7 @@
 
 namespace RenderEngine {
 
-	std::shared_ptr<spdlog::logger> Log::_coreLogger;
+	std::shared_ptr<spdlog::logger> Log::_engineLogger;
 	std::shared_ptr<spdlog::logger> Log::_clientLogger;
 
 	void Log::Init()
@@ -17,10 +17,10 @@ namespace RenderEngine {
 		logSinks[0]->set_pattern("%^[%T] %n: %v%$");
 		logSinks[1]->set_pattern("[%T] [%l] %n: %v");
 
-		_coreLogger = std::make_shared<spdlog::logger>("ENGINE", begin(logSinks), end(logSinks));
-		spdlog::register_logger(_coreLogger);
-		_coreLogger->set_level(spdlog::level::trace);
-		_coreLogger->flush_on(spdlog::level::trace);
+		_engineLogger = std::make_shared<spdlog::logger>("ENGINE", begin(logSinks), end(logSinks));
+		spdlog::register_logger(_engineLogger);
+		_engineLogger->set_level(spdlog::level::trace);
+		_engineLogger->flush_on(spdlog::level::trace);
 
 		_clientLogger = std::make_shared<spdlog::logger>("SIM", begin(logSinks), end(logSinks));
 		spdlog::register_logger(_clientLogger);

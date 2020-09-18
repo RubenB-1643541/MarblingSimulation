@@ -1,6 +1,7 @@
 #pragma once
 
 #include "WindowBase.h"
+#include "Log.h"
 
 namespace RenderEngine {
 
@@ -8,6 +9,8 @@ namespace RenderEngine {
 		WindowBase* window = nullptr;
 		std::string name = "";
 	};
+
+#define BIND_EVENT(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 	class Application
 	{
@@ -30,6 +33,15 @@ namespace RenderEngine {
 		inline virtual void OnStart() {};
 		inline virtual void OnStop() {};
 		inline virtual void OnUpdate() {};
+
+		inline virtual bool OnKeyPressEvent(KeyPressEvent& e) { return false; }
+		inline virtual bool OnKeyReleaseEvent(KeyReleaseEvent& e) { return false; }
+		inline virtual bool OnMouseMoveEvent(MouseMoveEvent& e) { return false; }
+		inline virtual bool OnMousePressEvent(MousePressEvent& e) { return false; }
+		inline virtual bool OnMouseReleaseEvent(MouseReleaseEvent& e) { return false; }
+		inline virtual bool OnMouseScrollEvent(MouseScrollEvent& e) { return false; }
+		inline virtual bool OnWindowCloseEvent(WindowCloseEvent& e) { Stop(); return true; }
+		inline virtual bool OnWindowResizeEvent(WindowResizeEvent& e) { return false; }
 
 		inline void SetCursor(Cursor cursor) { _props.window->SetCursor(cursor); }
 		inline void SetCursor(std::string cursor) { _props.window->SetCursor(cursor); }

@@ -12,7 +12,7 @@ namespace RenderEngine {
 		inline int GetKey() { return _key; };
 
 		EVENT_CATEGORY(KeyEvent)
-			EVENT_TYPE(KeyPressEvent)
+		EVENT_TYPE(KeyPressEvent)
 
 			inline std::string GetString() const override {
 			std::stringstream ss;
