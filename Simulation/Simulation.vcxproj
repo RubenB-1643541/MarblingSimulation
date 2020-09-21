@@ -58,7 +58,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\RenderEngine\dep\GLFW\include;..\RenderEngine\dep\GLEW\include;..\RenderEngine\dep\spdlog\include;..\RenderEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\RenderEngine\dep\GLFW\include;..\RenderEngine\dep\GLEW\include;..\RenderEngine\dep\spdlog\include;..\RenderEngine\src;..\FluidLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -75,7 +75,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\RenderEngine\dep\GLFW\include;..\RenderEngine\dep\GLEW\include;..\RenderEngine\dep\spdlog\include;..\RenderEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\RenderEngine\dep\GLFW\include;..\RenderEngine\dep\GLEW\include;..\RenderEngine\dep\spdlog\include;..\RenderEngine\src;..\FluidLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -100,9 +100,6 @@
     <ProjectReference Include="..\FluidLib\FluidLib.vcxproj">
       <Project>{90E6D4A7-7CB3-2FB3-A5CC-1D5B91F86441}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

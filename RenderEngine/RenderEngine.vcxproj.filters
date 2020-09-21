@@ -10,6 +10,9 @@
     <Filter Include="Core\Events">
       <UniqueIdentifier>{52201B74-BED5-9369-47CA-8D40B37E8A6D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{E3AE1F7C-4F19-D4F2-9857-85980401B247}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Consts\Keys.h">
@@ -46,20 +49,34 @@
     <ClInclude Include="src\Core\Log.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Core\Timer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Core\WindowBase.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\WindowCursor.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Rendering\ComputeShaderProgram.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\CountBuffer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\IndexBuffer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\ShaderProgram.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\ShaderStorageBuffer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\VertexBuffer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Core\Timer.h" />
-    <ClInclude Include="src\Rendering\ShaderProgram.h" />
-    <ClInclude Include="src\Rendering\VertexBuffer.h" />
-    <ClInclude Include="src\Rendering\IndexBuffer.h" />
-    <ClInclude Include="src\Rendering\ShaderStorageBuffer.h" />
-    <ClInclude Include="src\Rendering\CountBuffer.h" />
-    <ClInclude Include="src\Rendering\ComputeShaderProgram.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Application.cpp">
@@ -83,19 +100,30 @@
     <ClCompile Include="src\Core\Log.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Timer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\Core\WindowBase.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\ComputeShaderProgram.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering\CountBuffer.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering\IndexBuffer.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering\ShaderProgram.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering\ShaderStorageBuffer.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering\VertexBuffer.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Core\Timer.cpp" />
-    <ClCompile Include="src\Rendering\ShaderProgram.cpp" />
-    <ClCompile Include="src\Rendering\VertexBuffer.cpp" />
-    <ClCompile Include="src\Rendering\IndexBuffer.cpp" />
-    <ClCompile Include="src\Rendering\ShaderStorageBuffer.cpp" />
-    <ClCompile Include="src\Rendering\CountBuffer.cpp" />
-    <ClCompile Include="src\Rendering\ComputeShaderProgram.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Todo.txt" />
   </ItemGroup>
 </Project>

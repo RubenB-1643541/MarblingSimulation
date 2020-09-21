@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Events">
+      <UniqueIdentifier>{3A8963B1-262B-8E87-0FE6-A1DBFB2615D8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Grids">
+      <UniqueIdentifier>{1E1B440D-8A2F-6CBE-53B1-0F1EBF8468EF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{16CF2D0E-82E3-55BF-4B65-F91EB73852F0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Events\Event.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\Events.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\SimulationEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\ToolEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Grids\Grid.h">
+      <Filter>Grids</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Grids\GridManager.h">
+      <Filter>Grids</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Simulation.h" />
+    <ClInclude Include="src\Tools\ToolBase.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tools\ToolManager.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Grids\ComputeShaderController.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Events\SimulationEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Events\ToolEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Grids\GridManager.cpp">
+      <Filter>Grids</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Simulation.cpp" />
+    <ClCompile Include="src\Tools\ToolBase.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\ToolManager.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Grids\ComputeShaderController.cpp" />
+  </ItemGroup>
+</Project>

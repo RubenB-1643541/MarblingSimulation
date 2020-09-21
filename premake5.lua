@@ -127,7 +127,8 @@ project "Simulation"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLEW}",
 		"%{IncludeDir.SPDLOG}",
-		"RenderEngine/src"
+		"RenderEngine/src",
+		"FluidLib/src"
 	}
 
 	links
