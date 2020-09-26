@@ -76,4 +76,9 @@ namespace RenderEngine {
 		return glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY);
 	}
 
+	void ShaderStorageBuffer::ClearBuffer(GLenum internalformat, GLenum format, GLenum type, const void* data)
+	{
+		glClearNamedBufferData(_id, internalformat, format, type, data);
+	}
+
 }

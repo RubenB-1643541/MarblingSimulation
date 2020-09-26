@@ -14,9 +14,9 @@ namespace RenderEngine {
 		inline double GetY() { return _ypos; }
 
 		EVENT_CATEGORY(MouseEvent)
-			EVENT_TYPE(MouseMoveEvent)
+		EVENT_TYPE(MouseMoveEvent)
 
-			inline std::string GetString() const override {
+		inline std::string GetString() const override {
 			std::stringstream ss;
 			ss << "MouseMoveEvent: x" << _xpos << " y" << _ypos;
 			return ss.str();

@@ -7,34 +7,48 @@ namespace FluidLib {
 
 	}
 
+	Simulation::Simulation(int sizex, int sizey) : Simulation()
+	{
+		SetSize(sizex, sizey);
+	}
+
 	Simulation::~Simulation()
 	{
 	}
 
 	void Simulation::Init()
 	{
+		_prev = std::clock();
 		OnInit();
 	}
 
 	void Simulation::Update()
 	{
-		OnUpdate();
-		if (_computeshader.IsShaderSet()) {
-			//Bind Buffers
-			_computeshader.Use();
-			_computeshader.BindUniforms();
-			_computeshader.Dispatch();
-			//Useprogram
-			//Set Uniforms
-		}
-		else {
-			std::cerr << "No Compute Shader Set" << std::endl;
+		if (!_paused && (std::clock() - _prev)/ (double) CLOCKS_PER_SEC >= 1.0f / _settings.fps) {
+			//std::cout << "update: " << (std::clock() - _prev) / (double) CLOCKS_PER_SEC << " fps: " << 1.0f / _settings.fps << std::endl;
+			_prev = std::clock();
+
+			OnUpdate();
+			if (_computeshader.IsShaderSet()) {
+				_grids.BindGrids();
+				_computeshader.Use();
+				_computeshader.BindUniforms();
+				_computeshader.Dispatch();
+			}
+			else {
+				std::cerr << "No Compute Shader Set" << std::endl;
+			}
 		}
 	}
 
 	void Simulation::Draw()
 	{
 		OnDraw();
+	}
+	
+	void Simulation::Stop()
+	{
+		OnStop();
 	}
 
 }

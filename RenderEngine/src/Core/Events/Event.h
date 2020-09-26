@@ -2,6 +2,7 @@
 #include "Consts/Keys.h"
 #include "Consts/Macros.h"
 #include <functional>
+#include <string>
 
 namespace RenderEngine {
 

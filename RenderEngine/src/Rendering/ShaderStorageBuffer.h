@@ -25,7 +25,10 @@ namespace RenderEngine {
 		void UnMapBuffer();
 		void* MapBuffer();
 
+		void ClearBuffer(GLenum internalformat, GLenum format, GLenum type, const void* data);
+
 		inline GLuint GetId() { return _id; }
+		inline int GetSize() { return _size; }
 	private:
 		GLuint _id = -1;
 		int _size = -1;

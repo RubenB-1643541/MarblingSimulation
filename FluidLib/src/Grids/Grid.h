@@ -46,6 +46,7 @@ namespace FluidLib {
 		- int size: Number of elements in the buffer, not the size of the buffer
 		*/
 		Grid(GLuint id, int size);
+		Grid(GLuint id, int size, int attr);
 
 		T* GetBufferPointer();
 		T* GetBufferPointer(GLint bufMask);
@@ -85,6 +86,14 @@ namespace FluidLib {
 	{
 		SetBufferId(id);
 		SetSize(size);
+	}
+
+	template<class T>
+	inline Grid<T>::Grid(GLuint id, int size, int attr) : Grid()
+	{
+		SetBufferId(id);
+		SetSize(size);
+		SetAttrPointer(attr);
 	}
 
 	template<class T>

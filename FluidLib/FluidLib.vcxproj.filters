@@ -38,6 +38,8 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="src\Grids\ComputeShaderController.h" />
+    <ClInclude Include="src\Grids\Uniforms.h" />
+    <ClInclude Include="src\SimulationSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">
@@ -57,5 +59,6 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="src\Grids\ComputeShaderController.cpp" />
+    <ClCompile Include="src\Grids\Uniforms.cpp" />
   </ItemGroup>
 </Project>
