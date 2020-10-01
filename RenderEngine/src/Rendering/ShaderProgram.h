@@ -24,6 +24,8 @@ namespace RenderEngine {
 
 		void UseProgram();
 
+		inline GLuint GetId() { return _id; }
+		GLuint GetUniformLocation(std::string s);
 	private:
 		GLuint _id = -1;
 		Shader _shader;

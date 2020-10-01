@@ -17,4 +17,11 @@ namespace FluidLib {
         } 
     }
 
+    void GridManager::RenderGrids()
+    {
+        for (GridBase* grid : _grids) {
+            grid->DrawGrid();
+        }
+    }
+
 }

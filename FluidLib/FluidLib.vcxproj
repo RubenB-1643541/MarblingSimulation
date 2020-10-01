@@ -57,7 +57,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\RenderEngine\dep\GLFW\include;..\RenderEngine\dep\GLEW\include;..\RenderEngine\dep\spdlog\include;..\RenderEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\RenderEngine\dep\GLFW\include;..\RenderEngine\dep\GLEW\include;..\RenderEngine\dep\GLM\include;..\RenderEngine\dep\spdlog\include;..\RenderEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\RenderEngine\dep\GLFW\include;..\RenderEngine\dep\GLEW\include;..\RenderEngine\dep\spdlog\include;..\RenderEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\RenderEngine\dep\GLFW\include;..\RenderEngine\dep\GLEW\include;..\RenderEngine\dep\GLM\include;..\RenderEngine\dep\spdlog\include;..\RenderEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -101,6 +101,8 @@
     <ClInclude Include="src\Grids\ComputeShaderController.h" />
     <ClInclude Include="src\Grids\Grid.h" />
     <ClInclude Include="src\Grids\GridManager.h" />
+    <ClInclude Include="src\Grids\Renderer\GridRenderer.h" />
+    <ClInclude Include="src\Grids\Renderer\ShaderController.h" />
     <ClInclude Include="src\Grids\Uniforms.h" />
     <ClInclude Include="src\Simulation.h" />
     <ClInclude Include="src\SimulationSettings.h" />
@@ -112,6 +114,8 @@
     <ClCompile Include="src\Events\ToolEvent.cpp" />
     <ClCompile Include="src\Grids\ComputeShaderController.cpp" />
     <ClCompile Include="src\Grids\GridManager.cpp" />
+    <ClCompile Include="src\Grids\Renderer\GridRenderer.cpp" />
+    <ClCompile Include="src\Grids\Renderer\ShaderController.cpp" />
     <ClCompile Include="src\Grids\Uniforms.cpp" />
     <ClCompile Include="src\Simulation.cpp" />
     <ClCompile Include="src\Tools\ToolBase.cpp" />

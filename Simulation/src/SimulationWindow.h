@@ -8,7 +8,7 @@ public:
 	SimulationWindow();
 
 	void OnDraw() override;
-
+	void OnCreate() override;
 private:
 
 

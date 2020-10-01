@@ -7,6 +7,9 @@
     <Filter Include="Grids">
       <UniqueIdentifier>{1E1B440D-8A2F-6CBE-53B1-0F1EBF8468EF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Grids\Renderer">
+      <UniqueIdentifier>{84C0DA46-708E-CE4C-5922-3F73458FAAB1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Tools">
       <UniqueIdentifier>{16CF2D0E-82E3-55BF-4B65-F91EB73852F0}</UniqueIdentifier>
     </Filter>
@@ -24,22 +27,32 @@
     <ClInclude Include="src\Events\ToolEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Grids\ComputeShaderController.h">
+      <Filter>Grids</Filter>
+    </ClInclude>
     <ClInclude Include="src\Grids\Grid.h">
       <Filter>Grids</Filter>
     </ClInclude>
     <ClInclude Include="src\Grids\GridManager.h">
       <Filter>Grids</Filter>
     </ClInclude>
+    <ClInclude Include="src\Grids\Renderer\GridRenderer.h">
+      <Filter>Grids\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Grids\Renderer\ShaderController.h">
+      <Filter>Grids\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Grids\Uniforms.h">
+      <Filter>Grids</Filter>
+    </ClInclude>
     <ClInclude Include="src\Simulation.h" />
+    <ClInclude Include="src\SimulationSettings.h" />
     <ClInclude Include="src\Tools\ToolBase.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="src\Tools\ToolManager.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="src\Grids\ComputeShaderController.h" />
-    <ClInclude Include="src\Grids\Uniforms.h" />
-    <ClInclude Include="src\SimulationSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">
@@ -48,7 +61,19 @@
     <ClCompile Include="src\Events\ToolEvent.cpp">
       <Filter>Events</Filter>
     </ClCompile>
+    <ClCompile Include="src\Grids\ComputeShaderController.cpp">
+      <Filter>Grids</Filter>
+    </ClCompile>
     <ClCompile Include="src\Grids\GridManager.cpp">
+      <Filter>Grids</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Grids\Renderer\GridRenderer.cpp">
+      <Filter>Grids\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Grids\Renderer\ShaderController.cpp">
+      <Filter>Grids\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Grids\Uniforms.cpp">
       <Filter>Grids</Filter>
     </ClCompile>
     <ClCompile Include="src\Simulation.cpp" />
@@ -58,7 +83,5 @@
     <ClCompile Include="src\Tools\ToolManager.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="src\Grids\ComputeShaderController.cpp" />
-    <ClCompile Include="src\Grids\Uniforms.cpp" />
   </ItemGroup>
 </Project>

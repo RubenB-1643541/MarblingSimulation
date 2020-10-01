@@ -5,6 +5,7 @@
 #include "Grids/ComputeShaderController.h"
 #include "Grids/GridManager.h"
 #include "SimulationSettings.h"
+#include "Grids/Renderer/GridRenderer.h"
 
 namespace FluidLib {
 
@@ -29,12 +30,13 @@ namespace FluidLib {
 		//
 		inline ComputeShaderController* GetShader() { return &_computeshader; }
 		inline GridManager* GetGrids() { return &_grids; }
+		inline GridRenderer* GetRenderer() { return &_renderer; }
 		inline int GetSize() { return _sizex * _sizey; }
 		inline int GetSizeX() { return _sizex; }
 		inline int GetSizeY() { return _sizey; }
-		inline void SetSize(int sizex, int sizey) { _sizex = sizex; _sizey = sizey; }
-		inline void SetSizeX(int sizex) { _sizex = sizex; }
-		inline void SetSizeY(int sizey) { _sizey = sizey; }
+		inline void SetSize(int sizex, int sizey) { _sizex = sizex; _sizey = sizey; _renderer.SetSize(GetSize()); }
+		inline void SetSizeX(int sizex) { _sizex = sizex; _renderer.SetSize(GetSize()); }
+		inline void SetSizeY(int sizey) { _sizey = sizey; _renderer.SetSize(GetSize()); }
 		
 		inline Settings* GetSettings() { return &_settings; }
 
@@ -51,9 +53,12 @@ namespace FluidLib {
 		//Tool Manager
 		ComputeShaderController _computeshader;
 
+		GridRenderer _renderer;
+
 		std::clock_t _prev;
 		bool _paused = false;
 
+		
 	};
 
 }

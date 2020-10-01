@@ -58,8 +58,8 @@ vec2 Collision(vec2 vec);
 
 void main() {
 	uint i = gl_GlobalInvocationID.x;
-	frequencies[i] += 1;
-	//Advection();
+	//frequencies[i] += 1;
+	Advection();
 }
 
 void Advection() {

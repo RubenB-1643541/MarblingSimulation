@@ -48,6 +48,7 @@ namespace RenderEngine {
 	void Application::Start()
 	{
 		//TODO Assert Window not null
+		_props.window->Start();
 		OnStart();
 		if (_props.window != nullptr)
 			_props.window->Start();

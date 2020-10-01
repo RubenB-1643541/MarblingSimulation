@@ -20,6 +20,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "RenderEngine/dep/GLFW/include"
 IncludeDir["GLEW"] = "RenderEngine/dep/GLEW/include"
+IncludeDir["GLM"] = "RenderEngine/dep/GLM/include"
 IncludeDir["SPDLOG"] = "RenderEngine/dep/spdlog/include"
 
 include "RenderEngine/dep/GLFW"
@@ -47,8 +48,8 @@ project "RenderEngine"
 	{
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLEW}",
+		"%{IncludeDir.GLM}",
 		"%{IncludeDir.SPDLOG}",
-		"%{prj.name}/dep/GLM/include",
 		"%{prj.name}/dep/ImGui",
 		"%{prj.name}/dep/stb_image",
 		"%{prj.name}/src"
@@ -126,6 +127,7 @@ project "Simulation"
 	{
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLEW}",
+		"%{IncludeDir.GLM}",
 		"%{IncludeDir.SPDLOG}",
 		"RenderEngine/src",
 		"FluidLib/src"
@@ -167,6 +169,7 @@ project "FluidLib"
 	{
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLEW}",
+		"%{IncludeDir.GLM}",
 		"%{IncludeDir.SPDLOG}",
 		"RenderEngine/src"
 	}

@@ -2,7 +2,7 @@
 
 namespace FluidLib {
 
-	Simulation::Simulation()
+	Simulation::Simulation() : _renderer(&_grids)
 	{
 
 	}
@@ -44,6 +44,7 @@ namespace FluidLib {
 	void Simulation::Draw()
 	{
 		OnDraw();
+		_renderer.Draw();
 	}
 	
 	void Simulation::Stop()

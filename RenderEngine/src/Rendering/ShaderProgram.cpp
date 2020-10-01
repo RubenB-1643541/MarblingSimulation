@@ -141,3 +141,8 @@ void RenderEngine::ShaderProgram::UseProgram()
 {
 	glUseProgram(_id);
 }
+
+GLuint RenderEngine::ShaderProgram::GetUniformLocation(std::string s)
+{
+	return glGetUniformLocation(_id, s.c_str());
+}
