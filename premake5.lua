@@ -22,6 +22,7 @@ IncludeDir["GLFW"] = "RenderEngine/dep/GLFW/include"
 IncludeDir["GLEW"] = "RenderEngine/dep/GLEW/include"
 IncludeDir["GLM"] = "RenderEngine/dep/GLM/include"
 IncludeDir["SPDLOG"] = "RenderEngine/dep/spdlog/include"
+IncludeDir["ImGui"] = "RenderEngine/dep/ImGui",
 
 include "RenderEngine/dep/GLFW"
 
@@ -50,7 +51,7 @@ project "RenderEngine"
 		"%{IncludeDir.GLEW}",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.SPDLOG}",
-		"%{prj.name}/dep/ImGui",
+		"%{IncludeDir.ImGui}",
 		"%{prj.name}/dep/stb_image",
 		"%{prj.name}/src"
 	}
@@ -129,6 +130,7 @@ project "Simulation"
 		"%{IncludeDir.GLEW}",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.SPDLOG}",
+		"%{IncludeDir.ImGui}",
 		"RenderEngine/src",
 		"FluidLib/src"
 	}

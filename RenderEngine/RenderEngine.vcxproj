@@ -119,6 +119,9 @@
     <ClInclude Include="src\Core\Timer.h" />
     <ClInclude Include="src\Core\WindowBase.h" />
     <ClInclude Include="src\Core\WindowCursor.h" />
+    <ClInclude Include="src\Interface\ImGuiRenderer.h" />
+    <ClInclude Include="src\Interface\InterfaceComponent.h" />
+    <ClInclude Include="src\Interface\InterfaceController.h" />
     <ClInclude Include="src\Rendering\ComputeShaderProgram.h" />
     <ClInclude Include="src\Rendering\CountBuffer.h" />
     <ClInclude Include="src\Rendering\IndexBuffer.h" />
@@ -137,6 +140,11 @@
     <ClCompile Include="src\Core\Log.cpp" />
     <ClCompile Include="src\Core\Timer.cpp" />
     <ClCompile Include="src\Core\WindowBase.cpp" />
+    <ClCompile Include="src\Interface\ImGuiRenderer.cpp">
+      <ObjectFileName>$(IntDir)\ImGuiRenderer1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\Interface\InterfaceComponent.cpp" />
+    <ClCompile Include="src\Interface\InterfaceController.cpp" />
     <ClCompile Include="src\Rendering\ComputeShaderProgram.cpp" />
     <ClCompile Include="src\Rendering\CountBuffer.cpp" />
     <ClCompile Include="src\Rendering\IndexBuffer.cpp" />

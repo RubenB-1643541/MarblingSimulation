@@ -52,7 +52,7 @@ namespace RenderEngine {
 		virtual void OnUpdate() {};
 		virtual void OnDraw() {};
 		virtual void OnCreate() {};
-		virtual void OnResize(int width, int height) {};
+		virtual void OnResize(int width, int height) { _props.width = width; _props.height = height; };
 
 		bool isClosing();
 

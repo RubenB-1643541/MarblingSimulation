@@ -81,6 +81,8 @@ namespace RenderEngine {
 
         glfwSetWindowSizeCallback(_window, [](GLFWwindow* window, int width, int height) {
             Properties* props = (Properties*)glfwGetWindowUserPointer(window);
+            props->width = width;
+            props->height = height;
             WindowResizeEvent e(width, height);
             props->callback(e);
         });
@@ -156,16 +158,12 @@ namespace RenderEngine {
 
     int WindowBase::GetWidth()
     {
-        int width, height;
-        glfwGetWindowSize(_window, &width, &height);
-        return width;
+        return _props.width;
     }
 
     int WindowBase::GetHeight()
     {
-        int width, height;
-        glfwGetWindowSize(_window, &width, &height);
-        return height;
+        return _props.height;
     }
 
     void WindowBase::Minimize()

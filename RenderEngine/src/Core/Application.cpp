@@ -10,6 +10,7 @@ namespace RenderEngine {
 	Application::Application()
 	{
 		_instance = this;
+		_interface.Init();
 	}
 
 	Application::Application(std::string& name) : Application()
@@ -49,6 +50,7 @@ namespace RenderEngine {
 	{
 		//TODO Assert Window not null
 		_props.window->Start();
+		
 		OnStart();
 		if (_props.window != nullptr)
 			_props.window->Start();
@@ -67,6 +69,7 @@ namespace RenderEngine {
 
 	bool Application::OnEvent(Event& e)
 	{
+		_interface.OnEvent(e);
 		EventDisplatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressEvent>(BIND_EVENT(OnKeyPressEvent));
 		dispatcher.Dispatch<KeyReleaseEvent>(BIND_EVENT(OnKeyReleaseEvent));
@@ -84,9 +87,10 @@ namespace RenderEngine {
 		if (_props.window != nullptr) {
 			while (!_stop) {
 				_props.window->Update();
+				_interface.Update();
 				_props.window->StartDraw();
-				
 				OnUpdate();
+				_interface.Draw();
 				_props.window->EndDraw();
 			}
 		}

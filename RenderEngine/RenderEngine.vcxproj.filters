@@ -10,6 +10,9 @@
     <Filter Include="Core\Events">
       <UniqueIdentifier>{52201B74-BED5-9369-47CA-8D40B37E8A6D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{764D2783-E2B7-DBF9-2BF6-8C9F979FB94E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Rendering">
       <UniqueIdentifier>{E3AE1F7C-4F19-D4F2-9857-85980401B247}</UniqueIdentifier>
     </Filter>
@@ -58,6 +61,15 @@
     <ClInclude Include="src\Core\WindowCursor.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Interface\ImGuiRenderer.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Interface\InterfaceComponent.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Interface\InterfaceController.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
     <ClInclude Include="src\Rendering\ComputeShaderProgram.h">
       <Filter>Rendering</Filter>
     </ClInclude>
@@ -105,6 +117,15 @@
     </ClCompile>
     <ClCompile Include="src\Core\WindowBase.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Interface\ImGuiRenderer.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Interface\InterfaceComponent.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Interface\InterfaceController.cpp">
+      <Filter>Interface</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\ComputeShaderProgram.cpp">
       <Filter>Rendering</Filter>
