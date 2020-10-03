@@ -53,6 +53,8 @@
     <ClInclude Include="src\Tools\ToolManager.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="src\Tools\Action.h" />
+    <ClInclude Include="src\SimulationController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">
@@ -83,5 +85,6 @@
     <ClCompile Include="src\Tools\ToolManager.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="src\Tools\Action.cpp" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,9 @@
 #include "GridManager.h"
 
 namespace FluidLib {
-
+    void GridManager::OnEvent(Event& event)
+    {
+    }
     void GridManager::AddGrid(GridBase* grid)
     {
         _grids.push_back(grid);

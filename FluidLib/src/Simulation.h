@@ -6,8 +6,11 @@
 #include "Grids/GridManager.h"
 #include "SimulationSettings.h"
 #include "Grids/Renderer/GridRenderer.h"
+#include "Events/Events.h"
+#include "Tools/ToolManager.h"
 
 namespace FluidLib {
+
 
 	class Simulation
 	{
@@ -15,6 +18,8 @@ namespace FluidLib {
 		Simulation();
 		Simulation(int sizex, int sizey);
 		~Simulation();
+
+		static Simulation* Get() { return _instance; }
 
 		void Init();
 		void Update();
@@ -24,10 +29,13 @@ namespace FluidLib {
 		inline virtual void OnInit() {}
 		inline virtual void OnUpdate() {}
 		inline virtual void OnDraw() {}
-		inline virtual void OnStop() {}
 		
-		//virtual void OnEvent();
-		//
+		void OnEvent(Event& event);
+		virtual void OnSimulationStart(SimulationStartEvent& event) {}
+		virtual void OnSimulationStop(SimulationStopEvent& event) {}
+		virtual void OnSimulationPause(SimulationPauseEvent& event) {}
+		virtual void OnFrameRateChange(FrameRateChangeEvent& event) {}
+
 		inline ComputeShaderController* GetShader() { return &_computeshader; }
 		inline GridManager* GetGrids() { return &_grids; }
 		inline GridRenderer* GetRenderer() { return &_renderer; }
@@ -40,17 +48,19 @@ namespace FluidLib {
 		
 		inline Settings* GetSettings() { return &_settings; }
 
-		inline void Pause() { _paused = true; }
-		inline void UnPause() { _paused = false; }
+		inline void Pause() { _paused = true; OnSimulationPause(SimulationPauseEvent()); }
+		inline void UnPause() { _paused = false; OnSimulationStart(SimulationStartEvent()); }
 	protected:
 		Settings _settings;
 
 	private:
+		static Simulation* _instance;
+
 		int _sizex = -1;
 		int _sizey = -1;
 
 		GridManager _grids;
-		//Tool Manager
+		ToolManager _tools;
 		ComputeShaderController _computeshader;
 
 		GridRenderer _renderer;

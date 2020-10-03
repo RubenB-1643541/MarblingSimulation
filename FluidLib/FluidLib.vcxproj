@@ -105,7 +105,9 @@
     <ClInclude Include="src\Grids\Renderer\ShaderController.h" />
     <ClInclude Include="src\Grids\Uniforms.h" />
     <ClInclude Include="src\Simulation.h" />
+    <ClInclude Include="src\SimulationController.h" />
     <ClInclude Include="src\SimulationSettings.h" />
+    <ClInclude Include="src\Tools\Action.h" />
     <ClInclude Include="src\Tools\ToolBase.h" />
     <ClInclude Include="src\Tools\ToolManager.h" />
   </ItemGroup>
@@ -118,6 +120,7 @@
     <ClCompile Include="src\Grids\Renderer\ShaderController.cpp" />
     <ClCompile Include="src\Grids\Uniforms.cpp" />
     <ClCompile Include="src\Simulation.cpp" />
+    <ClCompile Include="src\Tools\Action.cpp" />
     <ClCompile Include="src\Tools\ToolBase.cpp" />
     <ClCompile Include="src\Tools\ToolManager.cpp" />
   </ItemGroup>

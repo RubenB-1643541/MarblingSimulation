@@ -15,7 +15,7 @@ namespace FluidLib {
 		void AddTool(ToolBase* tool);
 		//Load Tool Layout
 		//Update
-		//Draw
+		void Draw();
 		//ToolEvent Handler
 		void OnEvent(Event& event);
 		inline ToolBase* GetActive() { return _activeTool; }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Events/Events.h"
+#include "Action.h"
 
 namespace FluidLib {
 	
@@ -16,8 +17,10 @@ namespace FluidLib {
 		virtual inline bool OnUseEvent(ToolUseEvent& event) {}
 		virtual inline bool OnMoveEvent(ToolMoveEvent& event) {}
 		virtual inline bool OnScrollEvent(ToolScrollEvent& event) {}
+
+
 	protected:
-		//Action
+		Action* action;
 
 	private:
 

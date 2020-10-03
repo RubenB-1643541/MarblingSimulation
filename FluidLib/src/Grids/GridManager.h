@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Grid.h"
+#include "../Events/Events.h"
 #include <vector>
 
 namespace FluidLib {
@@ -9,7 +10,7 @@ namespace FluidLib {
 	{
 	public:
 
-
+		void OnEvent(Event& event);
 		//Add Grid
 		//Remove Grid
 		//UpdateGrid

@@ -15,6 +15,11 @@ namespace FluidLib {
 	{
 		_tools.push_back(tool);
 	}
+	void ToolManager::Draw()
+	{
+		if(_activeTool != nullptr)
+			_activeTool->Draw();
+	}
 	void ToolManager::OnEvent(Event& event)
 	{
 		if (event.GetEventCategory() == EventCategory::ToolEvent && _activeTool != nullptr) {

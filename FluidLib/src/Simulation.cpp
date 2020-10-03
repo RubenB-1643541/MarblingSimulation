@@ -2,9 +2,11 @@
 
 namespace FluidLib {
 
+	Simulation* Simulation::_instance = nullptr;
+
 	Simulation::Simulation() : _renderer(&_grids)
 	{
-
+		_instance = this;
 	}
 
 	Simulation::Simulation(int sizex, int sizey) : Simulation()
@@ -45,11 +47,19 @@ namespace FluidLib {
 	{
 		OnDraw();
 		_renderer.Draw();
+		_tools.Draw();
 	}
 	
 	void Simulation::Stop()
 	{
-		OnStop();
+		OnSimulationStop(SimulationStopEvent());
+	}
+
+	void Simulation::OnEvent(Event& event)
+	{
+		_tools.OnEvent(event);
+		_grids.OnEvent(event);
+
 	}
 
 }

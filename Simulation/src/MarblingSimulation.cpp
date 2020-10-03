@@ -17,7 +17,3 @@ void MarblingSimulation::OnUpdate()
 void MarblingSimulation::OnDraw()
 {
 }
-
-void MarblingSimulation::OnStop()
-{
-}

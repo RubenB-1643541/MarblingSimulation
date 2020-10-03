@@ -36,21 +36,19 @@ namespace FluidLib {
 	class ToolUseEvent : public Event
 	{
 	public:
-		ToolUseEvent(int action, int actionNumber = 1);
+		ToolUseEvent(int action);
 		inline int GetAction() { return _action; }
-		inline int GetActionNumber() { return _actionNumber; }
 
 		EVENT_CATEGORY(ToolEvent)
 		EVENT_TYPE(ToolUseEvent)
 
 		inline std::string GetString() const override {
 			std::stringstream ss;
-			ss << "ToolUseEvent: " << _action << " number: "<< _actionNumber;
+			ss << "ToolUseEvent: " << _action;
 			return ss.str();
 		}
 	private:
 		int _action;
-		int _actionNumber;
 	};
 
 	class ToolMoveEvent : public Event

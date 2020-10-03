@@ -1,5 +1,6 @@
 #include "SimulationApplication.h"
 #include "GridStructures.h"
+#include "SimulationController.h"
 
 SimulationApplication::SimulationApplication() : Application("Marbling Simulation", new SimulationWindow()), _sim(500,500)
 {
@@ -115,4 +116,28 @@ bool SimulationApplication::OnWindowResizeEvent(RenderEngine::WindowResizeEvent&
 	glViewport(0, 0, e.GetWidth(), e.GetHeight());
 	INFO("Window Resize {} - {}", e.GetWidth(), e.GetHeight());
 	return true;
+}
+
+bool SimulationApplication::OnMouseMoveEvent(RenderEngine::MouseMoveEvent& e)
+{
+	FluidLib::SimulationController::MouseMove(e.GetX(), e.GetY());
+	return false;
+}
+
+bool SimulationApplication::OnMousePressEvent(RenderEngine::MousePressEvent& e)
+{
+	FluidLib::SimulationController::MouseClick(e.GetButton());
+	return false;
+}
+
+bool SimulationApplication::OnMouseReleaseEvent(RenderEngine::MouseReleaseEvent& e)
+{
+
+	return false;
+}
+
+bool SimulationApplication::OnMouseScrollEvent(RenderEngine::MouseScrollEvent& e)
+{
+	FluidLib::SimulationController::MouseScroll(e.GetX(), e.GetY());
+	return false;
 }

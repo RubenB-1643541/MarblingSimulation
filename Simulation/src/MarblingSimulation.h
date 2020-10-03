@@ -12,7 +12,6 @@ public:
 	void OnInit() override;
 	void OnUpdate() override;
 	void OnDraw() override;
-	void OnStop() override;
 
 private:
 

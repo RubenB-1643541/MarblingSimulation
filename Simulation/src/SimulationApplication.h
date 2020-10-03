@@ -18,7 +18,11 @@ public:
 	virtual void OnStop() override;
 	virtual void OnUpdate() override;
 
-	virtual bool OnWindowResizeEvent(RenderEngine::WindowResizeEvent& e);
+	virtual bool OnWindowResizeEvent(RenderEngine::WindowResizeEvent& e) override;
+	virtual bool OnMouseMoveEvent(RenderEngine::MouseMoveEvent& e) override;
+	virtual bool OnMousePressEvent(RenderEngine::MousePressEvent& e) override;
+	virtual bool OnMouseReleaseEvent(RenderEngine::MouseReleaseEvent& e) override;
+	virtual bool OnMouseScrollEvent(RenderEngine::MouseScrollEvent& e) override;
 
 private:
 	MarblingSimulation _sim;

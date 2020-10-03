@@ -7,7 +7,7 @@ namespace FluidLib {
 
 	}
 
-	ToolUseEvent::ToolUseEvent(int action, int actionNumber) : _action(action), _actionNumber(actionNumber)
+	ToolUseEvent::ToolUseEvent(int action) : _action(action)
 	{
 
 	}
