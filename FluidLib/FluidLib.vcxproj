@@ -57,7 +57,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\RenderEngine\dep\GLFW\include;..\RenderEngine\dep\GLEW\include;..\RenderEngine\dep\GLM\include;..\RenderEngine\dep\spdlog\include;..\RenderEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\RenderEngine\dep\GLFW\include;..\RenderEngine\dep\GLEW\include;..\RenderEngine\dep\GLM\include;..\RenderEngine\dep\spdlog\include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\RenderEngine\dep\GLFW\include;..\RenderEngine\dep\GLEW\include;..\RenderEngine\dep\GLM\include;..\RenderEngine\dep\spdlog\include;..\RenderEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\RenderEngine\dep\GLFW\include;..\RenderEngine\dep\GLEW\include;..\RenderEngine\dep\GLM\include;..\RenderEngine\dep\spdlog\include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -108,8 +108,17 @@
     <ClInclude Include="src\SimulationController.h" />
     <ClInclude Include="src\SimulationSettings.h" />
     <ClInclude Include="src\Tools\Action.h" />
+    <ClInclude Include="src\Tools\Basic Tools\SelectTool.h" />
+    <ClInclude Include="src\Tools\Movement.h" />
+    <ClInclude Include="src\Tools\Movement\MouseMovement.h" />
+    <ClInclude Include="src\Tools\Surface.h" />
+    <ClInclude Include="src\Tools\Surface\Circle.h" />
+    <ClInclude Include="src\Tools\Surface\Square.h" />
     <ClInclude Include="src\Tools\ToolBase.h" />
+    <ClInclude Include="src\Tools\ToolFactory.h" />
     <ClInclude Include="src\Tools\ToolManager.h" />
+    <ClInclude Include="src\Util\Point.h" />
+    <ClInclude Include="src\Util\Rendering.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp" />
@@ -120,9 +129,14 @@
     <ClCompile Include="src\Grids\Renderer\ShaderController.cpp" />
     <ClCompile Include="src\Grids\Uniforms.cpp" />
     <ClCompile Include="src\Simulation.cpp" />
-    <ClCompile Include="src\Tools\Action.cpp" />
+    <ClCompile Include="src\Tools\Basic Tools\SelectTool.cpp" />
+    <ClCompile Include="src\Tools\Surface\Circle.cpp" />
+    <ClCompile Include="src\Tools\Surface\Square.cpp" />
     <ClCompile Include="src\Tools\ToolBase.cpp" />
+    <ClCompile Include="src\Tools\ToolFactory.cpp" />
     <ClCompile Include="src\Tools\ToolManager.cpp" />
+    <ClCompile Include="src\Util\Point.cpp" />
+    <ClCompile Include="src\Util\Rendering.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

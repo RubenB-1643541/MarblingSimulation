@@ -2,6 +2,8 @@
 
 #include "../Events/Events.h"
 #include "Action.h"
+#include "Movement.h"
+#include "Surface.h"
 
 namespace FluidLib {
 	
@@ -10,20 +12,35 @@ namespace FluidLib {
 	class ToolBase
 	{
 	public:
-		inline virtual void Draw() {};
+		virtual void Draw();
+		virtual inline void OnDraw() {}
+		virtual void Update();
+		virtual inline void OnUpdate() {}
+
+		virtual void OnActivate() {}
+		virtual void OnDeactivate() {}
 
 		virtual bool OnEvent(Event& toolevent);
-		virtual inline bool OnSelectEvent(ToolSelectEvent& event) {}
-		virtual inline bool OnUseEvent(ToolUseEvent& event) {}
-		virtual inline bool OnMoveEvent(ToolMoveEvent& event) {}
-		virtual inline bool OnScrollEvent(ToolScrollEvent& event) {}
+		//virtual inline bool OnSelectEvent(ToolSelectEvent& event) {}
+		virtual bool OnUseEvent(ToolUseEvent& event);
+		virtual bool OnEndUseEvent(ToolEndUseEvent& event);
+		virtual bool OnMoveEvent(ToolMoveEvent& event);
+		virtual bool OnScrollEvent(ToolScrollEvent& event);
 
+		void OnBeginUse();
+		void OnEndUse();
+		virtual void OnUse();
 
+		inline void SetAction(ActionBase* action) { _action = action; }
+		inline void SetMovement(Movement* movement) { _movement = movement; }
+		inline void SetSurface(Surface* surface) { _surface = surface; }
+		inline void SetProjection(glm::mat4 proj) { _surface->SetProjection(proj); }
 	protected:
-		Action* action;
-
+		ActionBase* _action;
+		Movement* _movement;
+		Surface* _surface;
 	private:
-
+		bool _using = false;
 
 	};
 

@@ -31,8 +31,9 @@ namespace FluidLib {
 			_prev = std::clock();
 
 			OnUpdate();
+			_tools.Update();
+			_grids.BindGrids();
 			if (_computeshader.IsShaderSet()) {
-				_grids.BindGrids();
 				_computeshader.Use();
 				_computeshader.BindUniforms();
 				_computeshader.Dispatch();
@@ -40,14 +41,18 @@ namespace FluidLib {
 			else {
 				std::cerr << "No Compute Shader Set" << std::endl;
 			}
+			
 		}
 	}
 
 	void Simulation::Draw()
 	{
-		OnDraw();
-		_renderer.Draw();
+		glViewport(_screenwidth / 2 - _sizex / 2, _screenheight / 2 - _sizey / 2, _sizex, _sizey);
 		_tools.Draw();
+		_renderer.Draw();
+		OnDraw();
+		glViewport(0, 0, _screenwidth, _screenheight);
+		
 	}
 	
 	void Simulation::Stop()
@@ -60,6 +65,21 @@ namespace FluidLib {
 		_tools.OnEvent(event);
 		_grids.OnEvent(event);
 
+	}
+
+	void Simulation::SetSize(int sizex, int sizey)
+	{
+		_sizex = sizex; _sizey = sizey; 
+		_renderer.SetSimSize(sizex, sizey);
+		_tools.SetSimSize(sizex, sizey);
+		_computeshader.SetGroupSizes((sizex * sizey)/ WORK_GROUP_SIZE, 1, 1);
+		
+	}
+
+	void Simulation::SetScreenSize(float width, float height)
+	{
+		_screenwidth = width;
+		_screenheight = height;
 	}
 
 }

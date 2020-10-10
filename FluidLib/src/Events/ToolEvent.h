@@ -31,7 +31,6 @@ namespace FluidLib {
 
 	/*
 	Indicates What action is used
-	Indicates if it is the first a secondary action
 	*/
 	class ToolUseEvent : public Event
 	{
@@ -43,6 +42,27 @@ namespace FluidLib {
 		EVENT_TYPE(ToolUseEvent)
 
 		inline std::string GetString() const override {
+			std::stringstream ss;
+			ss << "ToolUseEvent: " << _action;
+			return ss.str();
+		}
+	private:
+		int _action;
+	};
+
+	/*
+	Indicates action stopped being used
+	*/
+	class ToolEndUseEvent : public Event
+	{
+	public:
+		ToolEndUseEvent(int action);
+		inline int GetAction() { return _action; }
+
+		EVENT_CATEGORY(ToolEvent)
+			EVENT_TYPE(ToolEndUseEvent)
+
+			inline std::string GetString() const override {
 			std::stringstream ss;
 			ss << "ToolUseEvent: " << _action;
 			return ss.str();

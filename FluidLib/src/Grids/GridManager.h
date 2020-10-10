@@ -2,7 +2,7 @@
 
 #include "Grid.h"
 #include "../Events/Events.h"
-#include <vector>
+#include <map>
 
 namespace FluidLib {
 
@@ -14,15 +14,16 @@ namespace FluidLib {
 		//Add Grid
 		//Remove Grid
 		//UpdateGrid
-		void AddGrid(GridBase* grid);
-		void RemoveGrid(GridBase* grid);
+		void AddGrid(const std::string& name, GridBase* grid);
+		void RemoveGrid(const std::string& name);
+		GridBase* GetGrid(const std::string& name);
 		void BindGrids();
 		void RenderGrids();
 
-		std::vector<GridBase*>::iterator begin() { return _grids.begin(); }
-		std::vector<GridBase*>::iterator end() { return _grids.end(); }
+		std::map<std::string, GridBase*>::iterator begin() { return _grids.begin(); }
+		std::map<std::string, GridBase*>::iterator end() { return _grids.end(); }
 	private:
-		std::vector<GridBase*> _grids;
+		std::map<std::string, GridBase*> _grids;
 
 	};
 

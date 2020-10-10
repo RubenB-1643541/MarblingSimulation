@@ -90,7 +90,7 @@ void Advection() {
 			ExecMovement(i, dest);
 		}
 		//barrier();
-		//Pressure(i);
+		Pressure(i);
 		InkPressure(i);
 		//CleanEdges(i);
 

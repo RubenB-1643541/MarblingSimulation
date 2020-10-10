@@ -1,0 +1,21 @@
+Tools:
+
+	-Selected, UnSelected
+	-Draw
+	-Execute Action
+	-Movement
+	-Surface 
+
+Action	->	Change Value in Grid 
+		->	Add Value in Grid
+		->	Subtract Value in Grid
+		->	Divide Value in Grid
+		->	Mult Value in Grid
+
+Movement	->	Mouse
+			->	Lines
+			->	Curves
+
+Surface	->	Circle
+		->	Square
+		->	...

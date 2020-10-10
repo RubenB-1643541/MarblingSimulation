@@ -15,6 +15,11 @@ namespace FluidLib {
 	{
 		_tools.push_back(tool);
 	}
+	void ToolManager::Update()
+	{
+		if (_activeTool != nullptr)
+			_activeTool->Update();
+	}
 	void ToolManager::Draw()
 	{
 		if(_activeTool != nullptr)
@@ -25,6 +30,14 @@ namespace FluidLib {
 		if (event.GetEventCategory() == EventCategory::ToolEvent && _activeTool != nullptr) {
 			_activeTool->OnEvent(event);
 		}
+	}
+	void ToolManager::SetActive(ToolBase* tool)
+	{
+		if (_activeTool != nullptr)
+			_activeTool->OnDeactivate();
+		_activeTool = tool;
+		_activeTool->SetProjection(_projection);
+		_activeTool->OnActivate();
 	}
 	bool ToolLoader::Load(ToolManager& manger, std::string file)
 	{

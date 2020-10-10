@@ -21,4 +21,8 @@ namespace FluidLib {
 	{
 	}
 
+	ToolEndUseEvent::ToolEndUseEvent(int action) : _action(action)
+	{
+	}
+
 }

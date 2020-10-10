@@ -57,7 +57,7 @@ namespace RenderEngine {
 
 	void* ShaderStorageBuffer::MapBufferRange()
 	{
-		GLint bufMask = GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT;
+		GLint bufMask = GL_MAP_WRITE_BIT;
 		return glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, _size, bufMask);
 	}
 

@@ -173,7 +173,7 @@ project "FluidLib"
 		"%{IncludeDir.GLEW}",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.SPDLOG}",
-		"RenderEngine/src"
+		"%{prj.name}/src"
 	}
 
 	filter "system:windows"

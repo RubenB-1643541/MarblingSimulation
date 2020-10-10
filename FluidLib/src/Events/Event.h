@@ -15,7 +15,7 @@ namespace FluidLib {
 
 	enum class EventType {
 		None, 
-		ToolSelectEvent, ToolUseEvent, ToolUseSecEvent, ToolMoveEvent, ToolScrollEvent,
+		ToolSelectEvent, ToolUseEvent, ToolEndUseEvent, ToolUseSecEvent, ToolMoveEvent, ToolScrollEvent,
 		GridSelectEvent, GridModifiedEvent,
 		SimulationStartEvent, SimulationStopEvent, SimulationPauseEvent, FrameRateChangeEvent
 	};

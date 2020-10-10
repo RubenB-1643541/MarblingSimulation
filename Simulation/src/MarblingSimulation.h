@@ -14,7 +14,7 @@ public:
 	void OnDraw() override;
 
 private:
-
+	void CreateTools();
 
 
 };

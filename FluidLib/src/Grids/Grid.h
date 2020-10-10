@@ -2,6 +2,9 @@
 
 #include "GL/glew.h"
 
+#define COOR_2D_TO_1D(x,y) Simulation::Get()->GetSizeX() * y + x
+#define POINT_TO_1D(p) Simulation::Get()->GetSizeX() * p.GetY() + p.GetX()
+
 namespace FluidLib {
 
 	struct BufferLock {
@@ -13,6 +16,7 @@ namespace FluidLib {
 	static void ReleaseBufferLock() {
 		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 		lock.locked = false;
+		
 	}
 
 	struct BufferData 
@@ -53,6 +57,7 @@ namespace FluidLib {
 
 		T* GetBufferPointer();
 		T* GetBufferPointer(GLint bufMask);
+		void ReleaseBufferPointer();
 
 		inline void SetBufferId(GLuint id) { _data.id = id; }
 		inline int GetBufferId() { return _data.id; }
@@ -119,8 +124,12 @@ namespace FluidLib {
 		if (lock.locked)
 			ReleaseBufferLock();
 		lock.locked = true;
-		GLint bufMask = GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT;
-		return static_cast<T*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, _size * sizeof(T), bufMask));
+		if(_data.id != 2)
+			std::cout << _data.id << std::endl;
+
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, _data.id);
+		GLint bufMask = GL_MAP_WRITE_BIT;
+		return static_cast<T*>(glMapNamedBufferRange(_data.id, 0, _data.size * sizeof(T), bufMask));
 	}
 
 	template<class T>
@@ -129,7 +138,16 @@ namespace FluidLib {
 		if (lock.locked)
 			ReleaseBufferLock();
 		lock.locked = true;
-		return static_cast<T*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, _size * sizeof(T), bufMask));
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, _data.id);
+		return static_cast<T*>(glMapNamedBufferRange(_data.id, 0, _data.size * sizeof(T), bufMask));
+	}
+
+	template<class T>
+	inline void Grid<T>::ReleaseBufferPointer()
+	{
+		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, NULL);
+		lock.locked = false;
 	}
 
 	template<class T>

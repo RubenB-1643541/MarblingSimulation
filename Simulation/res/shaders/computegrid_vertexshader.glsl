@@ -1,6 +1,6 @@
 #version 430 core
 
-layout(std430, binding=2) buffer freq
+layout(binding=2) buffer freq
 {
 	int frequencies[];	//array of freqs
 };
@@ -27,7 +27,8 @@ out float oink;
 
 void main() {
 	ofreq = float(frequencies[gl_VertexID])/100;
-	oink = float(inkvals[gl_VertexID]);
+	oink = 0;
+	//oink = float(inkvals[gl_VertexID]);
 	oflags = flagvals[gl_VertexID];
 
 	//float x_pos = gl_VertexID;

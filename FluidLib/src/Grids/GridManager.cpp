@@ -4,25 +4,30 @@ namespace FluidLib {
     void GridManager::OnEvent(Event& event)
     {
     }
-    void GridManager::AddGrid(GridBase* grid)
+    void GridManager::AddGrid(const std::string& name, GridBase* grid)
     {
-        _grids.push_back(grid);
+        _grids.insert(std::make_pair(name, grid));
     }
-    void GridManager::RemoveGrid(GridBase* grid)
+    void GridManager::RemoveGrid(const std::string& name)
     {
+        _grids.erase(name);
         //Todo remove grid
+    }
+    GridBase* GridManager::GetGrid(const std::string& name)
+    {
+        return _grids[name];
     }
     void GridManager::BindGrids()
     {
-        for (GridBase * grid : _grids) {
-            grid->UseGrid();
+        for (std::pair<std::string, GridBase *> grid : _grids) {
+            grid.second->UseGrid();
         } 
     }
 
     void GridManager::RenderGrids()
     {
-        for (GridBase* grid : _grids) {
-            grid->DrawGrid();
+        for (std::pair<std::string, GridBase*> grid : _grids) {
+            grid.second->DrawGrid();
         }
     }
 

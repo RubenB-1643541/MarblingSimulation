@@ -9,6 +9,8 @@
 #include "Events/Events.h"
 #include "Tools/ToolManager.h"
 
+#define WORK_GROUP_SIZE 100
+
 namespace FluidLib {
 
 
@@ -42,26 +44,34 @@ namespace FluidLib {
 		inline int GetSize() { return _sizex * _sizey; }
 		inline int GetSizeX() { return _sizex; }
 		inline int GetSizeY() { return _sizey; }
-		inline void SetSize(int sizex, int sizey) { _sizex = sizex; _sizey = sizey; _renderer.SetSize(GetSize()); }
-		inline void SetSizeX(int sizex) { _sizex = sizex; _renderer.SetSize(GetSize()); }
-		inline void SetSizeY(int sizey) { _sizey = sizey; _renderer.SetSize(GetSize()); }
+		void SetSize(int sizex, int sizey);
+		inline int GetScreenSize() { return _screenwidth * _screenheight; }
+		inline int GetScreenWidth() { return _screenwidth; }
+		inline int GetScreenHeight() { return _screenheight; }
+		
+		//inline void SetSizeX(int sizex) { _sizex = sizex; _renderer.SetSize(GetSize()); }
+		//inline void SetSizeY(int sizey) { _sizey = sizey; _renderer.SetSize(GetSize()); }
 		
 		inline Settings* GetSettings() { return &_settings; }
 
 		inline void Pause() { _paused = true; OnSimulationPause(SimulationPauseEvent()); }
 		inline void UnPause() { _paused = false; OnSimulationStart(SimulationStartEvent()); }
+
+		void SetScreenSize(float width, float height);
 	protected:
 		Settings _settings;
-
+		GridManager _grids;
+		ToolManager _tools;
+		ComputeShaderController _computeshader;
 	private:
 		static Simulation* _instance;
 
 		int _sizex = -1;
 		int _sizey = -1;
+		float _screenwidth = 0;
+		float _screenheight = 0;
 
-		GridManager _grids;
-		ToolManager _tools;
-		ComputeShaderController _computeshader;
+	
 
 		GridRenderer _renderer;
 
