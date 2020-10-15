@@ -26,17 +26,19 @@ namespace FluidLib {
 
 	void Simulation::Update()
 	{
+		_tools.Update();
 		if (!_paused && (std::clock() - _prev)/ (double) CLOCKS_PER_SEC >= 1.0f / _settings.fps) {
 			//std::cout << "update: " << (std::clock() - _prev) / (double) CLOCKS_PER_SEC << " fps: " << 1.0f / _settings.fps << std::endl;
 			_prev = std::clock();
 
-			OnUpdate();
-			_tools.Update();
+			
+			BeforeUpdate();
 			_grids.BindGrids();
 			if (_computeshader.IsShaderSet()) {
 				_computeshader.Use();
 				_computeshader.BindUniforms();
 				_computeshader.Dispatch();
+				AfterUpdate();
 			}
 			else {
 				std::cerr << "No Compute Shader Set" << std::endl;

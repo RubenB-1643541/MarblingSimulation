@@ -4,7 +4,7 @@
 #include "Core/Application.h"
 #include "Core/Log.h"
 #include "Grids/Grid.h"
-#include "SimulationApplication.h"
+#include "SimulationCore/SimulationApplication.h"
 
 
 int main(int argc, char* argv[]) {

@@ -61,10 +61,11 @@ namespace RenderEngine {
 		bool _stop = false;
 		float _width = 0.0f;
 		float _height = 0.0f;
-	private:
-		static Application* _instance;
 		ApplicationProperties _props;
 		InterfaceController _interface;
+	private:
+		static Application* _instance;
+
 
 	};
 

@@ -10,8 +10,10 @@ public:
 	MarblingSimulation(int sizex, int sizey);
 
 	void OnInit() override;
-	void OnUpdate() override;
+	void BeforeUpdate() override;
+	void AfterUpdate() override;
 	void OnDraw() override;
+	inline FluidLib::ToolManager* GetTools() { return &_tools; }
 
 private:
 	void CreateTools();

@@ -126,8 +126,6 @@ namespace FluidLib {
 	inline void Action<T>::Add(IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		//if (_gridvals[0] == 0)
-		//	std::cout << 0 << std::endl;
 		_gridvals[POINT_TO_1D(temp)] += _value;
 	}
 

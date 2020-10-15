@@ -91,15 +91,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\GridStructures.h" />
-    <ClInclude Include="src\MarblingSimulation.h" />
-    <ClInclude Include="src\SimulationApplication.h" />
-    <ClInclude Include="src\SimulationWindow.h" />
+    <ClInclude Include="src\SimInterface\InterfaceComponentsList.h" />
+    <ClInclude Include="src\SimInterface\SideComponent.h" />
+    <ClInclude Include="src\SimInterface\ToolParameters.h" />
+    <ClInclude Include="src\SimInterface\TopBar.h" />
+    <ClInclude Include="src\SimulationCore\GridStructures.h" />
+    <ClInclude Include="src\SimulationCore\MarblingSimulation.h" />
+    <ClInclude Include="src\SimulationCore\SimulationApplication.h" />
+    <ClInclude Include="src\SimulationCore\SimulationWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\MarblingSimulation.cpp" />
-    <ClCompile Include="src\SimulationApplication.cpp" />
-    <ClCompile Include="src\SimulationWindow.cpp" />
+    <ClCompile Include="src\SimInterface\SideComponent.cpp" />
+    <ClCompile Include="src\SimInterface\ToolParameters.cpp" />
+    <ClCompile Include="src\SimInterface\TopBar.cpp" />
+    <ClCompile Include="src\SimulationCore\MarblingSimulation.cpp" />
+    <ClCompile Include="src\SimulationCore\SimulationApplication.cpp" />
+    <ClCompile Include="src\SimulationCore\SimulationWindow.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

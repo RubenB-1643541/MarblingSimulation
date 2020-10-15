@@ -34,7 +34,10 @@ namespace FluidLib {
 		inline void SetAction(ActionBase* action) { _action = action; }
 		inline void SetMovement(Movement* movement) { _movement = movement; }
 		inline void SetSurface(Surface* surface) { _surface = surface; }
-		inline void SetProjection(glm::mat4 proj) { _surface->SetProjection(proj); }
+		inline void SetProjection(glm::mat4 proj) { _surface->SetProjection(proj); _movement->SetProjection(proj); }
+		inline ActionBase* GetAction() { return _action; }
+		inline Movement* GetMovement() { return _movement; }
+		inline Surface* GetSurface() { return _surface; }
 	protected:
 		ActionBase* _action;
 		Movement* _movement;

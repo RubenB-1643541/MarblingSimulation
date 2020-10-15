@@ -85,6 +85,7 @@
     <ClInclude Include="src\Tools\Surface\Circle.h" />
     <ClInclude Include="src\Util\Rendering.h" />
     <ClInclude Include="src\Tools\Surface\Square.h" />
+    <ClInclude Include="src\Tools\Movement\Line.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">
@@ -125,5 +126,6 @@
     <ClCompile Include="src\Tools\Surface\Circle.cpp" />
     <ClCompile Include="src\Util\Rendering.cpp" />
     <ClCompile Include="src\Tools\Surface\Square.cpp" />
+    <ClCompile Include="src\Tools\Movement\Line.cpp" />
   </ItemGroup>
 </Project>

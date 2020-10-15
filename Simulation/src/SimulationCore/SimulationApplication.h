@@ -7,6 +7,7 @@
 #include "Rendering/ComputeShaderProgram.h"
 #include "Rendering/ShaderProgram.h"
 #include "Events/Events.h"
+#include "../SimInterface/InterfaceComponentsList.h"
 
 class SimulationApplication : public RenderEngine::Application
 {
@@ -17,6 +18,8 @@ public:
 	virtual void OnStart() override;
 	virtual void OnStop() override;
 	virtual void OnUpdate() override;
+
+	void CreateInterface();
 
 	virtual bool OnWindowResizeEvent(RenderEngine::WindowResizeEvent& e) override;
 	virtual bool OnMouseMoveEvent(RenderEngine::MouseMoveEvent& e) override;

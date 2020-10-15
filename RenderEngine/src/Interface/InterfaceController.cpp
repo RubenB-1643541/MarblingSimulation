@@ -102,6 +102,7 @@ namespace RenderEngine {
 
 	void InterfaceController::AddComponent(std::string str, InterfaceComponent* component)
 	{
+		component->Init();
 		_components.insert(std::make_pair(str, component));
 	}
 

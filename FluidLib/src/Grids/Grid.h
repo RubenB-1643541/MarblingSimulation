@@ -37,8 +37,10 @@ namespace FluidLib {
 
 		virtual void UseGrid() = 0;
 		virtual void DrawGrid() = 0;
+		BufferData& GetBufferData() { return _data; }
+	protected:
+		BufferData _data;
 	private:
-
 
 	};
 	
@@ -81,15 +83,13 @@ namespace FluidLib {
 		inline void SetAttrPointer(int attr) { _data.attrpointer = attr; }
 		inline void GetAttrPointer() { return _data.attrpointer; }
 
-		inline BufferData& GetBufferData() { return _data; }
-
 		void UseGrid();
 		void DrawGrid();
 
 		inline void SetRender(bool state) { _render = state; }
 		inline bool GetRender() { return _render; }
 	private:
-		BufferData _data;
+		
 		bool _render = false;
 
 
@@ -124,8 +124,6 @@ namespace FluidLib {
 		if (lock.locked)
 			ReleaseBufferLock();
 		lock.locked = true;
-		if(_data.id != 2)
-			std::cout << _data.id << std::endl;
 
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, _data.id);
 		GLint bufMask = GL_MAP_WRITE_BIT;

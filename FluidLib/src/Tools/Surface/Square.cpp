@@ -55,6 +55,8 @@ namespace FluidLib {
     void Square::OnScroll(float x, float y)
     {
         _len += y*2;
+        if (_len < 1)
+            _len = 1.0f;
         _changed = true;
     }
 

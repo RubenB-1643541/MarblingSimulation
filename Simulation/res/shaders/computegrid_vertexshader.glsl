@@ -1,16 +1,16 @@
 #version 430 core
 
-layout(binding=2) buffer freq
+layout(binding=3) buffer freq
 {
 	int frequencies[];	//array of freqs
 };
 
-layout(binding=3) buffer ink
+layout(binding=5) buffer ink
 {
 	int inkvals[];
 };
 
-layout(binding=4) buffer flags
+layout(binding=7) buffer flags
 {
 	vec4 flagvals[]; //freeze - unused - unused - unused
 };

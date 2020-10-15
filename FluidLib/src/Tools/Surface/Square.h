@@ -15,6 +15,8 @@ namespace FluidLib {
 		float GetSurfaceArea() const override;
 		//Loop through surface points
 		std::vector<IPoint>& GetSurfacePoints() override;
+		inline float* GetLen() { return &_len; }
+		inline void SetStyle(STYLE style) { _style = style; }
 	private:
 		float _xpos = 0;
 		float _ypos = 0;

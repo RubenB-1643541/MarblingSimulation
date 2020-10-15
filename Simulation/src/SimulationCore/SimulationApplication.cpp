@@ -2,7 +2,7 @@
 #include "GridStructures.h"
 #include "SimulationController.h"
 
-SimulationApplication::SimulationApplication() : Application("Marbling Simulation", new SimulationWindow()), _sim(800,500)
+SimulationApplication::SimulationApplication() : Application("Marbling Simulation", new SimulationWindow()), _sim(1000,500)
 {
 	_buffers.clear();
 	RenderEngine::ShaderStorageBuffer* velbuf = new RenderEngine::ShaderStorageBuffer();
@@ -10,10 +10,20 @@ SimulationApplication::SimulationApplication() : Application("Marbling Simulatio
 	velbuf->BufferData(_sim.GetSize() * sizeof(IVelocity));
 	IVelocity* vels = (IVelocity*)velbuf->MapBufferRange();
 	for (int i = 0; i < _sim.GetSize(); ++i) {
-		vels[i] = { 0 ,0 };
+		vels[i] = { 0, 0 };
 	}
 	velbuf->UnMapBuffer();
 	_buffers.insert(std::make_pair("Vel", velbuf));
+
+	RenderEngine::ShaderStorageBuffer* velbuf2 = new RenderEngine::ShaderStorageBuffer();
+	velbuf2->Bind();
+	velbuf2->BufferData(_sim.GetSize() * sizeof(IVelocity));
+	IVelocity* vels2 = (IVelocity*)velbuf2->MapBufferRange();
+	for (int i = 0; i < _sim.GetSize(); ++i) {
+		vels2[i] = { 0, 0 };
+	}
+	velbuf2->UnMapBuffer();
+	_buffers.insert(std::make_pair("Vel2", velbuf2));
 
 	RenderEngine::ShaderStorageBuffer* freqbuf = new RenderEngine::ShaderStorageBuffer();
 	freqbuf->Bind();
@@ -24,6 +34,16 @@ SimulationApplication::SimulationApplication() : Application("Marbling Simulatio
 	}
 	freqbuf->UnMapBuffer();
 	_buffers.insert(std::make_pair("Freq", freqbuf));
+
+	RenderEngine::ShaderStorageBuffer* freqbuf2 = new RenderEngine::ShaderStorageBuffer();
+	freqbuf2->Bind();
+	freqbuf2->BufferData(_sim.GetSize() * sizeof(IFrequency));
+	IFrequency* freqs2 = (IFrequency*)freqbuf2->MapBufferRange();
+	for (int i = 0; i < _sim.GetSize(); ++i) {
+		freqs2[i] = { 0 };
+	}
+	freqbuf2->UnMapBuffer();
+	_buffers.insert(std::make_pair("Freq2", freqbuf2));
 
 	RenderEngine::ShaderStorageBuffer* inkbuf = new RenderEngine::ShaderStorageBuffer();
 	inkbuf->Bind();
@@ -45,8 +65,9 @@ SimulationApplication::SimulationApplication() : Application("Marbling Simulatio
 	flagbuf->UnMapBuffer();
 	_buffers.insert(std::make_pair("Flag", flagbuf));
 
-	_computeshader.Create("res/computeshaders/final_computeshader.glsl");
+	_computeshader.Create("res/computeshaders/StamAdvection.glsl");
 	_shader.Create(_shaderdata);
+	
 }
 
 SimulationApplication::~SimulationApplication()
@@ -65,14 +86,21 @@ void SimulationApplication::OnStart()
 	FluidLib::Grid<IVelocity>* velgrid = new FluidLib::Grid<IVelocity>(_buffers.at("Vel")->GetId(), _sim.GetSize(), 1);
 	velgrid->SetElementSize(2);
 	gridman->AddGrid("Vel", velgrid);
+	
+	FluidLib::Grid<IVelocity>* velgrid2 = new FluidLib::Grid<IVelocity>(_buffers.at("Vel2")->GetId(), _sim.GetSize(), 2);
+	velgrid->SetElementSize(2);
+	gridman->AddGrid("Vel2", velgrid2);
 
-	FluidLib::Grid<IFrequency>* freqgrid = new FluidLib::Grid<IFrequency>(_buffers.at("Freq")->GetId(), _sim.GetSize(), 2, true);
+	FluidLib::Grid<IFrequency>* freqgrid = new FluidLib::Grid<IFrequency>(_buffers.at("Freq")->GetId(), _sim.GetSize(), 3, true);
 	gridman->AddGrid("Freq", freqgrid);
 
-	FluidLib::Grid<IInk>* inkgrid = new FluidLib::Grid<IInk>(_buffers.at("Ink")->GetId(), _sim.GetSize(), 3, true);
+	FluidLib::Grid<IFrequency>* freqgrid2 = new FluidLib::Grid<IFrequency>(_buffers.at("Freq2")->GetId(), _sim.GetSize(), 4);
+	gridman->AddGrid("Freq2", freqgrid2);
+
+	FluidLib::Grid<IInk>* inkgrid = new FluidLib::Grid<IInk>(_buffers.at("Ink")->GetId(), _sim.GetSize(), 5, true);
 	gridman->AddGrid("Ink", inkgrid);
 
-	FluidLib::Grid<Flags>* flaggrid = new FluidLib::Grid<Flags>(_buffers.at("Flag")->GetId(), _sim.GetSize(), 4, true);
+	FluidLib::Grid<Flags>* flaggrid = new FluidLib::Grid<Flags>(_buffers.at("Flag")->GetId(), _sim.GetSize(), 7, true);
 	flaggrid->SetElementSize(4);
 	gridman->AddGrid("Flag", flaggrid);
 
@@ -90,6 +118,7 @@ void SimulationApplication::OnStart()
 	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
 
 	_sim.Init();
+	CreateInterface();
 }
 
 void SimulationApplication::OnStop()
@@ -99,15 +128,23 @@ void SimulationApplication::OnStop()
 
 void SimulationApplication::OnUpdate()
 {
-	//RenderEngine::ShaderStorageBuffer* freqbuf = _buffers.at("Freq");
-	//freqbuf->Bind();
-	//IFrequency* freqs = (IFrequency*)freqbuf->MapBufferRange();
-	//INFO(freqs[0].freq);
-	//freqbuf->UnMapBuffer();
+	//RenderEngine::ShaderStorageBuffer* velbuf = _buffers.at("Vel2");
+	//velbuf->Bind();
+	//IVelocity* freqs = (IVelocity*)velbuf->MapBufferRange();
+	//INFO(freqs[0].dx);
+	//velbuf->UnMapBuffer();
 
 
 	_sim.Update();
 	_sim.Draw();
+}
+
+void SimulationApplication::CreateInterface()
+{
+	_interface.AddComponent("Left", new SideComponent("Left", ImVec2(0, 30), ImVec2(RenderEngine::Application::Get()->GetWidth() / 5, RenderEngine::Application::Get()->GetHeight() - 50)));
+	_interface.AddComponent("Right", new SideComponent("Right", ImVec2(RenderEngine::Application::Get()->GetWidth() - RenderEngine::Application::Get()->GetWidth()/5, 30), ImVec2(RenderEngine::Application::Get()->GetWidth() / 5, RenderEngine::Application::Get()->GetHeight() - 50)));
+	_interface.AddComponent("Menu", new TopBar());
+	_interface.GetComponent("Right")->AddComponent(new ToolParameters(_sim.GetTools()));
 }
 
 bool SimulationApplication::OnWindowResizeEvent(RenderEngine::WindowResizeEvent& e)

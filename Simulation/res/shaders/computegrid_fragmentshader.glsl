@@ -12,7 +12,7 @@ void main() {
 	//vec3 floatfreq = vec3(ofreq, ofreq, ofreq);
 	vec3 result;
 	if(ofreq == 0) 
-		result = vec3(1.0,0.0,ofreq);
+		result = vec3(0.0,0.0,ofreq);
 	
 	
 	else
