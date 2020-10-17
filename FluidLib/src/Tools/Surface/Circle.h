@@ -19,7 +19,7 @@ namespace FluidLib {
 		std::vector<IPoint>& GetSurfacePoints() override;
 
 	private:
-		float _r = 1.0f;
+		float _r = 50.0f;
 		float _x = 0.0f;
 		float _y = 0.0f;
 		float _color[3] = { 1.0,1.0,1.0 };

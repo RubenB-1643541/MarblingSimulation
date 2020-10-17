@@ -9,8 +9,8 @@ namespace FluidLib {
     Line::Line()
     {
         _xpos = 20.0f;
-        _ypos = 150.0f;
-        _len = 250.0f;
+        _ypos = 200.0f;
+        _len = 930.0f;
         if (_buffer == -1) {
             glCreateBuffers(1, &_buffer);
             std::vector<float> points = { 0.0, 0.0, 1.0, 0.0 };
