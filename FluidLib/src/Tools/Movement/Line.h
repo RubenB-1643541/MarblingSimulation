@@ -12,15 +12,15 @@ namespace FluidLib {
 	public:
 
 		Line();
-		bool OnScroll(float x, float y);
-		void DrawPath();
+		bool OnScroll(float x, float y) override;
+		void DrawPath() override;
 
 		/*
 		Changes input position to new position
 		@param float x, y : mouse position
 		@return FPoint: Stays on the line
 		*/
-		virtual FPoint Get(float x, float y);
+		virtual FPoint Get(float x, float y) override;
 		float* GetX() { return &_xpos; }
 		float* GetY() { return &_ypos; }
 		float* GetLen() { return &_len; }

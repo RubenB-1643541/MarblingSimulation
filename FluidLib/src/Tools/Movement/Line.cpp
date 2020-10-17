@@ -8,6 +8,7 @@ namespace FluidLib {
 
     Line::Line()
     {
+        _type = "Line";
         _xpos = 20.0f;
         _ypos = 200.0f;
         _len = 930.0f;

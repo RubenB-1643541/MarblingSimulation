@@ -7,7 +7,7 @@ namespace FluidLib {
 	class MouseMovement : public Movement
 	{
 	public:
-
+		MouseMovement() { _type = "Mouse"; }
 		/*
 		Changes input position to new position
 		@param float x, y : mouse position

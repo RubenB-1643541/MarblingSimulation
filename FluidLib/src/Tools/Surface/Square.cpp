@@ -9,6 +9,7 @@ namespace FluidLib {
 
     Square::Square()
     {
+        _type = "Square";
         if (_buffer == -1) {
             glCreateBuffers(1, &_buffer);
             std::vector<float> points = { 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0 };

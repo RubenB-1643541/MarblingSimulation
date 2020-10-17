@@ -1,6 +1,7 @@
 #include "MarblingSimulation.h"
 #include "Tools/Movement/MouseMovement.h"
 #include "Tools/Movement/Line.h"
+#include "Tools/Movement/Sine.h"
 #include "Tools/Surface/Square.h"
 #include "Tools/Surface/Circle.h"
 
@@ -67,14 +68,14 @@ void MarblingSimulation::CreateBasicTool()
 	basic->SetActiveAction("AddFreq");
 	basic->AddMovement("Mouse", new FluidLib::MouseMovement());
 	basic->AddMovement("Line", new FluidLib::Line());
-	basic->SetActiveMovement("Line");
+	basic->AddMovement("Sine", new FluidLib::Sine());
+	basic->SetActiveMovement("Mouse");
 	basic->AddSurface("Square", new FluidLib::Square());
 	basic->AddSurface("Circle", new FluidLib::Circle());
 	basic->SetActiveSurface("Circle");
 	_tools.AddTool("Basic", basic);
 	
 	_tools.SetActive(basic);
-	basic->SetActiveSurface("Square");
 
 }
 
@@ -82,6 +83,7 @@ void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
 {
 	comp->AddButton(Button("res/icons/Mouse.png", "Mouse", TOOL_PART::MOVEMENT));
 	comp->AddButton(Button("res/icons/Line.png", "Line", TOOL_PART::MOVEMENT));
+	comp->AddButton(Button("res/icons/Sine.png", "Sine", TOOL_PART::MOVEMENT));
 	comp->AddButton(Button("res/icons/Ink.png", "AddFreq", TOOL_PART::ACTION));
 	comp->AddButton(Button("res/icons/Square.png", "Square", TOOL_PART::SURFACE));
 	comp->AddButton(Button("res/icons/Circle.png", "Circle", TOOL_PART::SURFACE));

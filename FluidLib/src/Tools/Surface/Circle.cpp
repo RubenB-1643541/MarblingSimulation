@@ -7,6 +7,8 @@ namespace FluidLib {
     GLuint Circle::_shader = -1;
     Circle::Circle()
     {
+        _type = "Circle";
+        _changed = true;
         if (_buffer == -1) {
             glCreateBuffers(1, &_buffer);
             std::vector<float> points;
@@ -86,6 +88,7 @@ namespace FluidLib {
                     _points.push_back(IPoint(-i, -j));
                 }
             }
+            _changed = false;
         }
         return _points;
     }

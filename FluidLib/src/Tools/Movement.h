@@ -1,6 +1,7 @@
 #pragma once
 
 #include <utility>
+#include <string>
 #include "glm/gtx/transform.hpp"
 #include "Util/Point.h"
 
@@ -21,8 +22,10 @@ namespace FluidLib {
 		inline virtual void DrawPath() {}
 		inline virtual bool OnScroll(float x, float y) { return false; }
 		inline void SetProjection(glm::mat4 proj) { _projection = proj; }
+		std::string& GetType() { return _type; }
 	protected:
 		glm::mat4 _projection = glm::mat4(1.0);
+		std::string _type = "None";
 	};
 
 }

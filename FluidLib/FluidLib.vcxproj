@@ -113,6 +113,7 @@
     <ClInclude Include="src\Tools\Movement.h" />
     <ClInclude Include="src\Tools\Movement\Line.h" />
     <ClInclude Include="src\Tools\Movement\MouseMovement.h" />
+    <ClInclude Include="src\Tools\Movement\Sine.h" />
     <ClInclude Include="src\Tools\Surface.h" />
     <ClInclude Include="src\Tools\Surface\Circle.h" />
     <ClInclude Include="src\Tools\Surface\Square.h" />
@@ -134,6 +135,7 @@
     <ClCompile Include="src\Tools\Basic Tools\BasicTool.cpp" />
     <ClCompile Include="src\Tools\Basic Tools\SelectTool.cpp" />
     <ClCompile Include="src\Tools\Movement\Line.cpp" />
+    <ClCompile Include="src\Tools\Movement\Sine.cpp" />
     <ClCompile Include="src\Tools\Surface\Circle.cpp" />
     <ClCompile Include="src\Tools\Surface\Square.cpp" />
     <ClCompile Include="src\Tools\ToolBase.cpp" />
