@@ -2,6 +2,7 @@
 #include "Tools/Movement/MouseMovement.h"
 #include "Tools/Movement/Line.h"
 #include "Tools/Surface/Square.h"
+#include "Tools/Surface/Circle.h"
 
 MarblingSimulation::MarblingSimulation(int sizex, int sizey) : Simulation(sizex, sizey)
 {
@@ -50,13 +51,38 @@ void MarblingSimulation::OnDraw()
 
 }
 
+
+
 void MarblingSimulation::CreateTools()
 {
+	CreateBasicTool();
+}
+
+void MarblingSimulation::CreateBasicTool()
+{
+	FluidLib::BasicTool* basic = new FluidLib::BasicTool();
 	FluidLib::Action<IFrequency>* addfreq = new FluidLib::Action<IFrequency>(IFrequency(16), static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), FluidLib::ACTION_OPERATION::ADD);
-	FluidLib::ToolBase* addfreqtool = new FluidLib::ToolBase();
-	addfreqtool->SetAction(addfreq);
-	addfreqtool->SetMovement(new FluidLib::Line());
-	addfreqtool->SetSurface(new FluidLib::Square());
-	_tools.AddTool(addfreqtool);
-	_tools.SetActive(addfreqtool);
+	//FluidLib::ToolBase* addfreqtool = new FluidLib::ToolBase();
+	basic->AddAction("AddFreq", addfreq);
+	basic->SetActiveAction("AddFreq");
+	basic->AddMovement("Mouse", new FluidLib::MouseMovement());
+	basic->AddMovement("Line", new FluidLib::Line());
+	basic->SetActiveMovement("Line");
+	basic->AddSurface("Square", new FluidLib::Square());
+	basic->AddSurface("Circle", new FluidLib::Circle());
+	basic->SetActiveSurface("Circle");
+	_tools.AddTool("Basic", basic);
+	
+	_tools.SetActive(basic);
+	basic->SetActiveSurface("Square");
+
+}
+
+void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
+{
+	comp->AddButton(Button("res/icons/Mouse.png", "Mouse", TOOL_PART::MOVEMENT));
+	comp->AddButton(Button("res/icons/Line.png", "Line", TOOL_PART::MOVEMENT));
+	comp->AddButton(Button("res/icons/Ink.png", "AddFreq", TOOL_PART::ACTION));
+	comp->AddButton(Button("res/icons/Square.png", "Square", TOOL_PART::SURFACE));
+	comp->AddButton(Button("res/icons/Circle.png", "Circle", TOOL_PART::SURFACE));
 }

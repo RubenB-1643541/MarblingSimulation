@@ -19,6 +19,9 @@
     <Filter Include="Tools\Movement">
       <UniqueIdentifier>{102DD722-FCFA-CA28-E58E-3B4FD1FBA68D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tools\Surface">
+      <UniqueIdentifier>{6E60AAFB-DA20-2632-A35B-6FAF0FDB6A0E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Util">
       <UniqueIdentifier>{23A78D7C-0FDE-8E0D-B8CA-7410A4E00A0F}</UniqueIdentifier>
     </Filter>
@@ -60,11 +63,17 @@
     <ClInclude Include="src\Tools\Action.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="src\Tools\Basic Tools\BasicTool.h">
+      <Filter>Tools\Basic Tools</Filter>
+    </ClInclude>
     <ClInclude Include="src\Tools\Basic Tools\SelectTool.h">
       <Filter>Tools\Basic Tools</Filter>
     </ClInclude>
     <ClInclude Include="src\Tools\Movement.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tools\Movement\Line.h">
+      <Filter>Tools\Movement</Filter>
     </ClInclude>
     <ClInclude Include="src\Tools\Movement\MouseMovement.h">
       <Filter>Tools\Movement</Filter>
@@ -72,7 +81,16 @@
     <ClInclude Include="src\Tools\Surface.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="src\Tools\Surface\Circle.h">
+      <Filter>Tools\Surface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tools\Surface\Square.h">
+      <Filter>Tools\Surface</Filter>
+    </ClInclude>
     <ClInclude Include="src\Tools\ToolBase.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tools\ToolFactory.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="src\Tools\ToolManager.h">
@@ -81,11 +99,9 @@
     <ClInclude Include="src\Util\Point.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="src\Tools\ToolFactory.h" />
-    <ClInclude Include="src\Tools\Surface\Circle.h" />
-    <ClInclude Include="src\Util\Rendering.h" />
-    <ClInclude Include="src\Tools\Surface\Square.h" />
-    <ClInclude Include="src\Tools\Movement\Line.h" />
+    <ClInclude Include="src\Util\Rendering.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">
@@ -110,10 +126,25 @@
       <Filter>Grids</Filter>
     </ClCompile>
     <ClCompile Include="src\Simulation.cpp" />
+    <ClCompile Include="src\Tools\Basic Tools\BasicTool.cpp">
+      <Filter>Tools\Basic Tools</Filter>
+    </ClCompile>
     <ClCompile Include="src\Tools\Basic Tools\SelectTool.cpp">
       <Filter>Tools\Basic Tools</Filter>
     </ClCompile>
+    <ClCompile Include="src\Tools\Movement\Line.cpp">
+      <Filter>Tools\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\Surface\Circle.cpp">
+      <Filter>Tools\Surface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\Surface\Square.cpp">
+      <Filter>Tools\Surface</Filter>
+    </ClCompile>
     <ClCompile Include="src\Tools\ToolBase.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\ToolFactory.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="src\Tools\ToolManager.cpp">
@@ -122,10 +153,8 @@
     <ClCompile Include="src\Util\Point.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tools\ToolFactory.cpp" />
-    <ClCompile Include="src\Tools\Surface\Circle.cpp" />
-    <ClCompile Include="src\Util\Rendering.cpp" />
-    <ClCompile Include="src\Tools\Surface\Square.cpp" />
-    <ClCompile Include="src\Tools\Movement\Line.cpp" />
+    <ClCompile Include="src\Util\Rendering.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

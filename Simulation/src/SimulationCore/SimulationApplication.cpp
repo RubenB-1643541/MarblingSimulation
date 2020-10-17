@@ -145,6 +145,9 @@ void SimulationApplication::CreateInterface()
 	_interface.AddComponent("Right", new SideComponent("Right", ImVec2(RenderEngine::Application::Get()->GetWidth() - RenderEngine::Application::Get()->GetWidth()/5, 30), ImVec2(RenderEngine::Application::Get()->GetWidth() / 5, RenderEngine::Application::Get()->GetHeight() - 50)));
 	_interface.AddComponent("Menu", new TopBar());
 	_interface.GetComponent("Right")->AddComponent(new ToolParameters(_sim.GetTools()));
+	ToolSelectComponent* toolselect = new ToolSelectComponent(_sim.GetTools(), "Basic");
+	_interface.GetComponent("Left")->AddComponent(toolselect);
+	_sim.InitBasicToolComponent(toolselect);
 }
 
 bool SimulationApplication::OnWindowResizeEvent(RenderEngine::WindowResizeEvent& e)

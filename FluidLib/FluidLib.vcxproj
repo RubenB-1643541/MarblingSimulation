@@ -108,6 +108,7 @@
     <ClInclude Include="src\SimulationController.h" />
     <ClInclude Include="src\SimulationSettings.h" />
     <ClInclude Include="src\Tools\Action.h" />
+    <ClInclude Include="src\Tools\Basic Tools\BasicTool.h" />
     <ClInclude Include="src\Tools\Basic Tools\SelectTool.h" />
     <ClInclude Include="src\Tools\Movement.h" />
     <ClInclude Include="src\Tools\Movement\Line.h" />
@@ -130,6 +131,7 @@
     <ClCompile Include="src\Grids\Renderer\ShaderController.cpp" />
     <ClCompile Include="src\Grids\Uniforms.cpp" />
     <ClCompile Include="src\Simulation.cpp" />
+    <ClCompile Include="src\Tools\Basic Tools\BasicTool.cpp" />
     <ClCompile Include="src\Tools\Basic Tools\SelectTool.cpp" />
     <ClCompile Include="src\Tools\Movement\Line.cpp" />
     <ClCompile Include="src\Tools\Surface\Circle.cpp" />

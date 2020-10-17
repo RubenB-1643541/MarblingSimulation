@@ -7,13 +7,13 @@ namespace FluidLib {
 	}
 	ToolManager::~ToolManager()
 	{
-		for (ToolBase* tool : _tools) {
-			delete tool;
+		for (auto tool : _tools) {
+			delete tool.second;
 		}
 	}
-	void ToolManager::AddTool(ToolBase* tool)
+	void ToolManager::AddTool(const std::string& name, ToolBase* tool)
 	{
-		_tools.push_back(tool);
+		_tools.insert(std::make_pair(name, tool));
 	}
 	void ToolManager::Update()
 	{

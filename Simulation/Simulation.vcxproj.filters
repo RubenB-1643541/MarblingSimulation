@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="SimInterface">
+      <UniqueIdentifier>{7FF01A34-6B53-AAD8-14D9-E28E001B765B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SimUtils">
+      <UniqueIdentifier>{7F1234AC-6BDF-8EB7-94F8-7C5F8024C445}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SimulationCore">
+      <UniqueIdentifier>{335E1E1E-1F2C-1224-08C0-824AF42CEE88}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\SimInterface\InterfaceComponentsList.h">
+      <Filter>SimInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimInterface\SideComponent.h">
+      <Filter>SimInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimInterface\ToolParameters.h">
+      <Filter>SimInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimInterface\ToolSelectComponent.h">
+      <Filter>SimInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimInterface\TopBar.h">
+      <Filter>SimInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimUtils\Icon.hpp">
+      <Filter>SimUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimulationCore\GridStructures.h">
+      <Filter>SimulationCore</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimulationCore\MarblingSimulation.h">
+      <Filter>SimulationCore</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimulationCore\SimulationApplication.h">
+      <Filter>SimulationCore</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimulationCore\SimulationWindow.h">
+      <Filter>SimulationCore</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\SimInterface\SideComponent.cpp">
+      <Filter>SimInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimInterface\ToolParameters.cpp">
+      <Filter>SimInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimInterface\ToolSelectComponent.cpp">
+      <Filter>SimInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimInterface\TopBar.cpp">
+      <Filter>SimInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimulationCore\MarblingSimulation.cpp">
+      <Filter>SimulationCore</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimulationCore\SimulationApplication.cpp">
+      <Filter>SimulationCore</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimulationCore\SimulationWindow.cpp">
+      <Filter>SimulationCore</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp" />
+  </ItemGroup>
+</Project>

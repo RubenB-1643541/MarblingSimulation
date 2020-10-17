@@ -23,6 +23,7 @@ namespace RenderEngine {
     }
     void InterfaceComponent::AddComponent(InterfaceComponent* component)
     {
+        component->Init();
         _subComponents.push_back(component);
     }
     void InterfaceComponent::RemoveComponent(int index)
