@@ -21,6 +21,7 @@ namespace FluidLib {
 
 	private:
 		float _r = 50.0f;
+		float _rold = 50.0f;
 		float _x = 0.0f;
 		float _y = 0.0f;
 		float _color[3] = { 1.0,1.0,1.0 };

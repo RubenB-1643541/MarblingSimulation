@@ -15,7 +15,7 @@ namespace FluidLib {
 			->	Mult Value in Grid
 	*/
 
-	enum class ACTION_OPERATION {NONE, SET, ADD, SUB, MUL, DIV};
+	enum class ACTION_OPERATION {NONE, SET, ADD, SUB, MUL, DIV, MOVE};
 
 	class ActionBase
 	{
@@ -31,11 +31,14 @@ namespace FluidLib {
 		virtual void Sub(IPoint& p) = 0;
 		virtual void Mul(IPoint& p) = 0;
 		virtual void Div(IPoint& p) = 0;
+		virtual void Move(IPoint& p) = 0;
 		virtual void Mul(float f, IPoint& p) = 0;
 		virtual void Div(float f, IPoint& p) = 0;
-		virtual void SetPos(IPoint p) { _pos = p; }
+		virtual void SetPos(IPoint p) { _oldpos = _pos; _pos = p; }
+		virtual float* GetScale() = 0;
 	protected:
-		IPoint _pos;
+		IPoint _pos = { 0,0 };
+		IPoint _oldpos = {-1,-1};
 	private:
 
 	};
@@ -62,11 +65,14 @@ namespace FluidLib {
 		void Sub(IPoint& p) override;
 		void Mul(IPoint& p) override;
 		void Div(IPoint& p) override;
+		void Move(IPoint& p) override;
 		void Mul(float f, IPoint& p) override;
 		void Div(float f, IPoint& p) override;
+		float* GetScale() override;
 	private:
 		T _value;
 		Grid<T>* _grid;
+		float _scale = 1.0f;
 		T* _gridvals = nullptr;
 		ACTION_OPERATION _operation = ACTION_OPERATION::NONE;
 		
@@ -105,6 +111,9 @@ namespace FluidLib {
 		case ACTION_OPERATION::DIV:
 			Div(p);
 			break;
+		case ACTION_OPERATION::MOVE:
+			Move(p);
+			break;
 		default:
 			break;
 		}
@@ -119,49 +128,63 @@ namespace FluidLib {
 	inline void Action<T>::Set(IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] = _value;
+		_gridvals[POINT_TO_1D(temp)] = _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Add(IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] += _value;
+		_gridvals[POINT_TO_1D(temp)] += _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Sub(IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] -= _value;
+		_gridvals[POINT_TO_1D(temp)] -= _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Mul(IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] *= _value;
+		_gridvals[POINT_TO_1D(temp)] *= _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Div(IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] /= _value;
+		_gridvals[POINT_TO_1D(temp)] /= _value * _scale;
+	}
+
+	template<class T>
+	inline void Action<T>::Move(IPoint& p)
+	{
+		IPoint temp = _oldpos + p;
+		IPoint move = _pos - _oldpos;
+		_gridvals[POINT_TO_1D(temp)] += move * 20 *_scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Mul(float f, IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] *= f;
+		_gridvals[POINT_TO_1D(temp)] *= f * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Div(float f, IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] /= f;
+		_gridvals[POINT_TO_1D(temp)] /= f * _scale;
+	}
+
+	template<class T>
+	inline float* Action<T>::GetScale()
+	{
+		return &_scale;
 	}
 
 }

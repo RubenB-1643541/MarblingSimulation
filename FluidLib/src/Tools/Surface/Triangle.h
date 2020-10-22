@@ -5,10 +5,10 @@
 
 namespace FluidLib {
 
-	class Square : public Surface
+	class Triangle : public Surface
 	{
 	public:
-		Square();
+		Triangle();
 		void Draw() const override;
 		void OnScroll(float x, float y) override;
 		void OnMove(float x, float y) override;
@@ -25,7 +25,7 @@ namespace FluidLib {
 		STYLE _style = STYLE::BORDER;
 		bool _centered = false;
 
-	
+
 
 		static GLuint _buffer;
 		static GLuint _shader;

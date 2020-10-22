@@ -52,6 +52,13 @@ void ToolParameters::SurfaceParams()
 				ImGui::SliderFloat("Length", sq->GetLen(), 1.0f, 250.0f);
 			}
 		}
+		else if (surface->GetType() == "Rectangle") {
+			FluidLib::Rectangle* sq = static_cast<FluidLib::Rectangle*>(surface);
+			if (sq != nullptr) {
+				ImGui::SliderFloat("Width", sq->GetWidth(), 1.0f, 250.0f);
+				ImGui::SliderFloat("Height", sq->GetHeight(), 1.0f, 250.0f);
+			}
+		}
 		else if (surface->GetType() == "Circle") {
 			FluidLib::Circle* c = static_cast<FluidLib::Circle*>(surface);
 			if (c != nullptr) {
@@ -85,6 +92,18 @@ void ToolParameters::MovementParams()
 				ImGui::SliderFloat("Period", sine->GetPeriod(), 1.0f, 300);
 			}
 		}
+		
+		else if (movement->GetType() == "BezierCurve") {
+
+			FluidLib::BezierCurve *curve = static_cast<FluidLib::BezierCurve*>(movement);
+			if (curve != nullptr) {
+				ImGui::SliderFloat2("P1", curve->GetPoints()[0].GetXPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
+				ImGui::SliderFloat2("P2", curve->GetPoints()[1].GetXPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
+				ImGui::SliderFloat2("P3", curve->GetPoints()[2].GetXPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
+				ImGui::SliderFloat2("P4", curve->GetPoints()[3].GetXPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
+
+			}
+		}
 
 
 		ImGui::TreePop();
@@ -94,8 +113,10 @@ void ToolParameters::MovementParams()
 void ToolParameters::ActionParams()
 {
 	if (ImGui::TreeNode("Action")) {
-
-
+		FluidLib::ActionBase* action = _active->GetAction();
+		if (action != nullptr) {
+			ImGui::SliderFloat("Scale", action->GetScale(), 0.1f, 10.0f);
+		}
 		ImGui::TreePop();
 	}
 }

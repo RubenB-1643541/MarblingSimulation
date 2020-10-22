@@ -18,8 +18,14 @@ namespace FluidLib {
 		void operator*=(int i);
 		void operator/=(int i);
 
+		friend IPoint operator*(float f, const IPoint& p);
+		friend IPoint operator/(float f, const IPoint& p);
+
 		inline int GetX() const { return _x; }
 		inline int GetY() const { return _y; }
+
+		inline int* GetXPtr() { return &_x; }
+		inline int* GetYPtr() { return &_y; }
 	
 	private:
 		int _x, _y;
@@ -42,8 +48,14 @@ namespace FluidLib {
 		void operator*=(int i);
 		void operator/=(int i);
 
+		friend FPoint operator*(float f, const FPoint& p);
+		friend FPoint operator/(float f, const FPoint& p);
+
 		inline float GetX() const { return _x; }
 		inline float GetY() const { return _y; }
+
+		inline float* GetXPtr() { return &_x; }
+		inline float* GetYPtr() { return &_y; }
 	
 	private:
 		float _x, _y;

@@ -20,7 +20,7 @@ void ToolSelectComponent::OnDraw()
 {
 	if (ImGui::TreeNode("Tool Selection")) {
 		//Surfaces
-		
+		ImGui::BeginChild("ToolSelectChild", ImVec2(250, 250));
 		ImGui::Columns(3);
 		ImGui::Text("Surfaces");
 		int i = 0;
@@ -32,6 +32,8 @@ void ToolSelectComponent::OnDraw()
 					_basic->SetActiveSurface(button.name);
 					_selectedsurface = i;
 				}
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip(button.name.c_str());
 			}
 			++i;
 		}
@@ -44,10 +46,13 @@ void ToolSelectComponent::OnDraw()
 			if (i == _selectedmovement)
 				ImGui::ImageButton((void*)button.id, _iconSize, ImVec2(0, 0), ImVec2(1, 1), 0, ImVec4(1, 1, 1, 1));
 			else {
+				
 				if (ImGui::ImageButton((void*)button.id, _iconSize, ImVec2(0, 0), ImVec2(1, 1), 3, ImVec4(1, 1, 1, 1))) {
 					_basic->SetActiveMovement(button.name);
 					_selectedmovement = i;
 				}
+				if(ImGui::IsItemHovered())
+					ImGui::SetTooltip(button.name.c_str());
 			}
 			++i;
 		}
@@ -64,10 +69,12 @@ void ToolSelectComponent::OnDraw()
 					_basic->SetActiveAction(button.name);
 					_selectedaction = i;
 				}
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip(button.name.c_str());
 			}
 			++i;
 		}
-
+		ImGui::EndChild();
 
 		ImGui::TreePop();
 	}

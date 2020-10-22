@@ -42,6 +42,7 @@
     <ClInclude Include="src\SimulationCore\SimulationWindow.h">
       <Filter>SimulationCore</Filter>
     </ClInclude>
+    <ClInclude Include="src\SimInterface\SettingsComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SimInterface\SideComponent.cpp">
@@ -66,5 +67,6 @@
       <Filter>SimulationCore</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\SimInterface\SettingsComponent.cpp" />
   </ItemGroup>
 </Project>

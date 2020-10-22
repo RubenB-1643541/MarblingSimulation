@@ -78,7 +78,10 @@ namespace FluidLib {
 
     std::vector<IPoint>& Circle::GetSurfacePoints()
     {
+        if (_rold != _r)
+            _changed = true;
         if (_changed) {
+            _rold = _r;
             _points.clear();
             for (int i = 0; i < _r; ++i) {
                 for (int j = 0; j < sqrt(pow(_r, 2) - pow(i, 2)); ++j) {

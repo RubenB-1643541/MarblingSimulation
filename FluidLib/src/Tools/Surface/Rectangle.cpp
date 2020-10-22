@@ -1,15 +1,15 @@
-#include "Square.h"
+#include "Rectangle.h"
 
 #include "Util/Rendering.h"
 
 namespace FluidLib {
 
-    GLuint Square::_buffer = -1;
-    GLuint Square::_shader = -1;
+    GLuint Rectangle::_buffer = -1;
+    GLuint Rectangle::_shader = -1;
 
-    Square::Square()
+    Rectangle::Rectangle()
     {
-        _type = "Square";
+        _type = "Rectangle";
         _centered = true;
         if (_buffer == -1) {
             glCreateBuffers(1, &_buffer);
@@ -22,7 +22,7 @@ namespace FluidLib {
         }
     }
 
-    void Square::Draw() const
+    void Rectangle::Draw() const
     {
         glUseProgram(_shader);
         glEnableVertexAttribArray(0);
@@ -35,9 +35,9 @@ namespace FluidLib {
         GLuint ypos = glGetUniformLocation(_shader, "ypos");
         glUniform1f(ypos, _ypos);
         GLuint width = glGetUniformLocation(_shader, "width");
-        glUniform1f(width, _len);
+        glUniform1f(width, _width);
         GLuint height = glGetUniformLocation(_shader, "height");
-        glUniform1f(height, _len);
+        glUniform1f(height, _height);
         GLuint center = glGetUniformLocation(_shader, "center");
         glUniform1i(center, _centered);
         GLuint color = glGetUniformLocation(_shader, "color");
@@ -54,38 +54,41 @@ namespace FluidLib {
         glBindBuffer(GL_ARRAY_BUFFER, NULL);
     }
 
-    void Square::OnScroll(float x, float y)
+    void Rectangle::OnScroll(float x, float y)
     {
-        _len += y*2;
-        if (_len < 1)
-            _len = 1.0f;
+        _width += y * 2;
+        _height += y * 2;
+        if (_width < 1)
+            _width = 1.0f;
+        if (_height < 1)
+            _height = 1.0f;
         _changed = true;
     }
 
-    void Square::OnMove(float x, float y)
+    void Rectangle::OnMove(float x, float y)
     {
         _xpos = x; _ypos = y;
     }
 
-    float Square::GetSurfaceArea() const
+    float Rectangle::GetSurfaceArea() const
     {
-        return _len * _len;
+        return _width * _height;
     }
 
-    std::vector<IPoint>& Square::GetSurfacePoints()
+    std::vector<IPoint>& Rectangle::GetSurfacePoints()
     {
         if (_changed) {
             _points.clear();
             if (_centered) {
-                for (int i = -abs(_len / 2); i < abs(_len / 2); ++i) {
-                    for (int j = -abs(_len / 2); j < abs(_len / 2); ++j) {
+                for (int i = -abs(_width / 2); i < abs(_width / 2); ++i) {
+                    for (int j = -abs(_height / 2); j < abs(_height / 2); ++j) {
                         _points.push_back(IPoint(i, j));
                     }
                 }
             }
             else {
-                for (int i = 0; i < abs(_len); ++i) {
-                    for (int j = 0; j < abs(_len); ++j) {
+                for (int i = 0; i < abs(_width); ++i) {
+                    for (int j = 0; j < abs(_height); ++j) {
                         _points.push_back(IPoint(i, j));
                     }
                 }

@@ -126,4 +126,24 @@ namespace FluidLib {
 		_y /= i;
 	}
 
+	IPoint operator*(float f, const IPoint& p)
+	{
+		return IPoint(f * p._x, f * p._y);
+	}
+
+	IPoint operator/(float f, const IPoint& p)
+	{
+		return IPoint(p._x / f, p._y / f);
+	}
+
+	FPoint operator*(float f, const FPoint& p)
+	{
+		return FPoint(f * p._x, f * p._y);
+	}
+
+	FPoint operator/(float f, const FPoint& p)
+	{
+		return FPoint(p._x / f, p._y / f);
+	}
+
 }

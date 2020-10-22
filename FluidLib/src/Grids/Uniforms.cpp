@@ -29,6 +29,12 @@ namespace FluidLib {
 			case UniformType::FLOAT:
 				glUniform1f(u.loc, u.val.floatval);
 				break;
+			case UniformType::FLOAT_PTR:
+				glUniform1f(u.loc, *u.val.floatptr);
+				break;
+			case UniformType::INT_PTR:
+				glUniform1i(u.loc, *u.val.intptr);
+				break;
 			default:
 				break;
 			}

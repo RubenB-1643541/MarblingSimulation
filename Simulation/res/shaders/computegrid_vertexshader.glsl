@@ -26,7 +26,7 @@ out vec4 oflags;
 out float oink;
 
 void main() {
-	ofreq = float(frequencies[gl_VertexID])/100;
+	ofreq = float(frequencies[gl_VertexID]);
 	oink = 0;
 	//oink = float(inkvals[gl_VertexID]);
 	oflags = flagvals[gl_VertexID];

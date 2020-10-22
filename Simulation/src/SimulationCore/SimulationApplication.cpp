@@ -108,14 +108,17 @@ void SimulationApplication::OnStart()
 	shadercontroller->SetShader(_computeshader.GetId());
 	FluidLib::UniformVal widthval; widthval.intval = _sim.GetSizeX();
 	FluidLib::UniformVal heightval; heightval.intval = _sim.GetSizeY();
+	FluidLib::UniformVal aval; aval.floatptr = &_sim.GetSettings()->spreading;
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, widthval, "width"));
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
+	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, aval, "a"));
 
 	FluidLib::GridRenderer* renderer = _sim.GetRenderer();
 	renderer->SetShader(_shader.GetId());
 	FluidLib::ShaderController* shader = renderer->GetShader();
 	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, widthval, "width"));
 	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
+	
 
 	_sim.Init();
 	CreateInterface();
@@ -147,6 +150,7 @@ void SimulationApplication::CreateInterface()
 	_interface.GetComponent("Right")->AddComponent(new ToolParameters(_sim.GetTools()));
 	ToolSelectComponent* toolselect = new ToolSelectComponent(_sim.GetTools(), "Basic");
 	_interface.GetComponent("Left")->AddComponent(toolselect);
+	_interface.GetComponent("Left")->AddComponent(new SettingsComponent());
 	_sim.InitBasicToolComponent(toolselect);
 }
 

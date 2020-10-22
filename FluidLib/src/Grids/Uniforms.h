@@ -7,12 +7,14 @@
 namespace FluidLib {
 
 	enum class UniformType {
-		INT, FLOAT
+		INT, FLOAT, INT_PTR, FLOAT_PTR
 	};
 
 	union UniformVal {
 		int intval;
 		float floatval;
+		int* intptr;
+		float* floatptr;
 	};
 
 	struct Uniform {

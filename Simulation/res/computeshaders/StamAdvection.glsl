@@ -32,19 +32,11 @@ layout(binding=7) buffer flags
 {
 	vec4 flagvals[]; //freeze - unused - unused - unused
 };
-//
-//layout(binding=6) buffer debug
-//{
-//	vec4 debugvals[];	//array debugvals
-//};
 
-//layout(binding = 7) uniform atomic_uint inkcounter;
-//layout(binding = 7, offset = 4) uniform atomic_uint freqcounter;
-//layout(binding = 7, offset = 8) uniform atomic_uint velxcounter;
-//layout(binding = 7, offset = 12) uniform atomic_uint velycounter;
 
 layout( location=1 ) uniform int width;  
 layout( location=2 ) uniform int height; 
+layout( location=3 ) uniform float a; //Factor for ink spreading
 
 
 layout(local_size_x = 100, local_size_y = 1, local_size_z = 1) in; //Variable?
@@ -52,6 +44,7 @@ layout(local_size_x = 100, local_size_y = 1, local_size_z = 1) in; //Variable?
  //Forward declarations
 void StamAdvection(uint i, ivec2 pos);
 void Pressure(uint i, ivec2 pos);  
+void Diffuse(uint i);
 void InkPressure(uint src);  
 
 void ExecMovement(uint src, vec2 des); 
@@ -71,12 +64,20 @@ void main() {
 	uint i = gl_GlobalInvocationID.x;
 	bvec4 flags = bvec4(flagvals[i].x, flagvals[i].y, flagvals[i].z, flagvals[i].w);
 	ivec2 pos = IndexToPoint(i);
-	//frequencies[i] += 1;
 	StamAdvection(i, pos);
-	//velocities2[i].x += 1;
 	Pressure(i, pos);
+	barrier();
+	Diffuse(i);
 }
 
+/*
+Idea
+Take 100 (or more) ink to be moved in total
+Every point gives his percentage 
+The receiving point always gets 100
+But points can not be < 0
+Then the receiver will get less than 100
+*/
 void StamAdvection(uint i, ivec2 pos) {
 			
 		vec2 velval = velocities[i]/100;
@@ -125,36 +126,26 @@ void StamAdvection(uint i, ivec2 pos) {
 		
 }
 
+/*
+Special case for big forces 
+Force > 500 (or more)
+*/
 void Pressure(uint i, ivec2 pos) { // fix probs negative forces
 	if(pos.x + 1 < width && pos.y - 1 > 0) {//Check out of bounds 
 		ivec2 force = ivec2(frequencies[i] - frequencies[i - 1], frequencies[i] - frequencies[i - width]);
-		//float force_x =  frequencies[src + 1] - frequencies[src];
-		//float force_y = frequencies[src + height] - frequencies[src];
-		if(force.x > 1 || force.x < -1)  {
-			atomicAdd(velocities2[i].x, -force.x);
-			//velocities[src].x += force.x;
-			//velocities[src].x += force.x * 0.01;
-			atomicAdd(velocities2[i-1].x, -force.x);
-			//velocities[src-1].x += force.x;
-			//velocities[src-1].x += force.x * 0.01;
-		}
-		else {
-			//velocities[src].x /= 10;
-			//velocities[src-1].x /= 10;
+		if(force.x >= 1 || force.x <= -1)  {
+			atomicAdd(velocities2[i].x, int(-force.x*a));
+			atomicAdd(velocities2[i-1].x, int(-force.x*a));
 		}
 		if(force.y > 1 || force.y < -1 ) {
-			atomicAdd(velocities2[i].y, -force.y);
-			//velocities[src].y += force.y;
-			//velocities[src].y += force.y * 0.001;
-			atomicAdd(velocities2[i-width].y, -force.y);
-			//velocities[src+width].y += force.y;
-			//velocities[src+width].y += force.y * 0.001;
-		}
-		else {
-			//velocities[src].y /= 10;
-			//velocities[src+width].y /= 10;
+			atomicAdd(velocities2[i].y, int(-force.y * a));
+			atomicAdd(velocities2[i-width].y, int(-force.y * a));
 		}
 	}
+}
+
+void Diffuse(uint i) {
+	velocities2[i] = 3 * velocities2[i] / 5;
 }
 
 void InkPressure(uint src){

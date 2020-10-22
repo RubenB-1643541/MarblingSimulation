@@ -103,6 +103,11 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="src\Tools\Movement\Sine.h" />
+    <ClInclude Include="src\Tools\Surface\Rectangle.h" />
+    <ClInclude Include="src\Tools\Movement\Movements.h" />
+    <ClInclude Include="src\Tools\Surface\Surfaces.h" />
+    <ClInclude Include="src\Tools\Surface\Triangle.h" />
+    <ClInclude Include="src\Tools\Movement\BezierCurve.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">
@@ -158,5 +163,8 @@
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="src\Tools\Movement\Sine.cpp" />
+    <ClCompile Include="src\Tools\Surface\Rectangle.cpp" />
+    <ClCompile Include="src\Tools\Surface\Triangle.cpp" />
+    <ClCompile Include="src\Tools\Movement\BezierCurve.cpp" />
   </ItemGroup>
 </Project>

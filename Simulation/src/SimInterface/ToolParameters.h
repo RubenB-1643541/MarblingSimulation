@@ -3,10 +3,8 @@
 #include "Interface/InterfaceComponent.h"
 #include "Tools/ToolBase.h"
 #include "Tools/ToolManager.h"
-#include "Tools/Surface/Square.h"
-#include "Tools/Surface/Circle.h"
-#include "Tools/Movement/Line.h"
-#include "Tools/Movement/Sine.h"
+#include "Tools/Surface/Surfaces.h"
+#include "Tools/Movement/Movements.h"
 #include "Simulation.h"
 
 class ToolParameters : public RenderEngine::InterfaceComponent
