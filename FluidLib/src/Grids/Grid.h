@@ -159,7 +159,8 @@ namespace FluidLib {
 	{
 		if (_render) {
 			glBindBuffer(GL_ARRAY_BUFFER, _data.id);
-			glVertexPointer(_data.elementsize, _data.type, 0, (void*)0);
+			glVertexAttribIPointer(0, _data.elementsize, _data.type, 0, (void*)0);
+			//glVertexAttributePointer(_data.elementsize, _data.type, 0, (void*)0);
 			glEnableVertexAttribArray(_data.attrpointer);
 		}
 	}

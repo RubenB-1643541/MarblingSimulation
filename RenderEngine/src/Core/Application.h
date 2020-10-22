@@ -36,7 +36,7 @@ namespace RenderEngine {
 		inline virtual void OnStart() {};
 		inline virtual void OnStop() {};
 		inline virtual void OnUpdate() {};
-
+		
 		inline virtual bool OnKeyPressEvent(KeyPressEvent& e) { return false; }
 		inline virtual bool OnKeyReleaseEvent(KeyReleaseEvent& e) { return false; }
 		inline virtual bool OnMouseMoveEvent(MouseMoveEvent& e) { return false; }
