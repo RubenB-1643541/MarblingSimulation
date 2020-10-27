@@ -9,6 +9,7 @@
 class MarblingSimulation : public FluidLib::Simulation
 {
 public:
+	MarblingSimulation();
 	MarblingSimulation(int sizex, int sizey);
 
 	void OnInit() override;

@@ -26,8 +26,11 @@ public:
 	virtual bool OnMousePressEvent(RenderEngine::MousePressEvent& e) override;
 	virtual bool OnMouseReleaseEvent(RenderEngine::MouseReleaseEvent& e) override;
 	virtual bool OnMouseScrollEvent(RenderEngine::MouseScrollEvent& e) override;
-
+	inline virtual bool OnKeyPressEvent(RenderEngine::KeyPressEvent& e) override;
+	inline virtual bool OnKeyReleaseEvent(RenderEngine::KeyReleaseEvent& e) override;
+	void StartSimulation();
 private:
+	bool _simrunning = false;
 	MarblingSimulation _sim;
 	std::map<std::string, RenderEngine::ShaderStorageBuffer*> _buffers;
 	RenderEngine::ComputeShaderProgram _computeshader;

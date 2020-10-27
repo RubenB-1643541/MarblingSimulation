@@ -20,6 +20,7 @@ namespace RenderEngine {
         for (InterfaceComponent* component : _subComponents)
             component->Draw();
         EndDraw();
+        _first = false;
     }
     void InterfaceComponent::AddComponent(InterfaceComponent* component)
     {

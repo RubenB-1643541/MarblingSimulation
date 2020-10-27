@@ -27,9 +27,6 @@
     <ClInclude Include="src\SimInterface\TopBar.h">
       <Filter>SimInterface</Filter>
     </ClInclude>
-    <ClInclude Include="src\SimUtils\Icon.hpp">
-      <Filter>SimUtils</Filter>
-    </ClInclude>
     <ClInclude Include="src\SimulationCore\GridStructures.h">
       <Filter>SimulationCore</Filter>
     </ClInclude>
@@ -43,6 +40,10 @@
       <Filter>SimulationCore</Filter>
     </ClInclude>
     <ClInclude Include="src\SimInterface\SettingsComponent.h" />
+    <ClInclude Include="src\SimUtils\Icon.h">
+      <Filter>SimUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimInterface\CreateComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SimInterface\SideComponent.cpp">
@@ -68,5 +69,7 @@
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\SimInterface\SettingsComponent.cpp" />
+    <ClCompile Include="src\SimUtils\Icon.cpp" />
+    <ClCompile Include="src\SimInterface\CreateComponent.cpp" />
   </ItemGroup>
 </Project>

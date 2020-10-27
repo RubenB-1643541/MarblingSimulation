@@ -41,6 +41,14 @@ namespace FluidLib {
 		static void SetTool(int index) {
 			Simulation::Get()->OnEvent(ToolSelectEvent(index));
 		}
+
+		static void KeyPress(int key) {
+			Simulation::Get()->OnKeyPress(key);
+		}
+
+		static void KeyRelease(int key) {
+			Simulation::Get()->OnKeyRelease(key);
+		}
 	private:
 		
 	};

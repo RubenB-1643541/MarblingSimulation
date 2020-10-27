@@ -43,7 +43,10 @@ namespace FluidLib {
 		Movement* _movement;
 		Surface* _surface;
 	private:
+		bool _moveEdit = false;
 		bool _using = false;
+		float _x = 0;
+		float _y = 0;
 		glm::mat4 _proj;
 
 	};

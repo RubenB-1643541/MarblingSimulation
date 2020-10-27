@@ -2,6 +2,10 @@
 #include "Tools/Movement/Movements.h"
 #include "Tools/Surface/Surfaces.h"
 
+MarblingSimulation::MarblingSimulation()
+{
+}
+
 MarblingSimulation::MarblingSimulation(int sizex, int sizey) : Simulation(sizex, sizey)
 {
 }

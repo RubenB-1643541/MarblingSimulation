@@ -17,7 +17,8 @@ void ToolParameters::OnUpdate()
 
 void ToolParameters::OnDraw()
 {
-	//if (ImGui::CollapsingHeader("Tool Parameters")) {
+	if (_first)
+		ImGui::SetNextTreeNodeOpen(true);
 	if (ImGui::TreeNode("Tool Parameters")) {
 		
 		if (_active != nullptr) {
@@ -26,14 +27,20 @@ void ToolParameters::OnDraw()
 			ActionParams();
 		}
 		else {
-			ImGui::Text("No Active Tool");
+			ImGui::Text("No Active Tool"); 
+			ImGui::SetNextTreeNodeOpen(true);
+			ImGui::TreeNode("Surface");
+			ImGui::TreePop();
+			ImGui::SetNextTreeNodeOpen(true);
+			ImGui::TreeNode("Movement");
+			ImGui::TreePop();
+			ImGui::SetNextTreeNodeOpen(true);
+			ImGui::TreeNode("Action");
+			ImGui::TreePop();
 		}
-
+		ImGui::Separator();
 		ImGui::TreePop();
 	}
-	
-	
-	
 	
 }
 
@@ -44,6 +51,8 @@ void ToolParameters::EndDraw()
 
 void ToolParameters::SurfaceParams()
 {
+	if (_first)
+		ImGui::SetNextTreeNodeOpen(true);
 	if (ImGui::TreeNode("Surface")) {
 		FluidLib::Surface* surface = _active->GetSurface();
 		if (surface->GetType() == "Square") {
@@ -72,6 +81,8 @@ void ToolParameters::SurfaceParams()
 
 void ToolParameters::MovementParams()
 {
+	if (_first)
+		ImGui::SetNextTreeNodeOpen(true);
 	if (ImGui::TreeNode("Movement")) {
 		FluidLib::Movement* movement = _active->GetMovement();
 		if (movement->GetType() == "Line") {
@@ -97,6 +108,26 @@ void ToolParameters::MovementParams()
 
 			FluidLib::BezierCurve *curve = static_cast<FluidLib::BezierCurve*>(movement);
 			if (curve != nullptr) {
+				//ImGui::Text("P1");
+				//ImGui::SameLine();
+				//ImGui::SliderFloat("X1", curve->GetPoints()[0].GetXPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
+				//ImGui::SameLine();
+				//ImGui::SliderFloat("Y1", curve->GetPoints()[0].GetYPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
+				//ImGui::Text("P2");
+				//ImGui::SameLine();
+				//ImGui::SliderFloat("X2", curve->GetPoints()[1].GetXPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
+				//ImGui::SameLine();
+				//ImGui::SliderFloat("Y2", curve->GetPoints()[1].GetYPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
+				//ImGui::Text("P3");
+				//ImGui::SameLine();
+				//ImGui::SliderFloat("X3", curve->GetPoints()[2].GetXPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
+				//ImGui::SameLine();
+				//ImGui::SliderFloat("Y3", curve->GetPoints()[2].GetYPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
+				//ImGui::Text("P4");
+				//ImGui::SameLine();
+				//ImGui::SliderFloat("X4", curve->GetPoints()[3].GetXPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
+				//ImGui::SameLine();
+				//ImGui::SliderFloat("Y4", curve->GetPoints()[3].GetYPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
 				ImGui::SliderFloat2("P1", curve->GetPoints()[0].GetXPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
 				ImGui::SliderFloat2("P2", curve->GetPoints()[1].GetXPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
 				ImGui::SliderFloat2("P3", curve->GetPoints()[2].GetXPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
@@ -112,6 +143,8 @@ void ToolParameters::MovementParams()
 
 void ToolParameters::ActionParams()
 {
+	if (_first)
+		ImGui::SetNextTreeNodeOpen(true);
 	if (ImGui::TreeNode("Action")) {
 		FluidLib::ActionBase* action = _active->GetAction();
 		if (action != nullptr) {

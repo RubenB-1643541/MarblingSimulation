@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Movement.h"
-#include "Util/Point.h"
+#include "Util/ControlPoint.h"
 #include "GL/glew.h"
 #include <vector>
 
@@ -14,7 +14,11 @@ namespace FluidLib {
 		BezierCurve();
 		bool OnScroll(float x, float y) override;
 		void DrawPath() override;
+		void OnEdithDraw();
 
+		bool OnMoveClick(float x, float y) override;
+		bool OnMoveRelease(float x, float y) override;
+		bool OnMoveMove(float x, float y) override;
 		/*
 		Changes input position to new position
 		@param float x, y : mouse position
@@ -22,9 +26,10 @@ namespace FluidLib {
 		*/
 		virtual FPoint Get(float x, float y) override;
 
-		inline FPoint* GetPoints() { return _controlpoints; }
+		inline ControlPoint* GetPoints() { return _controlpoints; }
+		void SetProjection(glm::mat4 proj);
 	private:
-		FPoint _controlpoints[4];
+		ControlPoint _controlpoints[4];
 
 		float _precision = 0.01f;
 		static GLuint _buffer;

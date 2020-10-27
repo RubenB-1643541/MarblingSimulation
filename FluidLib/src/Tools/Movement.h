@@ -20,8 +20,12 @@ namespace FluidLib {
 		inline virtual FPoint Get(float x, float y) { return {x, y}; }
 
 		inline virtual void DrawPath() {}
+		inline virtual void OnEdithDraw() {}
 		inline virtual bool OnScroll(float x, float y) { return false; }
-		inline void SetProjection(glm::mat4 proj) { _projection = proj; }
+		inline virtual bool OnMoveClick(float x, float y) { return false; }
+		inline virtual bool OnMoveRelease(float x, float y) { return false; }
+		inline virtual bool OnMoveMove(float x, float y) { return false; }
+		inline virtual void SetProjection(glm::mat4 proj) { _projection = proj; }
 		std::string& GetType() { return _type; }
 	protected:
 		glm::mat4 _projection = glm::mat4(1.0);

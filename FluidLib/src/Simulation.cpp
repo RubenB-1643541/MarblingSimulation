@@ -69,6 +69,24 @@ namespace FluidLib {
 
 	}
 
+	void Simulation::OnKeyPress(int key)
+	{
+		_keys.keys[key] = true;
+		if (key == 340) //Shift
+			_keys.shift = true;
+		if (key == 341) //Ctrl
+			_keys.ctr = true;
+	}
+
+	void Simulation::OnKeyRelease(int key)
+	{
+		_keys.keys[key] = false;
+		if (key == 340) //Shift
+			_keys.shift = false;
+		if (key == 341) //Ctrl
+			_keys.ctr = false;
+	}
+
 	void Simulation::SetSize(int sizex, int sizey)
 	{
 		_sizex = sizex; _sizey = sizey; 

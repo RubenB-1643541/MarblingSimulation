@@ -1,5 +1,5 @@
 #include "ToolSelectComponent.h"
-#include "../SimUtils/Icon.hpp"
+#include "../SimUtils/Icon.h"
 
 ToolSelectComponent::ToolSelectComponent(FluidLib::ToolManager* tools, const std::string& basic)
 {
@@ -9,15 +9,19 @@ ToolSelectComponent::ToolSelectComponent(FluidLib::ToolManager* tools, const std
 
 void ToolSelectComponent::OnInit()
 {
-	_basic = static_cast<FluidLib::BasicTool*>(_tools->Get(_basicname));
+	//_basic = static_cast<FluidLib::BasicTool*>(_tools->Get(_basicname));
 }
 
 void ToolSelectComponent::OnUpdate()
 {
+	if(_basic == nullptr)
+		_basic = static_cast<FluidLib::BasicTool*>(_tools->Get(_basicname));
 }
 
 void ToolSelectComponent::OnDraw()
 {
+	if (_first)
+		ImGui::SetNextTreeNodeOpen(true);
 	if (ImGui::TreeNode("Tool Selection")) {
 		//Surfaces
 		ImGui::BeginChild("ToolSelectChild", ImVec2(250, 250));
@@ -32,13 +36,13 @@ void ToolSelectComponent::OnDraw()
 					_basic->SetActiveSurface(button.name);
 					_selectedsurface = i;
 				}
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip(button.name.c_str());
 			}
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip(button.name.c_str());
 			++i;
 		}
 	
-		//Movemens
+		//Movements
 		ImGui::NextColumn();
 		ImGui::Text("Movements");
 		i = 0;
@@ -51,9 +55,9 @@ void ToolSelectComponent::OnDraw()
 					_basic->SetActiveMovement(button.name);
 					_selectedmovement = i;
 				}
-				if(ImGui::IsItemHovered())
-					ImGui::SetTooltip(button.name.c_str());
 			}
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip(button.name.c_str());
 			++i;
 		}
 
@@ -69,13 +73,13 @@ void ToolSelectComponent::OnDraw()
 					_basic->SetActiveAction(button.name);
 					_selectedaction = i;
 				}
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip(button.name.c_str());
 			}
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip(button.name.c_str());
 			++i;
 		}
 		ImGui::EndChild();
-
+		ImGui::Separator();
 		ImGui::TreePop();
 	}
 }

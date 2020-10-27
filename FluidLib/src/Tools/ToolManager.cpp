@@ -13,7 +13,15 @@ namespace FluidLib {
 	}
 	void ToolManager::AddTool(const std::string& name, ToolBase* tool)
 	{
-		_tools.insert(std::make_pair(name, tool));
+		
+		auto toolit = _tools.find(name);
+		if (toolit != _tools.end()) {
+			if (toolit->second == nullptr)
+				toolit->second = tool;
+		}
+		else {
+			_tools.insert(std::make_pair(name, tool));
+		}
 	}
 	void ToolManager::Update()
 	{

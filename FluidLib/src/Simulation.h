@@ -13,6 +13,11 @@
 
 namespace FluidLib {
 
+	struct KeyIo {
+		bool keys[500] = {false};
+		bool shift = false;
+		bool ctr = false;
+	};
 
 	class Simulation
 	{
@@ -38,6 +43,8 @@ namespace FluidLib {
 		virtual void OnSimulationStop(SimulationStopEvent& event) {}
 		virtual void OnSimulationPause(SimulationPauseEvent& event) {}
 		virtual void OnFrameRateChange(FrameRateChangeEvent& event) {}
+		void OnKeyPress(int key);
+		void OnKeyRelease(int key);
 
 		inline ComputeShaderController* GetShader() { return &_computeshader; }
 		inline GridManager* GetGrids() { return &_grids; }
@@ -59,11 +66,13 @@ namespace FluidLib {
 		inline void UnPause() { _paused = false; OnSimulationStart(SimulationStartEvent()); }
 
 		void SetScreenSize(float width, float height);
+		KeyIo* GetKeys() { return &_keys; }
 	protected:
 		Settings _settings;
 		GridManager _grids;
 		ToolManager _tools;
 		ComputeShaderController _computeshader;
+		KeyIo _keys;
 	private:
 		static Simulation* _instance;
 
@@ -72,14 +81,10 @@ namespace FluidLib {
 		float _screenwidth = 0;
 		float _screenheight = 0;
 
-	
-
 		GridRenderer _renderer;
 
 		std::clock_t _prev;
 		bool _paused = false;
-
-		
 	};
 
 }

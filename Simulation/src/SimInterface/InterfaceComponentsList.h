@@ -5,3 +5,4 @@
 #include "ToolParameters.h"
 #include "ToolSelectComponent.h"
 #include "SettingsComponent.h"
+#include "CreateComponent.h"

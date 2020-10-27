@@ -1,14 +1,26 @@
 #include "ToolBase.h"
-
+#include "Simulation.h"
 namespace FluidLib {
     void ToolBase::Draw()
     {
-        _movement->DrawPath();
-        _surface->Draw();
+        if (_moveEdit) {
+            _movement->DrawPath();
+            _movement->OnEdithDraw();
+        }
+        else {
+            _movement->DrawPath();
+            _surface->Draw();
+        }
         OnDraw();
     }
     void ToolBase::Update()
     {
+        if (Simulation::Get()->GetKeys()->shift) {
+            _moveEdit = true;
+            _using = false;
+        }
+        else
+            _moveEdit = false;
         if (_using) {
             OnBeginUse();
             OnUse();
@@ -27,6 +39,10 @@ namespace FluidLib {
     }
     bool ToolBase::OnUseEvent(ToolUseEvent& event)
     {
+        if (_moveEdit) {
+            _movement->OnMoveClick(_x, _y);
+            return true;
+        }
         if (!_using) {
             //OnBeginUse();
             _using = true;
@@ -38,14 +54,25 @@ namespace FluidLib {
     bool ToolBase::OnEndUseEvent(ToolEndUseEvent& event)
     {
         _using = false;
+        if (_moveEdit) {
+            _movement->OnMoveRelease(_x, _y);
+            return true;
+        }
         //OnEndUse();
         return true;
     }
     bool ToolBase::OnMoveEvent(ToolMoveEvent& event)
     {
-        FPoint p = _movement->Get(event.GetX(), event.GetY());
-        _surface->OnMove(p.GetX(), p.GetY());
-        _action->SetPos({ (int)p.GetX(), (int)p.GetY() });
+        _x = event.GetX();
+        _y = event.GetY();
+        if (_moveEdit) {
+            _movement->OnMoveMove(_x, _y);
+        }
+        else {
+            FPoint p = _movement->Get(_x, _y);
+            _surface->OnMove(p.GetX(), p.GetY());
+            _action->SetPos({ (int)p.GetX(), (int)p.GetY() });
+        }
         return true;
     }
     bool ToolBase::OnScrollEvent(ToolScrollEvent& event)

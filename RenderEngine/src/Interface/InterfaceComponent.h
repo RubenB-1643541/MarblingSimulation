@@ -23,6 +23,7 @@ namespace RenderEngine {
 	protected:
 		std::vector<InterfaceComponent*> _subComponents;
 		ImGuiWindowFlags _window_flags = 0;
+		bool _first = true;;
 
 
 	};

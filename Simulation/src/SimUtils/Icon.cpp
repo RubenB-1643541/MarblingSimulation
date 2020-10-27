@@ -1,17 +1,8 @@
-#pragma once
+#include "Icon.h"
 
-#include "GL/glew.h"
-#include <string>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-struct Icon {
-    int width = 0;
-    int height = 0;
-	GLuint id = -1;
-};
-
-inline
 Icon Load(const std::string& name) {
     int image_width, image_height;
     unsigned char* image_data = stbi_load(name.c_str(), &image_width, &image_height, NULL, 4);

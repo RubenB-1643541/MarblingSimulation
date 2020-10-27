@@ -125,6 +125,7 @@
     <ClInclude Include="src\Tools\ToolBase.h" />
     <ClInclude Include="src\Tools\ToolFactory.h" />
     <ClInclude Include="src\Tools\ToolManager.h" />
+    <ClInclude Include="src\Util\ControlPoint.h" />
     <ClInclude Include="src\Util\Point.h" />
     <ClInclude Include="src\Util\Rendering.h" />
   </ItemGroup>
@@ -149,6 +150,7 @@
     <ClCompile Include="src\Tools\ToolBase.cpp" />
     <ClCompile Include="src\Tools\ToolFactory.cpp" />
     <ClCompile Include="src\Tools\ToolManager.cpp" />
+    <ClCompile Include="src\Util\ControlPoint.cpp" />
     <ClCompile Include="src\Util\Point.cpp" />
     <ClCompile Include="src\Util\Rendering.cpp" />
   </ItemGroup>

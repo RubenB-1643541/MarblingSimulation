@@ -62,10 +62,49 @@ namespace FluidLib {
         glBindBuffer(GL_ARRAY_BUFFER, NULL);
     }
 
+    void BezierCurve::OnEdithDraw()
+    {
+        for (int i = 0; i < 4; ++i) {
+            _controlpoints[i].Draw();
+        }
+    }
+
+    bool BezierCurve::OnMoveClick(float x, float y)
+    {
+        for (int i = 0; i < 4; ++i) {
+            if (_controlpoints[i].OnClick(x, y))
+                return true;
+        }
+        return false;
+    }
+
+    bool BezierCurve::OnMoveRelease(float x, float y)
+    {
+        for (int i = 0; i < 4; ++i) {
+            _controlpoints[i].OnRelease();
+        }
+        return false;
+    }
+
+    bool BezierCurve::OnMoveMove(float x, float y)
+    {
+        for (int i = 0; i < 4; ++i) {
+            _controlpoints[i].OnMove(x, y);
+        }
+        return false;
+    }
+
     FPoint BezierCurve::Get(float x, float y)//TODO FIX y from x
     {
         float t = x / FluidLib::Simulation::Get()->GetSizeX();
         return pow((1 - t), 3) * _controlpoints[0] + 3 * pow((1 - t), 2) * t * _controlpoints[1] + 3 * (1 - t) * pow(t, 2) * _controlpoints[2] + pow(t, 3) * _controlpoints[3];
+    }
+
+    void BezierCurve::SetProjection(glm::mat4 proj)
+    {
+        _projection = proj; 
+        for (int i = 0; i < 4; ++i)
+            _controlpoints[i].SetProjection(proj);
     }
 
 }
