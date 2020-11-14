@@ -20,6 +20,7 @@ namespace FluidLib {
 		//ToolEvent Handler
 		void OnEvent(Event& event);
 		void SetActive(ToolBase* tool);
+		void SetActive(const std::string& tool);
 		inline ToolBase* GetActive() { return _activeTool; }
 		inline ToolBase* Get(const std::string& name) { return _tools[name]; }
 		inline void SetSimSize(float width, float height) { SetProjection(glm::ortho(0.0f, width, height, 0.0f)); }

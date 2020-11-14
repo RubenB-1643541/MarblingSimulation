@@ -109,6 +109,7 @@
     <ClInclude Include="src\Tools\Surface\Triangle.h" />
     <ClInclude Include="src\Tools\Movement\BezierCurve.h" />
     <ClInclude Include="src\Util\ControlPoint.h" />
+    <ClInclude Include="src\Tools\Surface\PointSurface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">
@@ -168,5 +169,6 @@
     <ClCompile Include="src\Tools\Surface\Triangle.cpp" />
     <ClCompile Include="src\Tools\Movement\BezierCurve.cpp" />
     <ClCompile Include="src\Util\ControlPoint.cpp" />
+    <ClCompile Include="src\Tools\Surface\PointSurface.cpp" />
   </ItemGroup>
 </Project>

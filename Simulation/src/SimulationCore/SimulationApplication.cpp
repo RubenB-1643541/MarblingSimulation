@@ -196,6 +196,115 @@ void SimulationApplication::StartSimulation()
 	FluidLib::UniformVal widthval; widthval.intval = _sim.GetSizeX();
 	FluidLib::UniformVal heightval; heightval.intval = _sim.GetSizeY();
 	FluidLib::UniformVal aval; aval.floatptr = &_sim.GetSettings()->spreading;
+	FluidLib::UniformVal dval; dval.floatptr = &_sim.GetSettings()->diffuse;
+	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, widthval, "width"));
+	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
+	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, aval, "a"));
+	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, dval, "d"));
+
+	FluidLib::GridRenderer* renderer = _sim.GetRenderer();
+	renderer->SetShader(_shader.GetId());
+	FluidLib::ShaderController* shader = renderer->GetShader();
+	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, widthval, "width"));
+	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
+
+
+	_sim.Init();
+	_simrunning = true;
+}
+
+/*
+void SimulationApplication::StartSimulation()
+{
+	_buffers.clear();
+	RenderEngine::ShaderStorageBuffer* velbuf = new RenderEngine::ShaderStorageBuffer();
+	velbuf->Bind();
+	velbuf->BufferData(_sim.GetSize() * sizeof(IVelocity));
+	IVelocity* vels = (IVelocity*)velbuf->MapBufferRange();
+	for (int i = 0; i < _sim.GetSize(); ++i) {
+		vels[i] = { 0, 0 };
+	}
+	velbuf->UnMapBuffer();
+	_buffers.insert(std::make_pair("Vel", velbuf));
+
+	RenderEngine::ShaderStorageBuffer* velbuf2 = new RenderEngine::ShaderStorageBuffer();
+	velbuf2->Bind();
+	velbuf2->BufferData(_sim.GetSize() * sizeof(IVelocity));
+	IVelocity* vels2 = (IVelocity*)velbuf2->MapBufferRange();
+	for (int i = 0; i < _sim.GetSize(); ++i) {
+		vels2[i] = { 0, 0 };
+	}
+	velbuf2->UnMapBuffer();
+	_buffers.insert(std::make_pair("Vel2", velbuf2));
+
+	RenderEngine::ShaderStorageBuffer* freqbuf = new RenderEngine::ShaderStorageBuffer();
+	freqbuf->Bind();
+	freqbuf->BufferData(_sim.GetSize() * sizeof(IFrequency));
+	IFrequency* freqs = (IFrequency*)freqbuf->MapBufferRange();
+	for (int i = 0; i < _sim.GetSize(); ++i) {
+		freqs[i] = { 0 };
+	}
+	freqbuf->UnMapBuffer();
+	_buffers.insert(std::make_pair("Freq", freqbuf));
+
+	RenderEngine::ShaderStorageBuffer* freqbuf2 = new RenderEngine::ShaderStorageBuffer();
+	freqbuf2->Bind();
+	freqbuf2->BufferData(_sim.GetSize() * sizeof(IFrequency));
+	IFrequency* freqs2 = (IFrequency*)freqbuf2->MapBufferRange();
+	for (int i = 0; i < _sim.GetSize(); ++i) {
+		freqs2[i] = { 0 };
+	}
+	freqbuf2->UnMapBuffer();
+	_buffers.insert(std::make_pair("Freq2", freqbuf2));
+
+	RenderEngine::ShaderStorageBuffer* inkbuf = new RenderEngine::ShaderStorageBuffer();
+	inkbuf->Bind();
+	inkbuf->BufferData(_sim.GetSize() * sizeof(IInk));
+	IInk* inks = (IInk*)inkbuf->MapBufferRange();
+	for (int i = 0; i < _sim.GetSize(); ++i) {
+		inks[i] = { 0 };
+	}
+	inkbuf->UnMapBuffer();
+	_buffers.insert(std::make_pair("Ink", inkbuf));
+
+	RenderEngine::ShaderStorageBuffer* flagbuf = new RenderEngine::ShaderStorageBuffer();
+	flagbuf->Bind();
+	flagbuf->BufferData(_sim.GetSize() * sizeof(Flags));
+	Flags* flags = (Flags*)flagbuf->MapBufferRange();
+	for (int i = 0; i < _sim.GetSize(); ++i) {
+		flags[i] = { 0, 0, 0, 0 };
+	}
+	flagbuf->UnMapBuffer();
+	_buffers.insert(std::make_pair("Flag", flagbuf));
+
+	FluidLib::GridManager* gridman = _sim.GetGrids();
+
+	FluidLib::Grid<IVelocity>* velgrid = new FluidLib::Grid<IVelocity>(_buffers.at("Vel")->GetId(), _sim.GetSize(), 1);
+	velgrid->SetElementSize(2);
+	gridman->AddGrid("Vel", velgrid);
+
+	FluidLib::Grid<IVelocity>* velgrid2 = new FluidLib::Grid<IVelocity>(_buffers.at("Vel2")->GetId(), _sim.GetSize(), 2);
+	velgrid->SetElementSize(2);
+	gridman->AddGrid("Vel2", velgrid2);
+
+	FluidLib::Grid<IFrequency>* freqgrid = new FluidLib::Grid<IFrequency>(_buffers.at("Freq")->GetId(), _sim.GetSize(), 3, true);
+	gridman->AddGrid("Freq", freqgrid);
+
+	FluidLib::Grid<IFrequency>* freqgrid2 = new FluidLib::Grid<IFrequency>(_buffers.at("Freq2")->GetId(), _sim.GetSize(), 4);
+	gridman->AddGrid("Freq2", freqgrid2);
+
+	FluidLib::Grid<IInk>* inkgrid = new FluidLib::Grid<IInk>(_buffers.at("Ink")->GetId(), _sim.GetSize(), 5, true);
+	gridman->AddGrid("Ink", inkgrid);
+
+	FluidLib::Grid<Flags>* flaggrid = new FluidLib::Grid<Flags>(_buffers.at("Flag")->GetId(), _sim.GetSize(), 7, true);
+	flaggrid->SetElementSize(4);
+	gridman->AddGrid("Flag", flaggrid);
+
+	FluidLib::ComputeShaderController* shadercontroller = _sim.GetShader();
+	shadercontroller->SetShader(_computeshader.GetId());
+	FluidLib::UniformVal widthval; widthval.intval = _sim.GetSizeX();
+	FluidLib::UniformVal heightval; heightval.intval = _sim.GetSizeY();
+	FluidLib::UniformVal aval; aval.floatptr = &_sim.GetSettings()->spreading;
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, widthval, "width"));
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, aval, "a"));
@@ -210,3 +319,4 @@ void SimulationApplication::StartSimulation()
 	_sim.Init();
 	_simrunning = true;
 }
+*/
