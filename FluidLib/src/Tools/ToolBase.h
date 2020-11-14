@@ -31,23 +31,23 @@ namespace FluidLib {
 		void OnEndUse();
 		virtual void OnUse();
 
-		inline void SetAction(ActionBase* action) { _action = action; }
-		inline void SetMovement(Movement* movement) { _movement = movement; _movement->SetProjection(_proj); }
-		inline void SetSurface(Surface* surface) { _surface = surface; _surface->SetProjection(_proj); }
-		inline void SetProjection(glm::mat4 proj) { _proj = proj; _surface->SetProjection(proj); _movement->SetProjection(proj); }
+		inline virtual void SetAction(ActionBase* action) { _action = action; }
+		inline virtual void SetMovement(Movement* movement) { _movement = movement; _movement->SetProjection(_proj); }
+		inline virtual void SetSurface(Surface* surface) { _surface = surface; _surface->SetProjection(_proj); }
+		inline virtual void SetProjection(glm::mat4 proj) { _proj = proj; _surface->SetProjection(proj); _movement->SetProjection(proj); }
 		inline ActionBase* GetAction() { return _action; }
 		inline Movement* GetMovement() { return _movement; }
 		inline Surface* GetSurface() { return _surface; }
 	protected:
-		ActionBase* _action;
-		Movement* _movement;
-		Surface* _surface;
+		ActionBase* _action = nullptr;
+		Movement* _movement = nullptr;
+		Surface* _surface = nullptr;
+		glm::mat4 _proj;
+		bool _using = false;
 	private:
 		bool _moveEdit = false;
-		bool _using = false;
 		float _x = 0;
 		float _y = 0;
-		glm::mat4 _proj;
 
 	};
 

@@ -33,6 +33,9 @@ struct FVelocity {
 	inline FVelocity operator*(float scale) { return { dx * scale, dy * scale }; }
 	inline bool operator==(const FVelocity& val) { return dx == val.dx && dy == val.dy; }
 	inline bool operator==(float val) { return dx == val && dy == val; }
+	inline FVelocity(float dx, float dy) : dx(dx), dy(dy) {}
+	inline FVelocity(float d) : dx(d), dy(d) {}
+	inline FVelocity() : dx(0), dy(0) {}
 };
 
 struct IFrequency {
@@ -47,8 +50,8 @@ struct IFrequency {
 	inline IFrequency operator*(float scale) { return { static_cast<int>(freq * scale)}; }
 	inline bool operator==(const IFrequency& val) { return freq == val.freq; }
 	inline bool operator==(int val) { return freq == val; }
-	IFrequency() { freq = 0; }
-	IFrequency(int i) { freq = i; }
+	inline IFrequency() { freq = 0; }
+	inline IFrequency(int i) { freq = i; }
 
 };
 
@@ -64,6 +67,8 @@ struct FFrequency {
 	inline FFrequency operator*(float scale) { return { freq * scale }; }
 	inline bool operator==(const FFrequency& val) { return freq == val.freq; }
 	inline bool operator==(float val) { return freq == val; }
+	FFrequency() { freq = 0.0f; }
+	FFrequency(float f) { freq = f; }
 };
 
 struct IInk {

@@ -26,6 +26,7 @@ namespace FluidLib {
             OnUse();
             OnEndUse();
         }
+        OnUpdate();
     }
     bool ToolBase::OnEvent(Event& toolevent)
     {

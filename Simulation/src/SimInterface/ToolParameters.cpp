@@ -53,8 +53,8 @@ void ToolParameters::SurfaceParams()
 {
 	if (_first)
 		ImGui::SetNextTreeNodeOpen(true);
-	if (ImGui::TreeNode("Surface")) {
-		FluidLib::Surface* surface = _active->GetSurface();
+	FluidLib::Surface* surface = _active->GetSurface();
+	if (surface != nullptr && ImGui::TreeNode("Surface")) {
 		if (surface->GetType() == "Square") {
 			FluidLib::Square* sq = static_cast<FluidLib::Square*>(surface);
 			if (sq != nullptr) {
@@ -64,8 +64,8 @@ void ToolParameters::SurfaceParams()
 		else if (surface->GetType() == "Rectangle") {
 			FluidLib::Rectangle* sq = static_cast<FluidLib::Rectangle*>(surface);
 			if (sq != nullptr) {
-				ImGui::SliderFloat("Width", sq->GetWidth(), 1.0f, 250.0f);
-				ImGui::SliderFloat("Height", sq->GetHeight(), 1.0f, 250.0f);
+				ImGui::SliderFloat("Width", sq->GetWidthPtr(), 1.0f, 250.0f);
+				ImGui::SliderFloat("Height", sq->GetHeightPtr(), 1.0f, 250.0f);
 			}
 		}
 		else if (surface->GetType() == "Circle") {
@@ -83,8 +83,8 @@ void ToolParameters::MovementParams()
 {
 	if (_first)
 		ImGui::SetNextTreeNodeOpen(true);
-	if (ImGui::TreeNode("Movement")) {
-		FluidLib::Movement* movement = _active->GetMovement();
+	FluidLib::Movement* movement = _active->GetMovement();
+	if (movement != nullptr && ImGui::TreeNode("Movement")) {
 		if (movement->GetType() == "Line") {
 			FluidLib::Line* line = static_cast<FluidLib::Line*>(movement);
 			if (line != nullptr) {

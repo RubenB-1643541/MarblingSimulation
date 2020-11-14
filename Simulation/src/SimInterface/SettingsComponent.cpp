@@ -35,7 +35,8 @@ void SettingsComponent::OnDraw()
 			
 
 			ImGui::SliderInt("Updates/sec", &_settings->fps, 0.0, 60.0);
-			ImGui::SliderFloat("Ink Spreading", &_settings->spreading, 0.0001, 0.5f);
+			ImGui::SliderFloat("Ink Spreading", &_settings->spreading, 0.0f, 1.0f);
+			ImGui::SliderFloat("Diffuse", &_settings->diffuse, 0.0f, 1.0f);
 		}
 		else {
 			ImGui::Text("No Settings");

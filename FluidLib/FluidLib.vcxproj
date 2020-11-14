@@ -118,6 +118,7 @@
     <ClInclude Include="src\Tools\Movement\Sine.h" />
     <ClInclude Include="src\Tools\Surface.h" />
     <ClInclude Include="src\Tools\Surface\Circle.h" />
+    <ClInclude Include="src\Tools\Surface\PointSurface.h" />
     <ClInclude Include="src\Tools\Surface\Rectangle.h" />
     <ClInclude Include="src\Tools\Surface\Square.h" />
     <ClInclude Include="src\Tools\Surface\Surfaces.h" />
@@ -144,6 +145,7 @@
     <ClCompile Include="src\Tools\Movement\Line.cpp" />
     <ClCompile Include="src\Tools\Movement\Sine.cpp" />
     <ClCompile Include="src\Tools\Surface\Circle.cpp" />
+    <ClCompile Include="src\Tools\Surface\PointSurface.cpp" />
     <ClCompile Include="src\Tools\Surface\Rectangle.cpp" />
     <ClCompile Include="src\Tools\Surface\Square.cpp" />
     <ClCompile Include="src\Tools\Surface\Triangle.cpp" />

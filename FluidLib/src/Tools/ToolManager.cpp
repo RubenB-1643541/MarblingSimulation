@@ -47,6 +47,12 @@ namespace FluidLib {
 		_activeTool->SetProjection(_projection);
 		_activeTool->OnActivate();
 	}
+
+	void ToolManager::SetActive(const std::string& tool) {
+		ToolBase* t = Get(tool);
+		if (t != nullptr)
+			SetActive(t);
+	}
 	bool ToolLoader::Load(ToolManager& manger, std::string file)
 	{
 		return false;

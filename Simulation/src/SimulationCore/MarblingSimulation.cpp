@@ -63,9 +63,13 @@ void MarblingSimulation::CreateTools()
 void MarblingSimulation::CreateBasicTool()
 {
 	FluidLib::BasicTool* basic = new FluidLib::BasicTool();
-	FluidLib::Action<IFrequency>* addfreq = new FluidLib::Action<IFrequency>(IFrequency(16), static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), FluidLib::ACTION_OPERATION::ADD);
-	FluidLib::Action<IVelocity>* addvel = new FluidLib::Action<IVelocity>(IVelocity(100, 100), static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")), FluidLib::ACTION_OPERATION::MOVE);
+	//FluidLib::Action<IFrequency>* addfreq = new FluidLib::Action<IFrequency>(IFrequency(16), static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), FluidLib::ACTION_OPERATION::ADD);
+	//FluidLib::Action<IVelocity>* addvel = new FluidLib::Action<IVelocity>(IVelocity(100, 100), static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")), FluidLib::ACTION_OPERATION::MOVE);
 	
+	FluidLib::Action<IFrequency>* addfreq = new FluidLib::Action<IFrequency>(IFrequency(100), static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), FluidLib::ACTION_OPERATION::ADD);
+	FluidLib::Action<IVelocity>* addvel = new FluidLib::Action<IVelocity>(IVelocity(10, 10), static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")), FluidLib::ACTION_OPERATION::MOVE);
+
+
 	basic->AddAction("AddFreq", addfreq);
 	basic->AddAction("AddVel", addvel);
 	basic->SetActiveAction("AddFreq");
@@ -78,10 +82,16 @@ void MarblingSimulation::CreateBasicTool()
 	basic->AddSurface("Rectangle", new FluidLib::Rectangle());
 	basic->AddSurface("Triangle", new FluidLib::Triangle());
 	basic->AddSurface("Circle", new FluidLib::Circle());
+	basic->AddSurface("Point", new FluidLib::PointSurface());
 	basic->SetActiveSurface("Circle");
 	_tools.AddTool("Basic", basic);
 	
 	_tools.SetActive(basic);
+
+	FluidLib::SelectTool * sel = new FluidLib::SelectTool();
+	sel->SetAction(addfreq);
+	_tools.AddTool("Select", sel);
+	//_tools.SetActive("Select");
 
 }
 
@@ -97,4 +107,5 @@ void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
 	comp->AddButton(Button("res/icons/Rectangle.png", "Rectangle", TOOL_PART::SURFACE));
 	comp->AddButton(Button("res/icons/Triangle.png", "Triangle", TOOL_PART::SURFACE));
 	comp->AddButton(Button("res/icons/Circle.png", "Circle", TOOL_PART::SURFACE));
+	comp->AddButton(Button("res/icons/Point.png", "Point", TOOL_PART::SURFACE));
 }

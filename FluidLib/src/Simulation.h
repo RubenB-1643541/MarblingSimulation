@@ -67,6 +67,8 @@ namespace FluidLib {
 
 		void SetScreenSize(float width, float height);
 		KeyIo* GetKeys() { return &_keys; }
+
+		inline ToolManager* GetTools() { return &_tools; }
 	protected:
 		Settings _settings;
 		GridManager _grids;

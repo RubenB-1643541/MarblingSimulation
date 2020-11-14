@@ -30,6 +30,11 @@ void TopBar::OnDraw()
 		ImGui::EndMenu();
 	}
 	if (ImGui::BeginMenu("Tools")) {
+		if (ImGui::MenuItem("Basic", "Shift+B"))
+			FluidLib::Simulation::Get()->GetTools()->SetActive("Basic");
+		if (ImGui::MenuItem("Select", "Shift+S")) 
+			FluidLib::Simulation::Get()->GetTools()->SetActive("Select");
+		
 		ImGui::EndMenu();
 	}
 

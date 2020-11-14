@@ -5,22 +5,22 @@
 
 layout(binding=1) buffer vel
 {
-	ivec2 velocities[];	//array of velocities * 1000 -> 1000 == 1
+	vec2 velocities[];	//array of velocities * 1000 -> 1000 == 1
 };
 
 layout(binding=2) buffer vel2
 {
-	ivec2 velocities2[];	//array of velocities * 1000 -> 1000 == 1
+	vec2 velocities2[];	//array of velocities * 1000 -> 1000 == 1
 };
 
 layout(std430, binding=3) buffer freq
 {
-	uint frequencies[];	//array of freqs
+	int frequencies[];	//array of freqs
 };
 
 layout(std430, binding=4) buffer freq2
 {
-	uint frequencies2[];	//array of freqs
+	int frequencies2[];	//array of freqs
 };
 
 layout(std430, binding=5) buffer ink
@@ -37,7 +37,6 @@ layout(binding=7) buffer flags
 layout( location=1 ) uniform int width;  
 layout( location=2 ) uniform int height; 
 layout( location=3 ) uniform float a; //Factor for ink spreading
-layout( location=4 ) uniform float d; //Factor for diffusion
 
 
 layout(local_size_x = 100, local_size_y = 1, local_size_z = 1) in; //Variable?
@@ -47,10 +46,6 @@ void StamAdvection(uint i, ivec2 pos);
 void Pressure(uint i, ivec2 pos);  
 void Diffuse(uint i);
 void InkPressure(uint src);  
-
-void ExecMovement(uint src, vec2 des); 
-
-void CleanEdges(uint i);
 
 //Helpers
 ivec2 IndexToPoint(uint i);
@@ -81,14 +76,14 @@ Then the receiver will get less than 100
 */
 void StamAdvection(uint i, ivec2 pos) {
 			
-		vec2 velval = velocities[i]/100;
+		vec2 velval = velocities[i];
 		//velocities[i].x += int(ceil(velval.x));
 		vec2 source = pos;
 
-		//if(velval.x > 0.001 || velval.x < 0.001) //Prevent float ~= 0 being executed
-		source.x = pos.x - velval.x;
-		//if(velval.y > 0.001 || velval.y < 0.001)
-		source.y = pos.y - velval.y;
+		if(velval.x > 0.001 || velval.x < 0.001) //Prevent float ~= 0 being executed
+			source.x = pos.x - velval.x;
+		if(velval.y > 0.001 || velval.y < 0.001)
+			source.y = pos.y - velval.y;
 	
 		//dest = Collision(dest);
  		if(InGrid(source)) {
@@ -97,36 +92,37 @@ void StamAdvection(uint i, ivec2 pos) {
 			vec4 perc = Percentages(sqpoints, source);
 			int totalval = 0;
 			uint i = PointToIndex(ivec2(sqpoints.x, sqpoints.y));
-			int val = int(perc.x * 100);
-			//int val = int(perc.x * frequencies[i]);
-			if(val > 0 && frequencies2[i] >= val) {
+			int val = int( perc.x * frequencies[i]);
+			if(val > 0) {
 				totalval += val;
 				atomicAdd(frequencies2[i], -val);
+				//frequencies2[i] -= val;
 			}
 			i = PointToIndex(ivec2(sqpoints.z, sqpoints.y));
-			val = int(perc.y * 100);
-			//val = int(perc.y * frequencies[i]);
-			if(val > 0 && frequencies[i] >= val) {
+			val = int(perc.y * frequencies[i]);
+			if(val > 0) {
 				totalval += val;
 				atomicAdd(frequencies2[i], -val);
+				//frequencies2[i] -= val;
 			}
 			i = PointToIndex(ivec2(sqpoints.x, sqpoints.w));
-			val = int(perc.z * 100);
-			//val = int(perc.z * frequencies[i]);
-			if(val > 0 && val >= frequencies[i]) {
+			val = int(perc.z * frequencies[i]);
+			if(val > 0) {
 				totalval += val;
 				atomicAdd(frequencies2[i], -val);
+				//frequencies2[i] -= val;
 			}
 			i = PointToIndex(ivec2(sqpoints.z, sqpoints.w));
-			val = int(perc.w * 100);
-			//val = int(perc.w * frequencies[i]);
-			if(val > 0 && val >= frequencies[i]) {
+			val = int(perc.w * frequencies[i]);
+			if(val > 0) {
 				totalval += val;
 				atomicAdd(frequencies2[i], -val);
+				//frequencies2[i] -= val;
 			}
 			
 			i = PointToIndex(pos);
 			atomicAdd(frequencies2[i], totalval);
+			//frequencies2[i] += totalval;
 		}
 		
 }
@@ -137,20 +133,21 @@ Force > 500 (or more)
 */
 void Pressure(uint i, ivec2 pos) { // fix probs negative forces
 	if(pos.x + 1 < width && pos.y - 1 > 0) {//Check out of bounds 
-		ivec2 force = ivec2(frequencies[i] - frequencies[i - 1], frequencies[i] - frequencies[i - width]);
-		if(force.x >= 1 || force.x <= -1)  {
-			atomicAdd(velocities2[i].x, int(-force.x*a));
-			atomicAdd(velocities2[i-1].x, int(-force.x*a));
+		vec2 force = vec2(frequencies[i] - frequencies[i - 1], frequencies[i] - frequencies[i - width]);
+		if(force.x >= 0.01 || force.x <= -0.01)  {
+			velocities2[i].x -= force.x*a;
+			velocities2[i+1].x -= force.x*a;
 		}
-		if(force.y > 1 || force.y < -1 ) {
-			atomicAdd(velocities2[i].y, int(-force.y * a));
-			atomicAdd(velocities2[i-width].y, int(-force.y * a));
+		if(force.y > 0.01 || force.y < -0.01 ) {
+			velocities2[i].y -= force.y * a;
+			velocities2[i+width].y -= force.y * a;
 		}
 	}
 }
 
 void Diffuse(uint i) {
-	velocities2[i] = ivec2(velocities2[i] * d);
+	//velocities2[i] = 3 * velocities2[i] / 5;
+	velocities2[i] = 10 * velocities2[i] / 11;
 }
 
 void InkPressure(uint src){
@@ -160,17 +157,17 @@ void InkPressure(uint src){
 		//float force_x =  frequencies[src + 1] - frequencies[src];
 		//float force_y = frequencies[src + height] - frequencies[src];
 		if(force.x > 10 || force.x < -10) {
-			atomicAdd(velocities[src].x, force.x);		
+			//atomicAdd(velocities[src].x, force.x);		
 			//velocities[src].x += force.x;
 			//velocities[src].x += force.x * 0.001;
-			atomicAdd(velocities[src-1].x, force.x);	
+			//atomicAdd(velocities[src-1].x, force.x);	
 			//velocities[src+1].x += force.x;
 			//velocities[src+1].x += force.x * 0.001;
 		}
 		if(force.y > 10 || force.y < -10 ) {
-			atomicAdd(velocities[src].y, force.y);	
+			//atomicAdd(velocities[src].y, force.y);	
 		//	velocities[src].y += force.y * 0.001;
-			atomicAdd(velocities[src-width].y, force.y);
+			//atomicAdd(velocities[src-width].y, force.y);
 			//atomicAdd(velocities[src+height].y, force.y);
 		//	velocities[src + width].y += force.y * 0.001;
 		}
@@ -179,71 +176,6 @@ void InkPressure(uint src){
 	}
 }
 
-//Check destinations in grid
-void ExecMovement(uint src, vec2 dest) {
-	if(InGrid(vec2(int(ceil(dest.y)), int(ceil(dest.x))))){
-
-		uint freqval = frequencies[src];
-		atomicAdd(frequencies[src], -freqval);
-
-		uint temp = freqval/4;
-		ivec4 extra = ivec4(0,0,0,0);
-		if(temp * 4 != freqval) 
-			extra.x = 1;
-		if(temp * 4 + extra.x != freqval)
-			extra.y = 1;
-		if(temp * 4 + extra.x + extra.y != freqval)
-			extra.z = 1;
-
-		
-
-		//uint resindex = uint(dest.y) * height  + uint(dest.x);//dest.y and dest.x switched -> No Clue Why
-		
-		uint resindex = uint(int(floor(dest.y)) * height + int(floor(dest.x)));
-		atomicAdd(frequencies[resindex], int(freqval/4) + extra.x);		
-		resindex = uint(int(floor(dest.y)) * height + int(ceil(dest.x)));
-		atomicAdd(frequencies[resindex], int(freqval/4) + extra.y);
-		resindex = uint(int(ceil(dest.y)) * height + int(floor(dest.x)));
-		atomicAdd(frequencies[resindex], int(freqval/4) + extra.z);
-		resindex = uint(int(ceil(dest.y)) * height + int(ceil(dest.x)));
-		atomicAdd(frequencies[resindex], int(freqval/4) + extra.w);
-
-
-		int inkval = inkvals[src];
-		ivec4 positions = PointsSqaure(dest);
-		atomicAdd(inkvals[src], -inkval);
-		ivec2 inkpos = IndexToPoint(src);
-		temp = inkval/4;
-		extra = ivec4(0,0,0,0);
-		if(temp * 4 != inkval) 
-			extra.x = 1;
-		if(temp * 4 + extra.x != inkval)
-			extra.y = 1;
-		if(temp * 4 + extra.x + extra.y != inkval)
-			extra.z = 1;
-		uint inkresindex = PointToIndex(ivec2(positions.x, positions.y));//Lower-left
-		atomicAdd(inkvals[inkresindex], int(inkval/4) + extra.x);		
-		inkresindex = PointToIndex(ivec2(positions.z, positions.y));//Lower-right
-		atomicAdd(inkvals[inkresindex], int(inkval/4) + extra.y);
-		inkresindex = PointToIndex(ivec2(positions.x, positions.w));//Upper-left
-		atomicAdd(inkvals[inkresindex], int(inkval/4) + extra.w);
-		inkresindex = PointToIndex(ivec2(positions.z, positions.w));//Upper-right
-		atomicAdd(inkvals[inkresindex], int(inkval/4) + extra.z);
-	}
-	
-}
-
-void CleanEdges(uint i) {
-	ivec2 point = IndexToPoint(i);
-	if(point.x == 0)
-		atomicAdd(velocities[i].x, 10);
-	if(point.x == width-1)
-		atomicAdd(velocities[i].x, -10);
-	if(point.y == 0)
-		atomicAdd(velocities[i].y, 10);
-	if(point.x == width-1)
-		atomicAdd(velocities[i].y, -10);	
-}
 
 ivec2 IndexToPoint(uint i) {
 	ivec2 res = ivec2(0,0);
