@@ -149,6 +149,12 @@ void ToolParameters::ActionParams()
 		FluidLib::ActionBase* action = _active->GetAction();
 		if (action != nullptr) {
 			ImGui::SliderFloat("Scale", action->GetScale(), 0.1f, 10.0f);
+			if (strcmp(action->GetType(), "struct IInk") == 0) {
+				FluidLib::Action<IInk>* inkaction = static_cast<FluidLib::Action<IInk>*>(action);
+				if (inkaction != nullptr) {
+					ImGui::ColorEdit3("Ink Color", &inkaction->GetValue().color.x);
+				}
+			}
 		}
 		ImGui::TreePop();
 	}

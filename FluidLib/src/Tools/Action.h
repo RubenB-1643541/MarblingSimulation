@@ -36,6 +36,7 @@ namespace FluidLib {
 		virtual void Div(float f, IPoint& p) = 0;
 		virtual void SetPos(IPoint p) { _oldpos = _pos; _pos = p; }
 		virtual float* GetScale() = 0;
+		virtual const char* GetType() = 0;
 	protected:
 		IPoint _pos = { 0,0 };
 		IPoint _oldpos = {-1,-1};
@@ -53,6 +54,8 @@ namespace FluidLib {
 		
 		inline void SetOperation(ACTION_OPERATION op) { _operation = op; }
 		inline void SetValue(T value) { _value = value; }
+		inline T& GetValue() { return _value; }
+		const char* GetType() { return typeid(T).name(); }
 		inline void SetGrid(Grid<T>* grid) { _grid = grid; }
 
 		virtual void Start() override;
