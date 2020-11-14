@@ -5,6 +5,8 @@
 
 SimulationApplication::SimulationApplication() : Application("Marbling Simulation", new SimulationWindow())
 {
+	
+
 	_computeshader.Create("res/computeshaders/StamAdvection.glsl");
 	_shader.Create(_shaderdata);
 
@@ -36,11 +38,11 @@ void SimulationApplication::OnUpdate()
 	
 
 	if (_simrunning) {
-		//RenderEngine::ShaderStorageBuffer* velbuf = _buffers.at("Vel2");
-		//velbuf->Bind();
-		//IVelocity* freqs = (IVelocity*)velbuf->MapBufferRange();
-		//INFO(freqs[0].dx);
-		//velbuf->UnMapBuffer();
+		//RenderEngine::ShaderStorageBuffer* freq = _buffers.at("Freq");
+		//freq->Bind();
+		//IFrequency* freqs = (IFrequency*)freq->MapBufferRange();
+		//INFO(freqs[0].freq);
+		//freq->UnMapBuffer();
 
 		_sim.Update();
 		_sim.Draw();
@@ -154,10 +156,20 @@ void SimulationApplication::StartSimulation()
 	inkbuf->BufferData(_sim.GetSize() * sizeof(IInk));
 	IInk* inks = (IInk*)inkbuf->MapBufferRange();
 	for (int i = 0; i < _sim.GetSize(); ++i) {
-		inks[i] = { 0 };
+		inks[i] = { 0, 0, {0,0}, {0,0,0},0 };
 	}
 	inkbuf->UnMapBuffer();
 	_buffers.insert(std::make_pair("Ink", inkbuf));
+
+	RenderEngine::ShaderStorageBuffer* inkbuf2 = new RenderEngine::ShaderStorageBuffer();
+	inkbuf2->Bind();
+	inkbuf2->BufferData(_sim.GetSize() * sizeof(IInk));
+	IInk* inks2 = (IInk*)inkbuf2->MapBufferRange();
+	for (int i = 0; i < _sim.GetSize(); ++i) {
+		inks2[i] = { 0, 0, {0,0}, {0,0,0},0 };
+	}
+	inkbuf2->UnMapBuffer();
+	_buffers.insert(std::make_pair("Ink2", inkbuf2));
 
 	RenderEngine::ShaderStorageBuffer* flagbuf = new RenderEngine::ShaderStorageBuffer();
 	flagbuf->Bind();
@@ -187,6 +199,9 @@ void SimulationApplication::StartSimulation()
 
 	FluidLib::Grid<IInk>* inkgrid = new FluidLib::Grid<IInk>(_buffers.at("Ink")->GetId(), _sim.GetSize(), 5, true);
 	gridman->AddGrid("Ink", inkgrid);
+
+	FluidLib::Grid<IInk>* inkgrid2 = new FluidLib::Grid<IInk>(_buffers.at("Ink2")->GetId(), _sim.GetSize(), 6, true);
+	gridman->AddGrid("Ink2", inkgrid2);
 
 	FluidLib::Grid<Flags>* flaggrid = new FluidLib::Grid<Flags>(_buffers.at("Flag")->GetId(), _sim.GetSize(), 7, true);
 	flaggrid->SetElementSize(4);

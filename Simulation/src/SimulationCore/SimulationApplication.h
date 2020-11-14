@@ -38,7 +38,8 @@ private:
 	std::map<std::string, RenderEngine::ShaderStorageBuffer*> _buffers;
 	RenderEngine::ComputeShaderProgram _computeshader;
 	RenderEngine::ShaderProgram _shader;
-	RenderEngine::Shader _shaderdata = { "res/shaders/computegrid_vertexshader.glsl", "res/shaders/computegrid_fragmentshader.glsl", "" };
+	RenderEngine::Shader _shaderdata = { "res/shaders/ink_vertexshader.glsl", "res/shaders/ink_fragmentshader.glsl", "" };
+	//RenderEngine::Shader _shaderdata = { "res/shaders/computegrid_vertexshader.glsl", "res/shaders/computegrid_fragmentshader.glsl", "" };
 
 
 };
