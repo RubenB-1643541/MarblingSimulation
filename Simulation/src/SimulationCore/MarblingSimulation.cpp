@@ -67,12 +67,14 @@ void MarblingSimulation::CreateBasicTool()
 	//FluidLib::Action<IVelocity>* addvel = new FluidLib::Action<IVelocity>(IVelocity(100, 100), static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")), FluidLib::ACTION_OPERATION::MOVE);
 	
 	FluidLib::Action<IFrequency>* addfreq = new FluidLib::Action<IFrequency>(IFrequency(100), static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), FluidLib::ACTION_OPERATION::ADD);
+	FluidLib::Action<IInk>* addink = new FluidLib::Action<IInk>(IInk{ 100,1, {0,0},{1,1,1},0 }, static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::ADD);
 	FluidLib::Action<IVelocity>* addvel = new FluidLib::Action<IVelocity>(IVelocity(10, 10), static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")), FluidLib::ACTION_OPERATION::MOVE);
 
 
 	basic->AddAction("AddFreq", addfreq);
+	basic->AddAction("AddInk", addink);
 	basic->AddAction("AddVel", addvel);
-	basic->SetActiveAction("AddFreq");
+	basic->SetActiveAction("AddInk");
 	basic->AddMovement("Mouse", new FluidLib::MouseMovement());
 	basic->AddMovement("Line", new FluidLib::Line());
 	basic->AddMovement("Sine", new FluidLib::Sine());
@@ -102,6 +104,7 @@ void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
 	comp->AddButton(Button("res/icons/Sine.png", "Sine", TOOL_PART::MOVEMENT));
 	comp->AddButton(Button("res/icons/BezierCurve.png", "BezierCurve", TOOL_PART::MOVEMENT));
 	comp->AddButton(Button("res/icons/Ink.png", "AddFreq", TOOL_PART::ACTION));
+	comp->AddButton(Button("res/icons/Ink.png", "AddInk", TOOL_PART::ACTION));
 	comp->AddButton(Button("res/icons/Force.png", "AddVel", TOOL_PART::ACTION));
 	comp->AddButton(Button("res/icons/Square.png", "Square", TOOL_PART::SURFACE));
 	comp->AddButton(Button("res/icons/Rectangle.png", "Rectangle", TOOL_PART::SURFACE));
