@@ -20,14 +20,19 @@ void MarblingSimulation::BeforeUpdate()
 {
 	//Copy freq to freq2
 	GLuint src, des;
-	src = _grids.GetGrid("Freq")->GetBufferData().id;
-	des = _grids.GetGrid("Freq2")->GetBufferData().id;
-	int size = _grids.GetGrid("Freq2")->GetBufferData().size * sizeof(IFrequency);
-	glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+	//src = _grids.GetGrid("Freq")->GetBufferData().id;
+	//des = _grids.GetGrid("Freq2")->GetBufferData().id;
+	//int size = _grids.GetGrid("Freq2")->GetBufferData().size * sizeof(IFrequency);
+	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
 
 	src = _grids.GetGrid("Vel")->GetBufferData().id;
 	des = _grids.GetGrid("Vel2")->GetBufferData().id;
-	size = _grids.GetGrid("Vel2")->GetBufferData().size * sizeof(IVelocity);
+	int size = _grids.GetGrid("Vel2")->GetBufferData().size * sizeof(IVelocity);
+	glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+
+	src = _grids.GetGrid("Ink")->GetBufferData().id;
+	des = _grids.GetGrid("Ink2")->GetBufferData().id;
+	size = _grids.GetGrid("Ink2")->GetBufferData().size * sizeof(IInk);
 	glCopyNamedBufferSubData(src, des, NULL, NULL, size);
 }
 
@@ -35,14 +40,19 @@ void MarblingSimulation::AfterUpdate()
 {
 	//Copy freq2 to freq
 	GLuint src, des;
-	src = _grids.GetGrid("Freq2")->GetBufferData().id;
-	des = _grids.GetGrid("Freq")->GetBufferData().id;
-	int size = _grids.GetGrid("Freq")->GetBufferData().size * sizeof(IFrequency);
-	glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+	//src = _grids.GetGrid("Freq2")->GetBufferData().id;
+	//des = _grids.GetGrid("Freq")->GetBufferData().id;
+	//int size = _grids.GetGrid("Freq")->GetBufferData().size * sizeof(IFrequency);
+	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
 
 	src = _grids.GetGrid("Vel2")->GetBufferData().id;
 	des = _grids.GetGrid("Vel")->GetBufferData().id;
-	size = _grids.GetGrid("Vel")->GetBufferData().size * sizeof(IVelocity);
+	int size = _grids.GetGrid("Vel")->GetBufferData().size * sizeof(IVelocity);
+	glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+
+	src = _grids.GetGrid("Ink2")->GetBufferData().id;
+	des = _grids.GetGrid("Ink")->GetBufferData().id;
+	size = _grids.GetGrid("Ink")->GetBufferData().size * sizeof(IInk);
 	glCopyNamedBufferSubData(src, des, NULL, NULL, size);
 	
 }
@@ -69,10 +79,12 @@ void MarblingSimulation::CreateBasicTool()
 	FluidLib::Action<IFrequency>* addfreq = new FluidLib::Action<IFrequency>(IFrequency(100), static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), FluidLib::ACTION_OPERATION::ADD);
 	FluidLib::Action<IInk>* addink = new FluidLib::Action<IInk>(IInk{ 100,1, {0,0},{1,1,1},0 }, static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::ADD);
 	FluidLib::Action<IVelocity>* addvel = new FluidLib::Action<IVelocity>(IVelocity(10, 10), static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")), FluidLib::ACTION_OPERATION::MOVE);
+	FluidLib::Action<IInk>* removeink = new FluidLib::Action<IInk>(IInk{ 0,0, {0,0},{0,0,0},0 }, static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::SET);
 
 
 	basic->AddAction("AddFreq", addfreq);
 	basic->AddAction("AddInk", addink);
+	basic->AddAction("RemoveInk", removeink);
 	basic->AddAction("AddVel", addvel);
 	basic->SetActiveAction("AddInk");
 	basic->AddMovement("Mouse", new FluidLib::MouseMovement());
@@ -105,6 +117,7 @@ void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
 	comp->AddButton(Button("res/icons/BezierCurve.png", "BezierCurve", TOOL_PART::MOVEMENT));
 	comp->AddButton(Button("res/icons/Ink.png", "AddFreq", TOOL_PART::ACTION));
 	comp->AddButton(Button("res/icons/Ink.png", "AddInk", TOOL_PART::ACTION));
+	comp->AddButton(Button("res/icons/RemoveInk.png", "RemoveInk", TOOL_PART::ACTION));
 	comp->AddButton(Button("res/icons/Force.png", "AddVel", TOOL_PART::ACTION));
 	comp->AddButton(Button("res/icons/Square.png", "Square", TOOL_PART::SURFACE));
 	comp->AddButton(Button("res/icons/Rectangle.png", "Rectangle", TOOL_PART::SURFACE));

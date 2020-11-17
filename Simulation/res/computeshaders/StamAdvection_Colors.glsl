@@ -115,34 +115,34 @@ void StamAdvection(uint i, ivec2 pos) {
 			uint i = PointToIndex(ivec2(sqpoints.x, sqpoints.y));
 			int val = int(perc.x * 100);
 			//int val = int(perc.x * frequencies[i]);
-			if(val > 0 && frequencies2[i] >= val) {
+			if(val > 0 && inkvals2[i].freq >= val) {
 				totalval += val;
-				atomicAdd(frequencies2[i], -val);
+				atomicAdd(inkvals2[i].freq, -val);
 			}
 			i = PointToIndex(ivec2(sqpoints.z, sqpoints.y));
 			val = int(perc.y * 100);
 			//val = int(perc.y * frequencies[i]);
-			if(val > 0 && frequencies[i] >= val) {
+			if(val > 0 && inkvals2[i].freq >= val) {
 				totalval += val;
-				atomicAdd(frequencies2[i], -val);
+				atomicAdd(inkvals2[i].freq, -val);
 			}
 			i = PointToIndex(ivec2(sqpoints.x, sqpoints.w));
 			val = int(perc.z * 100);
 			//val = int(perc.z * frequencies[i]);
-			if(val > 0 && val >= frequencies[i]) {
+			if(val > 0 && inkvals2[i].freq >= val) {
 				totalval += val;
-				atomicAdd(frequencies2[i], -val);
+				atomicAdd(inkvals2[i].freq, -val);
 			}
 			i = PointToIndex(ivec2(sqpoints.z, sqpoints.w));
 			val = int(perc.w * 100);
 			//val = int(perc.w * frequencies[i]);
-			if(val > 0 && val >= frequencies[i]) {
+			if(val > 0 && inkvals2[i].freq >= val) {
 				totalval += val;
-				atomicAdd(frequencies2[i], -val);
+				atomicAdd(inkvals2[i].freq, -val);
 			}
 			
 			i = PointToIndex(pos);
-			atomicAdd(frequencies2[i], totalval);
+			atomicAdd(inkvals2[i].freq, totalval);
 		}
 		
 }
@@ -153,7 +153,7 @@ Force > 500 (or more)
 */
 void Pressure(uint i, ivec2 pos) { // fix probs negative forces
 	if(pos.x + 1 < width && pos.y - 1 > 0) {//Check out of bounds 
-		ivec2 force = ivec2(frequencies[i] - frequencies[i - 1], frequencies[i] - frequencies[i - width]);
+		ivec2 force = ivec2(inkvals[i].freq - inkvals2[i-1].freq, inkvals2[i].freq - inkvals2[i-width].freq);
 		if(force.x >= 1 || force.x <= -1)  {
 			atomicAdd(velocities2[i].x, int(-force.x*a));
 			atomicAdd(velocities2[i-1].x, int(-force.x*a));
