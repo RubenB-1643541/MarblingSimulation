@@ -79,9 +79,11 @@ struct IInk {
 	glm::vec3 color;
 	float padding2;
 	inline void operator+=(const IInk& val) { 
-		ink += val.ink; 
-		id = val.id;
-		color = val.color;
+		if (id == 0 || id == val.id) {
+			ink += val.ink;
+			id = val.id;
+			color = val.color;
+		}
 	}
 	inline void operator+=(const FluidLib::IPoint& move) { ink += move.GetX(); ink += move.GetY(); }
 	inline void operator-=(const IInk& val) { ink -= val.ink; }

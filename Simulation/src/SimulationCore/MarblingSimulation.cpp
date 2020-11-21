@@ -82,12 +82,9 @@ void MarblingSimulation::CreateBasicTool()
 	FluidLib::Action<IVelocity>* addvel = new FluidLib::Action<IVelocity>(IVelocity(10, 10), static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")), FluidLib::ACTION_OPERATION::MOVE);
 	FluidLib::Action<IInk>* removeink = new FluidLib::Action<IInk>(IInk{ 0,0, {0,0},{0,0,0},0 }, static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::SET);
 
-	FluidLib::CopyAction<IFrequency>* copyfreq = new FluidLib::CopyAction<IFrequency>(static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")));
-	FluidLib::PasteAction<IFrequency>* pastefreq = new FluidLib::PasteAction<IFrequency>(static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), FluidLib::ACTION_OPERATION::ADD);
-	FluidLib::CutAction<IFrequency>* cutfreq = new FluidLib::CutAction<IFrequency>(static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), IFrequency(0));
-
-	FluidLib::Action<IInk>* removeink = new FluidLib::Action<IInk>(IInk{ 0,0, {0,0},{0,0,0},0 }, static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::SET);
-
+	FluidLib::CopyAction<IInk>* copyfreq = new FluidLib::CopyAction<IInk>(static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")));
+	FluidLib::PasteAction<IInk>* pastefreq = new FluidLib::PasteAction<IInk>(static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::ADD);
+	FluidLib::CutAction<IInk>* cutfreq = new FluidLib::CutAction<IInk>(static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), IInk{ 0,0, {0,0},{0,0,0},0 });
 
 	basic->AddAction("AddFreq", addfreq);
 	basic->AddAction("AddInk", addink);
