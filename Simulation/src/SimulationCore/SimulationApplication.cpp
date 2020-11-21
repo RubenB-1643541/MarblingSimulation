@@ -7,7 +7,7 @@ SimulationApplication::SimulationApplication() : Application("Marbling Simulatio
 {
 	
 
-	_computeshader.Create("res/computeshaders/StamAdvection.glsl");
+	_computeshader.Create("res/computeshaders/StamAdvection_Colors.glsl");
 	_shader.Create(_shaderdata);
 
 	InitShortCuts();
