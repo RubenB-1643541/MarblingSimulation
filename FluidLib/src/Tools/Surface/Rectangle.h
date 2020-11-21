@@ -1,6 +1,7 @@
 #pragma once
 #include "Tools/Surface.h"
 #include "GL/glew.h"
+#include <Util/ControlPoint.h>
 
 namespace FluidLib {
 
@@ -31,7 +32,16 @@ namespace FluidLib {
 
 		inline void SetStyle(STYLE style) { _style = style; }
 		inline void SetCentred(bool cen) { _centered = cen; _changed = true; }
+
+		virtual void StartEdit() override;
+		virtual void EditDraw() override;
+		virtual bool OnEditMove(float x, float y) override;
+		virtual bool OnEditClick(float x, float y) override;
+		virtual bool OnEditRelease(float x, float y) override;
+
+		void SetProjection(glm::mat4 proj) override;
 	private:
+		ControlPoint _controlpoints[4];
 		float _xpos = 0;
 		float _ypos = 0;
 		float _width = 10.0f;

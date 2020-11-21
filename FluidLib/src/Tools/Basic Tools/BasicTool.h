@@ -9,6 +9,7 @@ namespace FluidLib {
 	class BasicTool : public ToolBase
 	{
 	public:
+		BasicTool();
 		void AddSurface(const std::string& name, Surface* surface);
 		void AddMovement(const std::string& name, Movement* movement);
 		void AddAction(const std::string& name, ActionBase* action);

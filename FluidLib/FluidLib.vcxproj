@@ -108,6 +108,10 @@
     <ClInclude Include="src\SimulationController.h" />
     <ClInclude Include="src\SimulationSettings.h" />
     <ClInclude Include="src\Tools\Action.h" />
+    <ClInclude Include="src\Tools\Action\Actions.h" />
+    <ClInclude Include="src\Tools\Action\CopyAction.h" />
+    <ClInclude Include="src\Tools\Action\CutAction.h" />
+    <ClInclude Include="src\Tools\Action\PasteAction.h" />
     <ClInclude Include="src\Tools\Basic Tools\BasicTool.h" />
     <ClInclude Include="src\Tools\Basic Tools\SelectTool.h" />
     <ClInclude Include="src\Tools\Movement.h" />
@@ -126,6 +130,7 @@
     <ClInclude Include="src\Tools\ToolBase.h" />
     <ClInclude Include="src\Tools\ToolFactory.h" />
     <ClInclude Include="src\Tools\ToolManager.h" />
+    <ClInclude Include="src\Util\Clipboard.h" />
     <ClInclude Include="src\Util\ControlPoint.h" />
     <ClInclude Include="src\Util\Point.h" />
     <ClInclude Include="src\Util\Rendering.h" />
@@ -152,6 +157,7 @@
     <ClCompile Include="src\Tools\ToolBase.cpp" />
     <ClCompile Include="src\Tools\ToolFactory.cpp" />
     <ClCompile Include="src\Tools\ToolManager.cpp" />
+    <ClCompile Include="src\Util\Clipboard.cpp" />
     <ClCompile Include="src\Util\ControlPoint.cpp" />
     <ClCompile Include="src\Util\Point.cpp" />
     <ClCompile Include="src\Util\Rendering.cpp" />

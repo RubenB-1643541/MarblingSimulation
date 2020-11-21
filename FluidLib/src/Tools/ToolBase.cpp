@@ -7,6 +7,10 @@ namespace FluidLib {
             _movement->DrawPath();
             _movement->OnEdithDraw();
         }
+        else if (_surfaceEdit) {
+            _surface->Draw();
+            _surface->EditDraw();
+        }
         else {
             _movement->DrawPath();
             _surface->Draw();
@@ -17,10 +21,20 @@ namespace FluidLib {
     {
         if (Simulation::Get()->GetKeys()->shift) {
             _moveEdit = true;
+            _surfaceEdit = false;
             _using = false;
         }
-        else
+        else if(Simulation::Get()->GetKeys()->ctr){
+            if (!_surfaceEdit)
+                _surface->StartEdit();
             _moveEdit = false;
+            _surfaceEdit = true;
+            _using = false;
+        }
+        else {
+            _moveEdit = false;
+            _surfaceEdit = false;
+        }
         if (_using) {
             OnBeginUse();
             OnUse();
@@ -44,6 +58,9 @@ namespace FluidLib {
             _movement->OnMoveClick(_x, _y);
             return true;
         }
+        else if (_surfaceEdit) {
+            _surface->OnEditClick(_x, _y);
+        }
         if (!_using) {
             //OnBeginUse();
             _using = true;
@@ -59,6 +76,9 @@ namespace FluidLib {
             _movement->OnMoveRelease(_x, _y);
             return true;
         }
+        else if (_surfaceEdit) {
+            _surface->OnEditRelease(_x, _y);
+        }
         //OnEndUse();
         return true;
     }
@@ -68,6 +88,9 @@ namespace FluidLib {
         _y = event.GetY();
         if (_moveEdit) {
             _movement->OnMoveMove(_x, _y);
+        }
+        else if (_surfaceEdit) {
+            _surface->OnEditMove(_x, _y);
         }
         else {
             FPoint p = _movement->Get(_x, _y);

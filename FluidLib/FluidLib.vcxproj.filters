@@ -72,10 +72,19 @@
     <ClInclude Include="src\Tools\Movement.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="src\Tools\Movement\BezierCurve.h">
+      <Filter>Tools\Movement</Filter>
+    </ClInclude>
     <ClInclude Include="src\Tools\Movement\Line.h">
       <Filter>Tools\Movement</Filter>
     </ClInclude>
     <ClInclude Include="src\Tools\Movement\MouseMovement.h">
+      <Filter>Tools\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tools\Movement\Movements.h">
+      <Filter>Tools\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tools\Movement\Sine.h">
       <Filter>Tools\Movement</Filter>
     </ClInclude>
     <ClInclude Include="src\Tools\Surface.h">
@@ -84,7 +93,19 @@
     <ClInclude Include="src\Tools\Surface\Circle.h">
       <Filter>Tools\Surface</Filter>
     </ClInclude>
+    <ClInclude Include="src\Tools\Surface\PointSurface.h">
+      <Filter>Tools\Surface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tools\Surface\Rectangle.h">
+      <Filter>Tools\Surface</Filter>
+    </ClInclude>
     <ClInclude Include="src\Tools\Surface\Square.h">
+      <Filter>Tools\Surface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tools\Surface\Surfaces.h">
+      <Filter>Tools\Surface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tools\Surface\Triangle.h">
       <Filter>Tools\Surface</Filter>
     </ClInclude>
     <ClInclude Include="src\Tools\ToolBase.h">
@@ -96,20 +117,20 @@
     <ClInclude Include="src\Tools\ToolManager.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="src\Util\ControlPoint.h">
+      <Filter>Util</Filter>
+    </ClInclude>
     <ClInclude Include="src\Util\Point.h">
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="src\Util\Rendering.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="src\Tools\Movement\Sine.h" />
-    <ClInclude Include="src\Tools\Surface\Rectangle.h" />
-    <ClInclude Include="src\Tools\Movement\Movements.h" />
-    <ClInclude Include="src\Tools\Surface\Surfaces.h" />
-    <ClInclude Include="src\Tools\Surface\Triangle.h" />
-    <ClInclude Include="src\Tools\Movement\BezierCurve.h" />
-    <ClInclude Include="src\Util\ControlPoint.h" />
-    <ClInclude Include="src\Tools\Surface\PointSurface.h" />
+    <ClInclude Include="src\Tools\Action\CopyAction.h" />
+    <ClInclude Include="src\Tools\Action\Actions.h" />
+    <ClInclude Include="src\Util\Clipboard.h" />
+    <ClInclude Include="src\Tools\Action\PasteAction.h" />
+    <ClInclude Include="src\Tools\Action\CutAction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">
@@ -140,13 +161,28 @@
     <ClCompile Include="src\Tools\Basic Tools\SelectTool.cpp">
       <Filter>Tools\Basic Tools</Filter>
     </ClCompile>
+    <ClCompile Include="src\Tools\Movement\BezierCurve.cpp">
+      <Filter>Tools\Movement</Filter>
+    </ClCompile>
     <ClCompile Include="src\Tools\Movement\Line.cpp">
+      <Filter>Tools\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\Movement\Sine.cpp">
       <Filter>Tools\Movement</Filter>
     </ClCompile>
     <ClCompile Include="src\Tools\Surface\Circle.cpp">
       <Filter>Tools\Surface</Filter>
     </ClCompile>
+    <ClCompile Include="src\Tools\Surface\PointSurface.cpp">
+      <Filter>Tools\Surface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\Surface\Rectangle.cpp">
+      <Filter>Tools\Surface</Filter>
+    </ClCompile>
     <ClCompile Include="src\Tools\Surface\Square.cpp">
+      <Filter>Tools\Surface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools\Surface\Triangle.cpp">
       <Filter>Tools\Surface</Filter>
     </ClCompile>
     <ClCompile Include="src\Tools\ToolBase.cpp">
@@ -158,17 +194,15 @@
     <ClCompile Include="src\Tools\ToolManager.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="src\Util\ControlPoint.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
     <ClCompile Include="src\Util\Point.cpp">
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="src\Util\Rendering.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tools\Movement\Sine.cpp" />
-    <ClCompile Include="src\Tools\Surface\Rectangle.cpp" />
-    <ClCompile Include="src\Tools\Surface\Triangle.cpp" />
-    <ClCompile Include="src\Tools\Movement\BezierCurve.cpp" />
-    <ClCompile Include="src\Util\ControlPoint.cpp" />
-    <ClCompile Include="src\Tools\Surface\PointSurface.cpp" />
+    <ClCompile Include="src\Util\Clipboard.cpp" />
   </ItemGroup>
 </Project>

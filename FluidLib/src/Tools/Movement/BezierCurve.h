@@ -27,7 +27,7 @@ namespace FluidLib {
 		virtual FPoint Get(float x, float y) override;
 
 		inline ControlPoint* GetPoints() { return _controlpoints; }
-		void SetProjection(glm::mat4 proj);
+		void SetProjection(glm::mat4 proj) override;
 	private:
 		ControlPoint _controlpoints[4];
 

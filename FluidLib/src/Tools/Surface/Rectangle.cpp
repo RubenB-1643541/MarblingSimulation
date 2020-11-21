@@ -20,6 +20,10 @@ namespace FluidLib {
         if (_shader == -1) {
             _shader = CompileShader(vertex, fragment);
         }
+        _controlpoints[0].Set(_xpos, _ypos);
+        _controlpoints[1].Set(_xpos, _height);
+        _controlpoints[2].Set(_width, _ypos);
+        _controlpoints[3].Set(_width, _height);
     }
 
     void Rectangle::Draw() const
@@ -95,6 +99,70 @@ namespace FluidLib {
             }
         }
         return _points;
+    }
+
+    void Rectangle::StartEdit()
+    {
+        if (_centered) {
+            _controlpoints[0].Set(_xpos - _width / 2, _ypos - _height / 2);
+            _controlpoints[1].Set(_xpos - _width / 2, _ypos + _height / 2);
+            _controlpoints[2].Set(_xpos + _width / 2, _ypos - _height / 2);
+            _controlpoints[3].Set(_xpos + _width / 2, _ypos + _height / 2);
+        }
+        else {
+            _controlpoints[0].Set(_xpos, _ypos);
+            _controlpoints[1].Set(_xpos, _ypos + _height);
+            _controlpoints[2].Set(_xpos + _width, _ypos);
+            _controlpoints[3].Set(_xpos + _width, _ypos + _height);
+        }
+    }
+
+    void Rectangle::EditDraw()
+    {
+        if (_controlpoints[0].Selected()) {
+            _xpos = _controlpoints[0].GetX() + _width/2;
+            _ypos = _controlpoints[0].GetY() + _height/2;
+        }
+        if (_controlpoints[3].Selected()) {
+            _width = (_controlpoints[3].GetX() -_xpos) * 2;
+            _height = (_controlpoints[3].GetY() -_ypos) * 2;
+        }
+        for (int i = 0; i < 4; ++i) {
+            _controlpoints[i].Draw();
+
+        }
+    }
+
+    bool Rectangle::OnEditMove(float x, float y)
+    {
+        for (int i = 0; i < 4; ++i) {
+            _controlpoints[i].OnMove(x, y);
+        }
+        return false;
+    }
+
+    bool Rectangle::OnEditClick(float x, float y)
+    {
+        for (int i = 0; i < 4; ++i) {
+            if (_controlpoints[i].OnClick(x, y))
+                return true;
+        }
+        return false;
+    }
+
+    bool Rectangle::OnEditRelease(float x, float y)
+    {
+        for (int i = 0; i < 4; ++i) {
+            _controlpoints[i].OnRelease();
+        }
+        return true;
+    }
+
+    void Rectangle::SetProjection(glm::mat4 proj)
+    {
+        _projection = proj;
+        for (int i = 0; i < 4; ++i)
+            _controlpoints[i].SetProjection(proj);
     }
 
 }

@@ -8,6 +8,7 @@
 #include "Rendering/ShaderProgram.h"
 #include "Events/Events.h"
 #include "../SimInterface/InterfaceComponentsList.h"
+#include "../SimUtils/ShortCutHandler.h"
 
 class SimulationApplication : public RenderEngine::Application
 {
@@ -30,6 +31,8 @@ public:
 	inline virtual bool OnKeyReleaseEvent(RenderEngine::KeyReleaseEvent& e) override;
 	void StartSimulation();
 private:
+	void InitShortCuts();
+	ShortCutHandler _shortcuts;
 	bool _simrunning = false;
 	MarblingSimulation _sim;
 	std::map<std::string, RenderEngine::ShaderStorageBuffer*> _buffers;
