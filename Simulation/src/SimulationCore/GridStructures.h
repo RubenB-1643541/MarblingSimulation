@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Util/Point.h"
+#include "glm/gtx/transform.hpp"
 
 struct IVelocity {
 	int dx;
@@ -73,20 +74,32 @@ struct FFrequency {
 
 struct IInk {
 	int ink;
-	inline void operator+=(const IInk& val) { ink += val.ink; }
+	int id;
+	int padding[2];
+	glm::vec3 color;
+	float padding2;
+	inline void operator+=(const IInk& val) { 
+		if (id == 0 || id == val.id) {
+			ink += val.ink;
+			id = val.id;
+			color = val.color;
+		}
+	}
 	inline void operator+=(const FluidLib::IPoint& move) { ink += move.GetX(); ink += move.GetY(); }
 	inline void operator-=(const IInk& val) { ink -= val.ink; }
 	inline void operator*=(const IInk& val) { ink *= val.ink; }
 	inline void operator/=(const IInk& val) { ink /= val.ink; }
 	inline void operator*=(int val) { ink *= val; }
 	inline void operator/=(int val) { ink /= val; }
-	inline IInk operator*(float scale) { return { static_cast<int>(ink * scale) }; }
-	inline bool operator==(const IInk& val) { return ink == val.ink; }
+	inline IInk operator*(float scale) { return { static_cast<int>(ink * scale), id, {0,0}, color,0 }; }
+	inline bool operator==(const IInk& val) { return ink == val.ink && id == val.id; }
 	inline bool operator==(int val) { return ink == val; }
 };
 
 struct FInk {
 	float ink;
+	int id;
+	glm::vec3 color;
 	inline void operator+=(const FInk& val) { ink += val.ink; }
 	inline void operator+=(const FluidLib::IPoint& move) { ink += move.GetX(); ink += move.GetY(); }
 	inline void operator-=(const FInk& val) { ink -= val.ink; }
@@ -95,7 +108,7 @@ struct FInk {
 	inline void operator*=(float val) { ink *= val; }
 	inline void operator/=(float val) { ink /= val; }
 	inline FInk operator*(float scale) { return { ink * scale }; }
-	inline bool operator==(const FInk& val) { return ink == val.ink; }
+	inline bool operator==(const FInk& val) { return ink == val.ink && id == val.id; }
 	inline bool operator==(float val) { return ink == val; }
 };
 

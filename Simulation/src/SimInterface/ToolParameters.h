@@ -6,6 +6,7 @@
 #include "Tools/Surface/Surfaces.h"
 #include "Tools/Movement/Movements.h"
 #include "Simulation.h"
+#include "../SimulationCore/GridStructures.h"
 
 class ToolParameters : public RenderEngine::InterfaceComponent
 {
