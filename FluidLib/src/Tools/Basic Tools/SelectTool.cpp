@@ -1,8 +1,10 @@
 #include "SelectTool.h"
 #include "Simulation.h"
+
 namespace FluidLib {
 	SelectTool::SelectTool()
 	{
+		SetName("Select");
 		_rect = new Rectangle();
 		_surface = _rect;
 		_move = MOVEMENT_MODE::BEGIN;
@@ -60,14 +62,89 @@ namespace FluidLib {
 		return false;
 	}
 
+	void SelectTool::SetCopyAction(ActionBase* copyaction)
+	{
+		_actions["Copy"] = copyaction;
+	}
+
+	void SelectTool::SetPasteAction(ActionBase* pasteaction)
+	{
+		_actions["Paste"] = pasteaction;
+	}
+
+	void SelectTool::SetCutAction(ActionBase* cutaction)
+	{
+		_actions["Cut"] = cutaction;
+	}
+
+	bool SelectTool::Copy()
+	{
+		std::vector<IPoint> points = _surface->GetSurfacePoints();
+		
+		if (_actions.find("Copy") != _actions.end()) {
+			ActionBase* copy = _actions.at("Copy");
+			copy->SetPos(IPoint(_rect->GetX(), _rect->GetY()));
+			copy->Start();
+			for (IPoint& p : points)
+				copy->Execute(p);
+			copy->Stop();
+			return true;
+		}
+		else
+			return false;
+		
+	}
+
+	bool SelectTool::Paste()
+	{
+		if (_actions.find("Paste") != _actions.end()) {
+			ActionBase* paste = _actions.at("Paste");
+			paste->Start();
+			size_t width = Clipboard::GetDataStruct()->width;
+			size_t height = Clipboard::GetDataStruct()->height;
+			for (int i = 0; i < width; ++i) {
+				for (int j = 0; j < height; ++j) {
+					paste->Execute(IPoint(i, j));
+				}
+			}
+			paste->Stop();
+			return true;
+		}
+		else
+			return false;
+	}
+
+	bool SelectTool::Cut()
+	{
+		std::vector<IPoint> points = _surface->GetSurfacePoints();
+
+		if (_actions.find("Cut") != _actions.end()) {
+			ActionBase* copy = _actions.at("Cut");
+			copy->SetPos(IPoint(_rect->GetX(), _rect->GetY()));
+			copy->Start();
+			for (IPoint& p : points)
+				copy->Execute(p);
+			copy->Stop();
+			return true;
+		}
+		else
+			return false;
+	}
+
 	void SelectTool::SwitchMode()
 	{
-		if (_move == MOVEMENT_MODE::BEGIN)
+		if (_move == MOVEMENT_MODE::BEGIN) {
 			_move = MOVEMENT_MODE::SIZE;
-		else if (_move == MOVEMENT_MODE::SIZE)
+
+		}
+		else if (_move == MOVEMENT_MODE::SIZE) {
 			_move = MOVEMENT_MODE::NONE;
-		else
+		}
+		else {
 			_move = MOVEMENT_MODE::BEGIN;
+			_rect->SetWidth(0);
+			_rect->SetHeight(0);
+		}
 	}
 
 }

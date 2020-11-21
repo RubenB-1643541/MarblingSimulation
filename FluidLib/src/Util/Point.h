@@ -57,6 +57,7 @@ namespace FluidLib {
 		inline float GetY() const { return _y; }
 		inline void SetX(float x) {_x = x;}
 		inline void SetY(float y) {_y = y;}
+		inline void Set(float x, float y) { _x = x; _y = y; }
 		inline float* GetXPtr() { return &_x; }
 		inline float* GetYPtr() { return &_y; }
 	

@@ -13,14 +13,19 @@ namespace FluidLib {
 	{
 	public:
 
+		inline virtual void EditDraw() {}
 		inline virtual void Draw() const {}
 		inline virtual void OnScroll(float x, float y) {}
 		inline virtual void OnMove(float x, float y) {}
 		inline virtual float GetSurfaceArea() const { return 0; }
 
+		inline virtual void StartEdit() {}
+		inline virtual bool OnEditMove(float x, float y) { return false; }
+		inline virtual bool OnEditClick(float x, float y) { return false; }
+		inline virtual bool OnEditRelease(float x, float y) { return false; }
 		//Loop through surface points
 		virtual inline std::vector<IPoint>& GetSurfacePoints() { return _points; }
-		inline void SetProjection(glm::mat4 proj) { _projection = proj; }
+		inline virtual void SetProjection(glm::mat4 proj) { _projection = proj; }
 		std::string& GetType() { return _type; }
 	protected:
 		glm::mat4 _projection = glm::mat4(1.0);

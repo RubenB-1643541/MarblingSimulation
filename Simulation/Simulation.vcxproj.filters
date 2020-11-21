@@ -12,7 +12,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\SimInterface\CreateComponent.h">
+      <Filter>SimInterface</Filter>
+    </ClInclude>
     <ClInclude Include="src\SimInterface\InterfaceComponentsList.h">
+      <Filter>SimInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimInterface\SettingsComponent.h">
       <Filter>SimInterface</Filter>
     </ClInclude>
     <ClInclude Include="src\SimInterface\SideComponent.h">
@@ -27,6 +33,12 @@
     <ClInclude Include="src\SimInterface\TopBar.h">
       <Filter>SimInterface</Filter>
     </ClInclude>
+    <ClInclude Include="src\SimUtils\Icon.h">
+      <Filter>SimUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimUtils\ShortCutHandler.h">
+      <Filter>SimUtils</Filter>
+    </ClInclude>
     <ClInclude Include="src\SimulationCore\GridStructures.h">
       <Filter>SimulationCore</Filter>
     </ClInclude>
@@ -39,13 +51,14 @@
     <ClInclude Include="src\SimulationCore\SimulationWindow.h">
       <Filter>SimulationCore</Filter>
     </ClInclude>
-    <ClInclude Include="src\SimInterface\SettingsComponent.h" />
-    <ClInclude Include="src\SimUtils\Icon.h">
-      <Filter>SimUtils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SimInterface\CreateComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\SimInterface\CreateComponent.cpp">
+      <Filter>SimInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimInterface\SettingsComponent.cpp">
+      <Filter>SimInterface</Filter>
+    </ClCompile>
     <ClCompile Include="src\SimInterface\SideComponent.cpp">
       <Filter>SimInterface</Filter>
     </ClCompile>
@@ -58,6 +71,12 @@
     <ClCompile Include="src\SimInterface\TopBar.cpp">
       <Filter>SimInterface</Filter>
     </ClCompile>
+    <ClCompile Include="src\SimUtils\Icon.cpp">
+      <Filter>SimUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimUtils\ShortCutHandler.cpp">
+      <Filter>SimUtils</Filter>
+    </ClCompile>
     <ClCompile Include="src\SimulationCore\MarblingSimulation.cpp">
       <Filter>SimulationCore</Filter>
     </ClCompile>
@@ -68,8 +87,5 @@
       <Filter>SimulationCore</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\SimInterface\SettingsComponent.cpp" />
-    <ClCompile Include="src\SimUtils\Icon.cpp" />
-    <ClCompile Include="src\SimInterface\CreateComponent.cpp" />
   </ItemGroup>
 </Project>

@@ -38,6 +38,8 @@ namespace FluidLib {
 		inline ActionBase* GetAction() { return _action; }
 		inline Movement* GetMovement() { return _movement; }
 		inline Surface* GetSurface() { return _surface; }
+		inline const std::string& GetName() { return _name; }
+		inline void SetName(const std::string& name) { _name = name; }
 	protected:
 		ActionBase* _action = nullptr;
 		Movement* _movement = nullptr;
@@ -46,8 +48,10 @@ namespace FluidLib {
 		bool _using = false;
 	private:
 		bool _moveEdit = false;
+		bool _surfaceEdit = false;
 		float _x = 0;
 		float _y = 0;
+		std::string _name = "Base";
 
 	};
 

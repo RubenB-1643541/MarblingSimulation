@@ -47,6 +47,7 @@ namespace FluidLib {
 	class Action : public ActionBase
 	{
 	public:
+		inline Action() {}
 		inline Action(T value, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetValue(value); SetOperation(op); }
 		inline Action(Grid<T>* grid, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetGrid(grid); SetOperation(op); }
 		inline Action(T value, Grid<T>* grid, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetValue(value); SetGrid(grid); SetOperation(op); }
@@ -60,21 +61,23 @@ namespace FluidLib {
 		virtual void Execute(IPoint& p) override;
 		virtual void Execute(std::vector<IPoint>& points) override;
 
-		void Set(IPoint& p) override;
-		void Add(IPoint& p) override;
-		void Sub(IPoint& p) override;
-		void Mul(IPoint& p) override;
-		void Div(IPoint& p) override;
-		void Move(IPoint& p) override;
-		void Mul(float f, IPoint& p) override;
-		void Div(float f, IPoint& p) override;
+		virtual void Set(IPoint& p) override;
+		virtual void Add(IPoint& p) override;
+		virtual void Sub(IPoint& p) override;
+		virtual void Mul(IPoint& p) override;
+		virtual void Div(IPoint& p) override;
+		virtual void Move(IPoint& p) override;
+		virtual void Mul(float f, IPoint& p) override;
+		virtual void Div(float f, IPoint& p) override;
 		float* GetScale() override;
-	private:
-		T _value;
+	
+	protected:
 		Grid<T>* _grid;
-		float _scale = 1.0f;
-		T* _gridvals = nullptr;
+		T* _gridvals = nullptr;	
 		ACTION_OPERATION _operation = ACTION_OPERATION::NONE;
+		T _value;
+		float _scale = 1.0f;
+	private:
 		
 	};
 

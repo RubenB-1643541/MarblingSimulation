@@ -99,6 +99,7 @@
     <ClInclude Include="src\SimInterface\ToolSelectComponent.h" />
     <ClInclude Include="src\SimInterface\TopBar.h" />
     <ClInclude Include="src\SimUtils\Icon.h" />
+    <ClInclude Include="src\SimUtils\ShortCutHandler.h" />
     <ClInclude Include="src\SimulationCore\GridStructures.h" />
     <ClInclude Include="src\SimulationCore\MarblingSimulation.h" />
     <ClInclude Include="src\SimulationCore\SimulationApplication.h" />
@@ -111,11 +112,12 @@
     <ClCompile Include="src\SimInterface\ToolParameters.cpp" />
     <ClCompile Include="src\SimInterface\ToolSelectComponent.cpp" />
     <ClCompile Include="src\SimInterface\TopBar.cpp" />
+    <ClCompile Include="src\SimUtils\Icon.cpp" />
+    <ClCompile Include="src\SimUtils\ShortCutHandler.cpp" />
     <ClCompile Include="src\SimulationCore\MarblingSimulation.cpp" />
     <ClCompile Include="src\SimulationCore\SimulationApplication.cpp" />
     <ClCompile Include="src\SimulationCore\SimulationWindow.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\SimUtils\Icon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RenderEngine\RenderEngine.vcxproj">

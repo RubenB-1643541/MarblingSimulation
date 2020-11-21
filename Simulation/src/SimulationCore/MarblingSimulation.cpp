@@ -1,6 +1,7 @@
 #include "MarblingSimulation.h"
 #include "Tools/Movement/Movements.h"
 #include "Tools/Surface/Surfaces.h"
+#include "Tools/Action/Actions.h"
 
 MarblingSimulation::MarblingSimulation()
 {
@@ -68,7 +69,9 @@ void MarblingSimulation::CreateBasicTool()
 	
 	FluidLib::Action<IFrequency>* addfreq = new FluidLib::Action<IFrequency>(IFrequency(100), static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), FluidLib::ACTION_OPERATION::ADD);
 	FluidLib::Action<IVelocity>* addvel = new FluidLib::Action<IVelocity>(IVelocity(10, 10), static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")), FluidLib::ACTION_OPERATION::MOVE);
-
+	FluidLib::CopyAction<IFrequency>* copyfreq = new FluidLib::CopyAction<IFrequency>(static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")));
+	FluidLib::PasteAction<IFrequency>* pastefreq = new FluidLib::PasteAction<IFrequency>(static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), FluidLib::ACTION_OPERATION::ADD);
+	FluidLib::CutAction<IFrequency>* cutfreq = new FluidLib::CutAction<IFrequency>(static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), IFrequency(0));
 
 	basic->AddAction("AddFreq", addfreq);
 	basic->AddAction("AddVel", addvel);
@@ -90,6 +93,13 @@ void MarblingSimulation::CreateBasicTool()
 
 	FluidLib::SelectTool * sel = new FluidLib::SelectTool();
 	sel->SetAction(addfreq);
+	sel->SetCopyAction(copyfreq);
+	sel->SetPasteAction(pastefreq);
+	sel->SetCutAction(cutfreq);
+	FluidLib::Rectangle* rect = static_cast<FluidLib::Rectangle*>(sel->GetSurface());
+	copyfreq->SetDim(rect->GetWidthPtr(), rect->GetHeightPtr());
+	pastefreq->SetPos(rect->GetXPtr(), rect->GetYPtr());
+	cutfreq->SetDim(rect->GetWidthPtr(), rect->GetHeightPtr());
 	_tools.AddTool("Select", sel);
 	//_tools.SetActive("Select");
 

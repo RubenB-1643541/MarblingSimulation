@@ -4,6 +4,7 @@
 #include "../Surface/Rectangle.h"
 #include <map>
 #include "../Action.h"
+#include "../Action/CopyAction.h"
 
 namespace FluidLib {
 
@@ -26,6 +27,14 @@ namespace FluidLib {
 		bool OnMoveEvent(ToolMoveEvent& event) override;
 		bool OnScrollEvent(ToolScrollEvent& event) override;
 		inline void SetProjection(glm::mat4 proj) { _proj = proj; _surface->SetProjection(proj); }
+
+		void SetCopyAction(ActionBase* copyaction);
+		void SetPasteAction(ActionBase* pasteaction);
+		void SetCutAction(ActionBase* cutaction);
+
+		bool Copy();
+		bool Paste();
+		bool Cut();
 	private:
 		void SwitchMode();
 		Rectangle* _rect = nullptr;

@@ -2,14 +2,13 @@
 #include "GridStructures.h"
 #include "SimulationController.h"
 
+
 SimulationApplication::SimulationApplication() : Application("Marbling Simulation", new SimulationWindow())
 {
-	
-
 	_computeshader.Create("res/computeshaders/StamAdvection.glsl");
 	_shader.Create(_shaderdata);
 
-	
+	InitShortCuts();
 }
 
 SimulationApplication::~SimulationApplication()
@@ -96,12 +95,14 @@ bool SimulationApplication::OnMouseScrollEvent(RenderEngine::MouseScrollEvent& e
 inline bool SimulationApplication::OnKeyPressEvent(RenderEngine::KeyPressEvent& e)
 {
 	FluidLib::SimulationController::KeyPress(e.GetKey());
+	_shortcuts.OnKeyPressEvent(e);
 	return false;
 }
 
 inline bool SimulationApplication::OnKeyReleaseEvent(RenderEngine::KeyReleaseEvent& e)
 {
 	FluidLib::SimulationController::KeyRelease(e.GetKey());
+	_shortcuts.OnKeyReleaseEvent(e);
 	return false;
 }
 
@@ -211,6 +212,60 @@ void SimulationApplication::StartSimulation()
 
 	_sim.Init();
 	_simrunning = true;
+}
+
+void SimulationApplication::InitShortCuts()
+{
+	_shortcuts.AddShortCut({ KEY_S , false, true,[]() {//Shift S select select tool
+		INFO("SELECT TOOL");
+		FluidLib::Simulation::Get()->GetTools()->SetActive("Select");
+	} });
+
+	_shortcuts.AddShortCut({ KEY_B , false, true,[]() {//Shift B select basic tool
+		INFO("BASIC TOOL");
+		FluidLib::Simulation::Get()->GetTools()->SetActive("Basic");
+	} });
+
+	_shortcuts.AddShortCut({ KEY_P , false, false,[]() {//P toggle pause
+		INFO("TOGGLE PAUSE");
+		static int last = 0;
+		static bool pause = false;
+		if (!pause) {
+			last = FluidLib::Simulation::Get()->GetSettings()->fps;
+			FluidLib::Simulation::Get()->GetSettings()->fps = 0;
+			pause = true;
+		}
+		else {
+			FluidLib::Simulation::Get()->GetSettings()->fps = last;
+			pause = false;
+		}
+	} });
+
+	_shortcuts.AddShortCut({ KEY_C , true, false,[]() {//Ctrl C copy with select tool
+		INFO("COPY");
+		FluidLib::ToolBase* tool = FluidLib::Simulation::Get()->GetTools()->GetActive();
+		if (tool->GetName() == "Select") {
+			FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(tool);
+			select->Copy();
+		}
+	} });
+	_shortcuts.AddShortCut({ KEY_V , true, false,[]() {//Ctrl V paste with select tool
+		INFO("PASTE");
+		FluidLib::ToolBase* tool = FluidLib::Simulation::Get()->GetTools()->GetActive();
+		if (tool->GetName() == "Select") {
+			FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(tool);
+			select->Paste();
+		}
+	} });
+
+	_shortcuts.AddShortCut({ KEY_X , true, false,[]() {//Ctrl X cut with select tool
+		INFO("CUT");
+		FluidLib::ToolBase* tool = FluidLib::Simulation::Get()->GetTools()->GetActive();
+		if (tool->GetName() == "Select") {
+			FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(tool);
+			select->Cut();
+		}
+	} });
 }
 
 /*

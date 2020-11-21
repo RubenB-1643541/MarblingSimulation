@@ -1,5 +1,10 @@
 #include "BasicTool.h"
 
+FluidLib::BasicTool::BasicTool()
+{
+	SetName("Basic");
+}
+
 void FluidLib::BasicTool::AddSurface(const std::string& name, Surface* surface)
 {
 	_surfaces.insert(std::make_pair(name, surface));
