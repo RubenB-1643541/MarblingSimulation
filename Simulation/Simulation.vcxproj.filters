@@ -51,6 +51,9 @@
     <ClInclude Include="src\SimulationCore\SimulationWindow.h">
       <Filter>SimulationCore</Filter>
     </ClInclude>
+    <ClInclude Include="src\FileIO\SimulationSaveLoad.h" />
+    <ClInclude Include="src\SimInterface\PresetComponent.h" />
+    <ClInclude Include="src\FileIO\FileDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SimInterface\CreateComponent.cpp">
@@ -87,5 +90,8 @@
       <Filter>SimulationCore</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\FileIO\SimulationSaveLoad.cpp" />
+    <ClCompile Include="src\SimInterface\PresetComponent.cpp" />
+    <ClCompile Include="src\FileIO\FileDialog.cpp" />
   </ItemGroup>
 </Project>

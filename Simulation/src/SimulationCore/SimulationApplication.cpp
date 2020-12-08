@@ -50,13 +50,17 @@ void SimulationApplication::OnUpdate()
 
 void SimulationApplication::CreateInterface()
 {
-	_interface.AddComponent("Left", new SideComponent("Left", ImVec2(0, 30), ImVec2(RenderEngine::Application::Get()->GetWidth() / 5, RenderEngine::Application::Get()->GetHeight() - 50)));
-	_interface.AddComponent("Right", new SideComponent("Right", ImVec2(RenderEngine::Application::Get()->GetWidth() - RenderEngine::Application::Get()->GetWidth()/5, 30), ImVec2(RenderEngine::Application::Get()->GetWidth() / 5, RenderEngine::Application::Get()->GetHeight() - 50)));
+	_interface.AddComponent("Left", new SideComponent("Left", ImVec2(0, 30), ImVec2(1920 / 5, 1001 - 50)));
+	//_interface.AddComponent("Left", new SideComponent("Left", ImVec2(0, 30), ImVec2(RenderEngine::Application::Get()->GetWidth() / 5, RenderEngine::Application::Get()->GetHeight() - 50)));
+	_interface.AddComponent("Right", new SideComponent("Right", ImVec2(1920 - 1920/5, 30), ImVec2(1920 / 5, 1001 - 50)));
+	//_interface.AddComponent("Right", new SideComponent("Right", ImVec2(RenderEngine::Application::Get()->GetWidth() - RenderEngine::Application::Get()->GetWidth()/5, 30), ImVec2(RenderEngine::Application::Get()->GetWidth() / 5, RenderEngine::Application::Get()->GetHeight() - 50)));
 	_interface.AddComponent("Menu", new TopBar());
 	_interface.GetComponent("Right")->AddComponent(new ToolParameters(_sim.GetTools()));
 	ToolSelectComponent* toolselect = new ToolSelectComponent(_sim.GetTools(), "Basic");
+	PresetComponent* preset = new PresetComponent(_sim.GetTools(), "Basic");
 	_interface.GetComponent("Left")->AddComponent(new SettingsComponent());
 	_interface.GetComponent("Left")->AddComponent(toolselect);
+	_interface.GetComponent("Left")->AddComponent(preset);
 	_sim.InitBasicToolComponent(toolselect);
 	_interface.AddComponent("Create", new CreateComponent(this, true));
 }
@@ -228,9 +232,39 @@ void SimulationApplication::StartSimulation()
 	_simrunning = true;
 }
 
+void SimulationApplication::LoadSimulation(const std::string& file)
+{
+	SimLoad loader;
+	loader.SetFile(file);
+	loader.SetBuffers(&_buffers);
+	loader.SetGrids(_sim.GetGrids());
+	loader.Load();
+
+	FluidLib::ComputeShaderController* shadercontroller = _sim.GetShader();
+	shadercontroller->SetShader(_computeshader.GetId());
+	FluidLib::UniformVal widthval; widthval.intval = _sim.GetSizeX();
+	FluidLib::UniformVal heightval; heightval.intval = _sim.GetSizeY();
+	FluidLib::UniformVal aval; aval.floatptr = &_sim.GetSettings()->spreading;
+	FluidLib::UniformVal dval; dval.floatptr = &_sim.GetSettings()->diffuse;
+	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, widthval, "width"));
+	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
+	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, aval, "a"));
+	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, dval, "d"));
+	
+	FluidLib::GridRenderer* renderer = _sim.GetRenderer();
+	renderer->SetShader(_shader.GetId());
+	FluidLib::ShaderController* shader = renderer->GetShader();
+	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, widthval, "width"));
+	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
+	
+	
+	_sim.Init();
+	_simrunning = true;
+}
+
 void SimulationApplication::InitShortCuts()
 {
-	_shortcuts.AddShortCut({ KEY_S , false, true,[]() {//Shift S select select tool
+	_shortcuts.AddShortCut({ KEY_D , false, true,[]() {//Shift D select select tool
 		INFO("SELECT TOOL");
 		FluidLib::Simulation::Get()->GetTools()->SetActive("Select");
 	} });
@@ -279,6 +313,14 @@ void SimulationApplication::InitShortCuts()
 			FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(tool);
 			select->Cut();
 		}
+	} });
+
+	_shortcuts.AddShortCut({ KEY_S, true, false, []() {//Ctrl S save
+		INFO("SAVE");
+		SimSave saver;
+		saver.SetFile("Test.sim");
+		saver.SetGrids(FluidLib::Simulation::Get()->GetGrids());
+		saver.Save();
 	} });
 }
 

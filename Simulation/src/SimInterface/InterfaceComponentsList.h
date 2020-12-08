@@ -6,3 +6,4 @@
 #include "ToolSelectComponent.h"
 #include "SettingsComponent.h"
 #include "CreateComponent.h"
+#include "PresetComponent.h"

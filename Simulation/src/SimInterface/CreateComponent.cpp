@@ -1,5 +1,6 @@
 #include "CreateComponent.h"
 #include "../SimulationCore/SimulationApplication.h"
+#include "../FileIO/FileDialog.h"
 CreateComponent::CreateComponent(SimulationApplication* app, bool open) : _open(open), _app(app)
 {
 }
@@ -30,7 +31,9 @@ void CreateComponent::OnDraw()
 		ImGui::InputInt("Width", &_width);
 		ImGui::InputInt("Height", &_height);
 		ImGui::Spacing();
-		if (ImGui::Button("Cancel")) {
+		if (ImGui::Button("Load")) {
+			std::string file = FileDialog::Open();
+			_app->LoadSimulation(file);
 			_open = false;
 		}
 		ImGui::SameLine(0, 200.0f);

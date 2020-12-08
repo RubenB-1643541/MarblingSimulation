@@ -9,6 +9,7 @@
 #include "Events/Events.h"
 #include "../SimInterface/InterfaceComponentsList.h"
 #include "../SimUtils/ShortCutHandler.h"
+#include "../FileIO/SimulationSaveLoad.h"
 
 class SimulationApplication : public RenderEngine::Application
 {
@@ -30,6 +31,7 @@ public:
 	inline virtual bool OnKeyPressEvent(RenderEngine::KeyPressEvent& e) override;
 	inline virtual bool OnKeyReleaseEvent(RenderEngine::KeyReleaseEvent& e) override;
 	void StartSimulation();
+	void LoadSimulation(const std::string& file);
 private:
 	void InitShortCuts();
 	ShortCutHandler _shortcuts;

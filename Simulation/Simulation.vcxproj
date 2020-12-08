@@ -91,8 +91,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\FileIO\FileDialog.h" />
+    <ClInclude Include="src\FileIO\SimulationSaveLoad.h" />
     <ClInclude Include="src\SimInterface\CreateComponent.h" />
     <ClInclude Include="src\SimInterface\InterfaceComponentsList.h" />
+    <ClInclude Include="src\SimInterface\PresetComponent.h" />
     <ClInclude Include="src\SimInterface\SettingsComponent.h" />
     <ClInclude Include="src\SimInterface\SideComponent.h" />
     <ClInclude Include="src\SimInterface\ToolParameters.h" />
@@ -106,7 +109,10 @@
     <ClInclude Include="src\SimulationCore\SimulationWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\FileIO\FileDialog.cpp" />
+    <ClCompile Include="src\FileIO\SimulationSaveLoad.cpp" />
     <ClCompile Include="src\SimInterface\CreateComponent.cpp" />
+    <ClCompile Include="src\SimInterface\PresetComponent.cpp" />
     <ClCompile Include="src\SimInterface\SettingsComponent.cpp" />
     <ClCompile Include="src\SimInterface\SideComponent.cpp" />
     <ClCompile Include="src\SimInterface\ToolParameters.cpp" />

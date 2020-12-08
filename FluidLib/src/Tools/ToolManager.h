@@ -25,8 +25,10 @@ namespace FluidLib {
 		inline ToolBase* Get(const std::string& name) { return _tools[name]; }
 		inline void SetSimSize(float width, float height) { SetProjection(glm::ortho(0.0f, width, height, 0.0f)); }
 		inline void SetProjection(glm::mat4 proj) { _projection = proj; if (_activeTool != nullptr) _activeTool->SetProjection(proj); }
+		inline void SetEnabled(bool b) { _enabled = b; }
 		//Iterators
 	private:
+		bool _enabled = true;
 		std::map<std::string, ToolBase*> _tools;
 		//std::vector<ToolBase*> _tools;
 		ToolBase* _activeTool = nullptr;

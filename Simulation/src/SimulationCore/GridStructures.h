@@ -19,6 +19,14 @@ struct IVelocity {
 	inline IVelocity(int dx, int dy) : dx(dx), dy(dy) {}
 	inline IVelocity(int d) : dx(d), dy(d) {}
 	inline IVelocity() : dx(0), dy(0) {}
+	friend std::ostream& operator<<(std::ostream& out, const IVelocity& vel) {
+		out << vel.dx << " " << vel.dy;
+		return out;
+	}
+	friend std::istream& operator>>(std::istream& in, IVelocity& vel) {
+		in >> vel.dx >> vel.dy;
+		return in;
+	}
 };
 
 struct FVelocity {
@@ -37,6 +45,14 @@ struct FVelocity {
 	inline FVelocity(float dx, float dy) : dx(dx), dy(dy) {}
 	inline FVelocity(float d) : dx(d), dy(d) {}
 	inline FVelocity() : dx(0), dy(0) {}
+	friend std::ostream& operator<<(std::ostream& out, const FVelocity& vel) {
+		out << vel.dx << " " << vel.dy;
+		return out;
+	}
+	friend std::istream& operator>>(std::istream& in, FVelocity& vel) {
+		in >> vel.dx >> vel.dy;
+		return in;
+	}
 };
 
 struct IFrequency {
@@ -53,6 +69,14 @@ struct IFrequency {
 	inline bool operator==(int val) { return freq == val; }
 	inline IFrequency() { freq = 0; }
 	inline IFrequency(int i) { freq = i; }
+	friend std::ostream& operator<<(std::ostream& out, const IFrequency& freq) {
+		out << freq.freq;
+		return out;
+	}
+	friend std::istream& operator>>(std::istream& in, IFrequency& freq) {
+		in >> freq.freq;
+		return in;
+	}
 
 };
 
@@ -70,6 +94,14 @@ struct FFrequency {
 	inline bool operator==(float val) { return freq == val; }
 	FFrequency() { freq = 0.0f; }
 	FFrequency(float f) { freq = f; }
+	friend std::ostream& operator<<(std::ostream& out, const FFrequency& freq) {
+		out << freq.freq;
+		return out;
+	}
+	friend std::istream& operator>>(std::istream& in, FFrequency& freq) {
+		in >> freq.freq;
+		return in;
+	}
 };
 
 struct IInk {
@@ -94,6 +126,14 @@ struct IInk {
 	inline IInk operator*(float scale) { return { static_cast<int>(ink * scale), id, {0,0}, color,0 }; }
 	inline bool operator==(const IInk& val) { return ink == val.ink && id == val.id; }
 	inline bool operator==(int val) { return ink == val; }
+	friend std::ostream& operator<<(std::ostream& out, const IInk& ink) {
+		out << ink.ink << " " << ink.id << " " << ink.color.x << " " << ink.color.y << " " << ink.color.z;
+		return out;
+	}
+	friend std::istream& operator>>(std::istream& in, IInk& ink) {
+		in >> ink.ink >> ink.id >> ink.color.x >> ink.color.y >> ink.color.z;
+		return in;
+	}
 };
 
 struct FInk {
@@ -110,6 +150,14 @@ struct FInk {
 	inline FInk operator*(float scale) { return { ink * scale }; }
 	inline bool operator==(const FInk& val) { return ink == val.ink && id == val.id; }
 	inline bool operator==(float val) { return ink == val; }
+	friend std::ostream& operator<<(std::ostream& out, const FInk& ink) {
+		out << ink.ink << " " << ink.id << " " << ink.color.x << " " << ink.color.y << " " << ink.color.z;
+		return out;
+	}
+	friend std::istream& operator>>(std::istream& in, FInk& ink) {
+		in >> ink.ink >> ink.id >> ink.color.x >> ink.color.y >> ink.color.z;
+		return in;
+	}
 };
 
 struct Flags {
@@ -127,4 +175,12 @@ struct Flags {
 	inline Flags operator*(float scale) { }
 	inline bool operator==(const IInk& val) { return true; }
 	inline bool operator==(int val) { return true; }
+	friend std::ostream& operator<<(std::ostream& out, const Flags& flags) {
+		out << flags.freeze << " " << flags.unamed1 << " " << flags.unamed2 << " " << flags.unamed3;
+		return out;
+	}
+	friend std::istream& operator>>(std::istream& in, Flags& flags) {
+		in >> flags.freeze >> flags.unamed1 >> flags.unamed2 >> flags.unamed3;
+		return in;
+	}
 };

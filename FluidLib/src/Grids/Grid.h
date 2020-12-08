@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GL/glew.h"
+#include <fstream>
 
 #define COOR_2D_TO_1D(x,y) Simulation::Get()->GetSizeX() * y + x
 #define POINT_TO_1D(p) Simulation::Get()->GetSizeX() * p.GetY() + p.GetX()
@@ -9,14 +10,16 @@ namespace FluidLib {
 
 	struct BufferLock {
 		bool locked = false;
+		GLuint id;
+		int attrpointer;
 	};
 
 	static BufferLock lock ;
 
 	static void ReleaseBufferLock() {
 		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, NULL);
 		lock.locked = false;
-		
 	}
 
 	struct BufferData 
@@ -38,6 +41,7 @@ namespace FluidLib {
 		virtual void UseGrid() = 0;
 		virtual void DrawGrid() = 0;
 		BufferData& GetBufferData() { return _data; }
+		virtual void WriteToFile(std::ofstream& stream) = 0;
 	protected:
 		BufferData _data;
 	private:
@@ -88,6 +92,8 @@ namespace FluidLib {
 
 		inline void SetRender(bool state) { _render = state; }
 		inline bool GetRender() { return _render; }
+
+		void WriteToFile(std::ofstream& stream) override;
 	private:
 		
 		bool _render = false;
@@ -121,9 +127,11 @@ namespace FluidLib {
 	template<class T>
 	inline T* Grid<T>::GetBufferPointer()
 	{
-		if (lock.locked)
-			ReleaseBufferLock();
+		//if (lock.locked)
+		//	ReleaseBufferLock();
 		lock.locked = true;
+		lock.id = _data.id;
+		lock.attrpointer = _data.attrpointer;
 
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, _data.id);
 		GLint bufMask = GL_MAP_WRITE_BIT;
@@ -136,6 +144,8 @@ namespace FluidLib {
 		if (lock.locked)
 			ReleaseBufferLock();
 		lock.locked = true;
+		lock.id = _data.id;
+		lock.attrpointer = _data.attrpointer;
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, _data.id);
 		return static_cast<T*>(glMapNamedBufferRange(_data.id, 0, _data.size * sizeof(T), bufMask));
 	}
@@ -163,6 +173,16 @@ namespace FluidLib {
 			//glVertexAttributePointer(_data.elementsize, _data.type, 0, (void*)0);
 			glEnableVertexAttribArray(_data.attrpointer);
 		}
+	}
+
+	template<class T>
+	inline void Grid<T>::WriteToFile(std::ofstream& stream)
+	{
+		T* data = GetBufferPointer();
+		for (int i = 0; i < _data.size; ++i) {
+			stream << data[i] << " ";
+		}
+		ReleaseBufferLock();
 	}
 
 }

@@ -35,8 +35,10 @@ namespace FluidLib {
 	}
 	void ToolManager::OnEvent(Event& event)
 	{
-		if (event.GetEventCategory() == EventCategory::ToolEvent && _activeTool != nullptr) {
-			_activeTool->OnEvent(event);
+		if (_enabled) {
+			if (event.GetEventCategory() == EventCategory::ToolEvent && _activeTool != nullptr) {
+				_activeTool->OnEvent(event);
+			}
 		}
 	}
 	void ToolManager::SetActive(ToolBase* tool)

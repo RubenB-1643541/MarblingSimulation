@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "Core/WindowBase.h"
 #include "Core/Application.h"
@@ -10,9 +11,18 @@
 int main(int argc, char* argv[]) {
 	RenderEngine::Log::Init();
 	INFO("Main Started");
-	
+
 	SimulationApplication sim;
-	sim.Start();
+	if (argc == 2) {
+		//Load file
+		std::string file = argv[1];
+		sim.Start();
+		sim.LoadSimulation(file);
+	}
+	else {
+		sim.Start();
+	}
+	
 
 	//RenderEngine::Application app("Test", new RenderEngine::WindowBase("Test"));
 	//app.Start();
