@@ -31,8 +31,11 @@ public:
 	inline virtual bool OnKeyPressEvent(RenderEngine::KeyPressEvent& e) override;
 	inline virtual bool OnKeyReleaseEvent(RenderEngine::KeyReleaseEvent& e) override;
 	void StartSimulation();
-	void LoadSimulation(const std::string& file);
+	bool LoadSimulation(const std::string& file);
+	inline void SetLoad(bool l) { _load = l; }
 private:
+	void CreateGrids();
+	void CreateUniforms();
 	void InitShortCuts();
 	ShortCutHandler _shortcuts;
 	bool _simrunning = false;
@@ -43,6 +46,6 @@ private:
 	RenderEngine::Shader _shaderdata = { "res/shaders/ink_vertexshader.glsl", "res/shaders/ink_fragmentshader.glsl", "" };
 	//RenderEngine::Shader _shaderdata = { "res/shaders/computegrid_vertexshader.glsl", "res/shaders/computegrid_fragmentshader.glsl", "" };
 
-
+	bool _load = false;
 };
 

@@ -11,12 +11,13 @@
 int main(int argc, char* argv[]) {
 	RenderEngine::Log::Init();
 	INFO("Main Started");
-
 	SimulationApplication sim;
 	if (argc == 2) {
+		sim.SetLoad(true);
+		INFO(argv[1]);
 		//Load file
 		std::string file = argv[1];
-		sim.Start();
+		//sim.Start();
 		sim.LoadSimulation(file);
 	}
 	else {
