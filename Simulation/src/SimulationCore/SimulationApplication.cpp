@@ -62,7 +62,7 @@ void SimulationApplication::CreateInterface()
 	_interface.GetComponent("Left")->AddComponent(toolselect);
 	_interface.GetComponent("Left")->AddComponent(preset);
 	_sim.InitBasicToolComponent(toolselect);
-	_interface.AddComponent("Create", new CreateComponent(this, true));
+	_interface.AddComponent("Create", new CreateComponent(this, !_load));
 }
 
 bool SimulationApplication::OnWindowResizeEvent(RenderEngine::WindowResizeEvent& e)
@@ -112,6 +112,44 @@ inline bool SimulationApplication::OnKeyReleaseEvent(RenderEngine::KeyReleaseEve
 }
 
 void SimulationApplication::StartSimulation()
+{
+	CreateGrids();
+	CreateUniforms();
+
+	_sim.Init();
+	_simrunning = true;
+}
+
+bool SimulationApplication::LoadSimulation(const std::string& file)
+{
+	SimLoad loader;
+	loader.SetFile(file);
+	loader.SetBuffers(&_buffers);
+	loader.SetGrids(_sim.GetGrids());
+	//loader.Load();
+	if (!loader.StartLoad()) {
+		ERROR("Failed to open file : ");
+		ERROR(file.c_str());
+		return false;
+	}
+	if (!loader.LoadSimData()) {
+		ERROR("Failed To Load Simulation Data");
+		return false;
+	}
+	CreateGrids();
+	loader.LoadGrids();
+	loader.EndLoad();
+
+	CreateUniforms();
+	
+	_sim.Init();
+	_simrunning = true;
+	if(_load)
+		Start();
+	return true;
+}
+
+void SimulationApplication::CreateGrids()
 {
 	_buffers.clear();
 	RenderEngine::ShaderStorageBuffer* velbuf = new RenderEngine::ShaderStorageBuffer();
@@ -209,37 +247,10 @@ void SimulationApplication::StartSimulation()
 	FluidLib::Grid<Flags>* flaggrid = new FluidLib::Grid<Flags>(_buffers.at("Flag")->GetId(), _sim.GetSize(), 7, true);
 	flaggrid->SetElementSize(4);
 	gridman->AddGrid("Flag", flaggrid);
-
-	FluidLib::ComputeShaderController* shadercontroller = _sim.GetShader();
-	shadercontroller->SetShader(_computeshader.GetId());
-	FluidLib::UniformVal widthval; widthval.intval = _sim.GetSizeX();
-	FluidLib::UniformVal heightval; heightval.intval = _sim.GetSizeY();
-	FluidLib::UniformVal aval; aval.floatptr = &_sim.GetSettings()->spreading;
-	FluidLib::UniformVal dval; dval.floatptr = &_sim.GetSettings()->diffuse;
-	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, widthval, "width"));
-	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
-	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, aval, "a"));
-	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, dval, "d"));
-
-	FluidLib::GridRenderer* renderer = _sim.GetRenderer();
-	renderer->SetShader(_shader.GetId());
-	FluidLib::ShaderController* shader = renderer->GetShader();
-	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, widthval, "width"));
-	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
-
-
-	_sim.Init();
-	_simrunning = true;
 }
 
-void SimulationApplication::LoadSimulation(const std::string& file)
+void SimulationApplication::CreateUniforms()
 {
-	SimLoad loader;
-	loader.SetFile(file);
-	loader.SetBuffers(&_buffers);
-	loader.SetGrids(_sim.GetGrids());
-	loader.Load();
-
 	FluidLib::ComputeShaderController* shadercontroller = _sim.GetShader();
 	shadercontroller->SetShader(_computeshader.GetId());
 	FluidLib::UniformVal widthval; widthval.intval = _sim.GetSizeX();
@@ -250,16 +261,12 @@ void SimulationApplication::LoadSimulation(const std::string& file)
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, aval, "a"));
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, dval, "d"));
-	
+
 	FluidLib::GridRenderer* renderer = _sim.GetRenderer();
 	renderer->SetShader(_shader.GetId());
 	FluidLib::ShaderController* shader = renderer->GetShader();
 	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, widthval, "width"));
 	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
-	
-	
-	_sim.Init();
-	_simrunning = true;
 }
 
 void SimulationApplication::InitShortCuts()

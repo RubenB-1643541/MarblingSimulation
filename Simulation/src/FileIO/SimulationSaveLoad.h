@@ -36,15 +36,16 @@ private:
 class SimLoad
 {
 public:
-
-	bool Load();
 	void SetFile(const std::string& file);
 	void SetGrids(FluidLib::GridManager* grids);
 	void SetBuffers(std::map<std::string, RenderEngine::ShaderStorageBuffer*>* buffers);
-private:
 	bool StartLoad();
 	bool LoadSimData();
+	bool LoadGrids();
+	bool EndLoad();
+private:
 	bool LoadGrid();
+
 	std::string _file;
 	std::ifstream _istream;
 	FluidLib::GridManager* _grids;
