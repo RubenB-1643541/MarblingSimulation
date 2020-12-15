@@ -54,6 +54,7 @@
     <ClInclude Include="src\FileIO\SimulationSaveLoad.h" />
     <ClInclude Include="src\SimInterface\PresetComponent.h" />
     <ClInclude Include="src\FileIO\FileDialog.h" />
+    <ClInclude Include="src\FileIO\Exporter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SimInterface\CreateComponent.cpp">
@@ -93,5 +94,6 @@
     <ClCompile Include="src\FileIO\SimulationSaveLoad.cpp" />
     <ClCompile Include="src\SimInterface\PresetComponent.cpp" />
     <ClCompile Include="src\FileIO\FileDialog.cpp" />
+    <ClCompile Include="src\FileIO\Exporter.cpp" />
   </ItemGroup>
 </Project>

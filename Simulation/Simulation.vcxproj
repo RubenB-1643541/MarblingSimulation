@@ -91,6 +91,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\FileIO\Exporter.h" />
     <ClInclude Include="src\FileIO\FileDialog.h" />
     <ClInclude Include="src\FileIO\SimulationSaveLoad.h" />
     <ClInclude Include="src\SimInterface\CreateComponent.h" />
@@ -109,6 +110,7 @@
     <ClInclude Include="src\SimulationCore\SimulationWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\FileIO\Exporter.cpp" />
     <ClCompile Include="src\FileIO\FileDialog.cpp" />
     <ClCompile Include="src\FileIO\SimulationSaveLoad.cpp" />
     <ClCompile Include="src\SimInterface\CreateComponent.cpp" />

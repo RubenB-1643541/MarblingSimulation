@@ -325,7 +325,7 @@ void SimulationApplication::InitShortCuts()
 	_shortcuts.AddShortCut({ KEY_S, true, false, []() {//Ctrl S save
 		INFO("SAVE");
 		SimSave saver;
-		saver.SetFile("Test.sim");
+		//saver.SetFile("Test.sim");
 		saver.SetGrids(FluidLib::Simulation::Get()->GetGrids());
 		saver.Save();
 	} });

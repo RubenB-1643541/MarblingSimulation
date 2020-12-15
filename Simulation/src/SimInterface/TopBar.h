@@ -2,6 +2,8 @@
 
 #include "Simulation.h"
 #include "Interface/InterfaceComponent.h"
+#include "../FileIO/FileDialog.h"
+#include "../FileIO/Exporter.h"
 
 class TopBar : public RenderEngine::InterfaceComponent
 {

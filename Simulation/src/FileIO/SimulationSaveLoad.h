@@ -9,6 +9,7 @@
 #include "Grids/Grid.h"
 #include "Rendering/ShaderStorageBuffer.h"
 #include "../SimulationCore/GridStructures.h"
+#include "../FileIO/FileDialog.h"
 /*
 Save Grids
 -> Grid Size
@@ -28,7 +29,7 @@ private:
 	bool StartSave();
 	bool SaveSimData();
 	bool SaveGrid(const std::string& name, FluidLib::GridBase * grid);
-	std::string _file;
+	static std::string _file;
 	std::ofstream _ostream;
 	FluidLib::GridManager* _grids;
 };

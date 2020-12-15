@@ -1,7 +1,14 @@
 #include "SimulationSaveLoad.h"
 
+std::string SimSave::_file = "";
+
 bool SimSave::Save()
 {
+	if (_file == "") {
+		_file = FileDialog::Save();
+	}
+	if (_file == "")
+		return false;
 	if (!StartSave()) {
 		ERROR("Failed to open file : ");
 		ERROR(_file.c_str());
