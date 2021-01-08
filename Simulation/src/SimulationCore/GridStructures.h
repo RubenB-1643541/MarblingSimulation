@@ -108,13 +108,13 @@ struct IInk {
 	int ink;
 	int id;
 	int padding[2];
-	glm::vec3 color;
-	float padding2;
+	//glm::vec3 color;
+	//float padding2;
 	inline void operator+=(const IInk& val) { 
 		if (id == 0 || id == val.id) {
 			ink += val.ink;
 			id = val.id;
-			color = val.color;
+			//color = val.color;
 		}
 	}
 	inline void operator+=(const FluidLib::IPoint& move) { ink += move.GetX(); ink += move.GetY(); }
@@ -123,15 +123,15 @@ struct IInk {
 	inline void operator/=(const IInk& val) { ink /= val.ink; }
 	inline void operator*=(int val) { ink *= val; }
 	inline void operator/=(int val) { ink /= val; }
-	inline IInk operator*(float scale) { return { static_cast<int>(ink * scale), id, {0,0}, color,0 }; }
+	inline IInk operator*(float scale) { return { static_cast<int>(ink * scale), id }; }// , { 0,0 }, color, 0};}
 	inline bool operator==(const IInk& val) { return ink == val.ink && id == val.id; }
 	inline bool operator==(int val) { return ink == val; }
 	friend std::ostream& operator<<(std::ostream& out, const IInk& ink) {
-		out << ink.ink << " " << ink.id << " " << ink.color.x << " " << ink.color.y << " " << ink.color.z;
+		out << ink.ink << " " << ink.id;// << " " << ink.color.x << " " << ink.color.y << " " << ink.color.z;
 		return out;
 	}
 	friend std::istream& operator>>(std::istream& in, IInk& ink) {
-		in >> ink.ink >> ink.id >> ink.color.x >> ink.color.y >> ink.color.z;
+		in >> ink.ink >> ink.id;// >> ink.color.x >> ink.color.y >> ink.color.z;
 		return in;
 	}
 };

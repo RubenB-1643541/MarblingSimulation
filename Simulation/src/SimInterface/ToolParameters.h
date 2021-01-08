@@ -2,8 +2,10 @@
 
 #include "Interface/InterfaceComponent.h"
 #include "Tools/ToolBase.h"
+#include "Tools/Basic Tools/SelectTool.h"
 #include "Tools/ToolManager.h"
 #include "Tools/Surface/Surfaces.h"
+#include "Tools/Action/Actions.h"
 #include "Tools/Movement/Movements.h"
 #include "Simulation.h"
 #include "../SimulationCore/GridStructures.h"
@@ -25,6 +27,8 @@ private:
 	void SurfaceParams();
 	void MovementParams();
 	void ActionParams();
+	void InkActionParams(FluidLib::InkAction<IInk>* inkaction);
+	void SelectToolActions();
 
 };
 

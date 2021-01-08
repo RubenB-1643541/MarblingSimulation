@@ -87,13 +87,13 @@ namespace FluidLib {
 		inline void SetAttrPointer(int attr) { _data.attrpointer = attr; }
 		inline void GetAttrPointer() { return _data.attrpointer; }
 
-		void UseGrid();
-		void DrawGrid();
+		virtual void UseGrid();
+		virtual void DrawGrid();
 
 		inline void SetRender(bool state) { _render = state; }
 		inline bool GetRender() { return _render; }
 
-		void WriteToFile(std::ofstream& stream) override;
+		virtual void WriteToFile(std::ofstream& stream) override;
 	private:
 		
 		bool _render = false;

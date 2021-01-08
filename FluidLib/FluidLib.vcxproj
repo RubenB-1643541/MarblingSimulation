@@ -98,6 +98,7 @@
     <ClInclude Include="src\Events\Events.h" />
     <ClInclude Include="src\Events\SimulationEvent.h" />
     <ClInclude Include="src\Events\ToolEvent.h" />
+    <ClInclude Include="src\Grids\ColorGrid.h" />
     <ClInclude Include="src\Grids\ComputeShaderController.h" />
     <ClInclude Include="src\Grids\Grid.h" />
     <ClInclude Include="src\Grids\GridManager.h" />
@@ -111,6 +112,7 @@
     <ClInclude Include="src\Tools\Action\Actions.h" />
     <ClInclude Include="src\Tools\Action\CopyAction.h" />
     <ClInclude Include="src\Tools\Action\CutAction.h" />
+    <ClInclude Include="src\Tools\Action\InkAction.h" />
     <ClInclude Include="src\Tools\Action\PasteAction.h" />
     <ClInclude Include="src\Tools\Basic Tools\BasicTool.h" />
     <ClInclude Include="src\Tools\Basic Tools\SelectTool.h" />

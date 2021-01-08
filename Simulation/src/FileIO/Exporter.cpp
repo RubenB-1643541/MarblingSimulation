@@ -14,12 +14,14 @@ bool Exporter::Export()
 	int width = FluidLib::Simulation::Get()->GetSizeX();
 	int height = FluidLib::Simulation::Get()->GetSizeY();
 	uint8_t* pixels = new uint8_t[width * height * CHANNEL_NUM];
-	FluidLib::Grid<IInk> * grid = static_cast<FluidLib::Grid<IInk> *>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Ink"));
+	FluidLib::ColorGrid<IInk> * grid = static_cast<FluidLib::ColorGrid<IInk> *>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Ink"));
+	std::vector<glm::vec3> colors = grid->GetColors();
 	IInk* inkvals = grid->GetBufferPointer();
 	int index = 0;
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
-			glm::vec3 col = inkvals[i * width + j].color;
+			//TODO Fix export
+			glm::vec3 col = colors[inkvals[i * width + j].id];
 			float freq = inkvals[i * width + j].ink;
 			pixels[index++] = int(255.99 * col.r * freq / 1000);
 			pixels[index++] = int(255.99 * col.g * freq / 1000);

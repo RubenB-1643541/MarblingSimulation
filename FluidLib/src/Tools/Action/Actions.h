@@ -3,3 +3,4 @@
 #include "CopyAction.h"
 #include "PasteAction.h"
 #include "CutAction.h"
+#include "InkAction.h"

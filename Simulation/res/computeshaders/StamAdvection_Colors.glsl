@@ -27,9 +27,6 @@ struct InkStruct
 {
 	int freq;
 	int id;
-	ivec2 padding;
-	vec3 color;
-	float padding2;
 };
 
 layout(std140, binding=5) buffer ink
@@ -78,7 +75,8 @@ vec2 Collision(vec2 vec);
 void main() {
 	uint i = gl_GlobalInvocationID.x;
 	//frequencies2[i] = 1;
-	frequencies2[i] = int( inkvals[i].color.x);
+	//frequencies[i] = int( inkvals[i].id);
+	//frequencies2[i].y = int( inkvals[i].id);
 	bvec4 flags = bvec4(flagvals[i].x, flagvals[i].y, flagvals[i].z, flagvals[i].w);
 	ivec2 pos = IndexToPoint(i);
 	StamAdvection(i, pos);

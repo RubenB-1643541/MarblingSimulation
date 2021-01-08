@@ -10,6 +10,7 @@
 #include "../SimInterface/InterfaceComponentsList.h"
 #include "../SimUtils/ShortCutHandler.h"
 #include "../FileIO/SimulationSaveLoad.h"
+#include "Grids/ColorGrid.h"
 
 class SimulationApplication : public RenderEngine::Application
 {

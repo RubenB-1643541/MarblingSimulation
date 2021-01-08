@@ -10,8 +10,6 @@ struct InkStruct
 	int freq;
 	int id;
 	ivec2 padding;
-	vec3 color;
-	float padding2;
 };
 
 layout(std140, binding=5) buffer ink
@@ -22,6 +20,11 @@ layout(std140, binding=5) buffer ink
 layout(binding=7) buffer flags
 {
 	vec4 flagvals[]; //freeze - unused - unused - unused
+};
+
+layout(std140, binding=8) uniform colors
+{
+	vec3 colorvals[];
 };
 
 
@@ -39,7 +42,10 @@ out vec3 inkcolor;
 void main() {
 	ofreq = float(frequencies[gl_VertexID]);
 	inkfreq = inkvals[gl_VertexID].freq;
-	inkcolor = inkvals[gl_VertexID].color;
+	//inkfreq = inkvals[gl_VertexID].freq;
+	//inkcolor = vec3(1,0,0);
+	//inkcolor = colorvals[0];
+	inkcolor = colorvals[inkvals[gl_VertexID].id];
 	//oink = float(inkvals[gl_VertexID]);
 	oflags = flagvals[gl_VertexID];
 

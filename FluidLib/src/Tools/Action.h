@@ -37,9 +37,12 @@ namespace FluidLib {
 		virtual void SetPos(IPoint p) { _oldpos = _pos; _pos = p; }
 		virtual float* GetScale() = 0;
 		virtual const char* GetType() = 0;
+		void SetName(const std::string& name) { _name = name; }
+		std::string GetName() { return _name; }
 	protected:
 		IPoint _pos = { 0,0 };
 		IPoint _oldpos = {-1,-1};
+		std::string _name = "Base";
 	private:
 
 	};

@@ -40,7 +40,7 @@ void SimulationApplication::OnUpdate()
 		//RenderEngine::ShaderStorageBuffer* freq = _buffers.at("Freq");
 		//freq->Bind();
 		//IFrequency* freqs = (IFrequency*)freq->MapBufferRange();
-		//INFO(freqs[0].freq);
+		//INFO(freqs[10].freq);
 		//freq->UnMapBuffer();
 
 		_sim.Update();
@@ -197,7 +197,8 @@ void SimulationApplication::CreateGrids()
 	inkbuf->BufferData(_sim.GetSize() * sizeof(IInk));
 	IInk* inks = (IInk*)inkbuf->MapBufferRange();
 	for (int i = 0; i < _sim.GetSize(); ++i) {
-		inks[i] = { 0, 0, {0,0}, {0,0,0},0 };
+		inks[i] = { 0, 0 };
+		//inks[i] = { 0, 0, {0,0}, {0,0,0},0 };
 	}
 	inkbuf->UnMapBuffer();
 	_buffers.insert(std::make_pair("Ink", inkbuf));
@@ -207,7 +208,8 @@ void SimulationApplication::CreateGrids()
 	inkbuf2->BufferData(_sim.GetSize() * sizeof(IInk));
 	IInk* inks2 = (IInk*)inkbuf2->MapBufferRange();
 	for (int i = 0; i < _sim.GetSize(); ++i) {
-		inks2[i] = { 0, 0, {0,0}, {0,0,0},0 };
+		inks2[i] = { 0, 0 };
+		//inks2[i] = { 0, 0, {0,0}, {0,0,0},0 };
 	}
 	inkbuf2->UnMapBuffer();
 	_buffers.insert(std::make_pair("Ink2", inkbuf2));
@@ -238,10 +240,12 @@ void SimulationApplication::CreateGrids()
 	FluidLib::Grid<IFrequency>* freqgrid2 = new FluidLib::Grid<IFrequency>(_buffers.at("Freq2")->GetId(), _sim.GetSize(), 4);
 	gridman->AddGrid("Freq2", freqgrid2);
 
-	FluidLib::Grid<IInk>* inkgrid = new FluidLib::Grid<IInk>(_buffers.at("Ink")->GetId(), _sim.GetSize(), 5, true);
+	FluidLib::Grid<IInk>* inkgrid = new FluidLib::ColorGrid<IInk>(_buffers.at("Ink")->GetId(), _sim.GetSize(), 5, 8, true);
+	inkgrid->SetElementSize(2);
 	gridman->AddGrid("Ink", inkgrid);
 
 	FluidLib::Grid<IInk>* inkgrid2 = new FluidLib::Grid<IInk>(_buffers.at("Ink2")->GetId(), _sim.GetSize(), 6, true);
+	inkgrid2->SetElementSize(2);
 	gridman->AddGrid("Ink2", inkgrid2);
 
 	FluidLib::Grid<Flags>* flaggrid = new FluidLib::Grid<Flags>(_buffers.at("Flag")->GetId(), _sim.GetSize(), 7, true);

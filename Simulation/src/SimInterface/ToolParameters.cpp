@@ -149,13 +149,79 @@ void ToolParameters::ActionParams()
 		FluidLib::ActionBase* action = _active->GetAction();
 		if (action != nullptr) {
 			ImGui::SliderFloat("Scale", action->GetScale(), 0.1f, 10.0f);
-			if (strcmp(action->GetType(), "struct IInk") == 0) {
-				FluidLib::Action<IInk>* inkaction = static_cast<FluidLib::Action<IInk>*>(action);
+			if (action->GetName() == "AddInk") {
+				FluidLib::InkAction<IInk>* inkaction = static_cast<FluidLib::InkAction<IInk>*>(action);
 				if (inkaction != nullptr) {
-					ImGui::ColorEdit3("Ink Color", &inkaction->GetValue().color.x);
+					InkActionParams(inkaction);
 				}
+			}
+			if (_active->GetName() == "Select") {
+				SelectToolActions();
 			}
 		}
 		ImGui::TreePop();
 	}
+}
+
+void ToolParameters::InkActionParams(FluidLib::InkAction<IInk>* inkaction)
+{
+	ImGui::ColorEdit3("Ink Color", &inkaction->GetColorPtr()->x);
+	if (ImGui::BeginPopupContextItem("AddToPalette"))
+	{
+		if (ImGui::Button("Add Color To Palette")) {
+			inkaction->AddCurrentColorToPalette();
+		}
+		ImGui::EndPopup();
+	}
+	if (ImGui::Button("Add Color To Palette")) {
+		inkaction->AddCurrentColorToPalette();
+	}
+	std::string colstr = "Color ";
+	static bool first = true;
+	if (first) {
+		ImGui::SetNextTreeNodeOpen(true);
+		first = false;
+	}
+	if (ImGui::TreeNode("Color Palette")) {
+		//for (glm::vec3& col : inkaction->GetColors()) {
+			std::vector<glm::vec3> colors = inkaction->GetColors();
+		for(int i = 1; i < colors.size(); ++i) {
+			std::string name = colstr + std::to_string(i);
+			glm::vec3 col = colors[i];
+			ImVec4 vec(col.x, col.y, col.z, 1);
+			if (i != 1 && i % 5 != 0)
+				ImGui::SameLine();
+			if (ImGui::ColorButton(name.c_str(), vec)) {
+				INFO("SELECTED {0}", i);
+				inkaction->SelectColor(i);
+			}
+			std::string edit = "edit color ";
+			std::string nameedit = edit + std::to_string(i);
+			if (ImGui::BeginPopupContextItem(nameedit.c_str()))
+			{
+				if (ImGui::Button("Change Color")) {
+					ERROR("EDIT COLOR NOT implemented");
+				}
+				ImGui::EndPopup();
+			}
+		}
+		ImGui::TreePop();
+	}
+}
+
+void ToolParameters::SelectToolActions()
+{
+	FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(_active);
+	if (ImGui::Button("Copy")) {
+		select->Copy();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Cut")) {
+		select->Cut();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Paste")) {
+		select->Paste();
+	}
+
 }

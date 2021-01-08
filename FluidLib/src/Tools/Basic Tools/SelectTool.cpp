@@ -65,16 +65,19 @@ namespace FluidLib {
 	void SelectTool::SetCopyAction(ActionBase* copyaction)
 	{
 		_actions["Copy"] = copyaction;
+		copyaction->SetName("Copy");
 	}
 
 	void SelectTool::SetPasteAction(ActionBase* pasteaction)
 	{
 		_actions["Paste"] = pasteaction;
+		pasteaction->SetName("Paste");
 	}
 
 	void SelectTool::SetCutAction(ActionBase* cutaction)
 	{
 		_actions["Cut"] = cutaction;
+		cutaction->SetName("Cut");
 	}
 
 	bool SelectTool::Copy()

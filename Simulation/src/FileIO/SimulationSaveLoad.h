@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include "Grids/GridManager.h"
+#include "Grids/ColorGrid.h"
 #include "Core/Log.h"
 #include "Simulation.h"
 #include "Grids/Grid.h"

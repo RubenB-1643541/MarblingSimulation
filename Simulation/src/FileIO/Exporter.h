@@ -2,6 +2,7 @@
 
 #include "FileDialog.h"
 #include <string>
+#include "Grids/ColorGrid.h"
 
 #define CHANNEL_NUM 3
 

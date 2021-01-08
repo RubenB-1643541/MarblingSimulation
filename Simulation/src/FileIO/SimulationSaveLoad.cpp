@@ -123,6 +123,16 @@ bool SimLoad::LoadGrid()
 		_buffers->at(name)->UnMapBuffer();
 	}
 	else if (name == "Ink") {
+		//Load Colors
+		FluidLib::ColorGrid<IInk>* colorgrid = static_cast<FluidLib::ColorGrid<IInk>*>(_grids->GetGrid("Ink"));
+		int size;
+		_istream >> size;
+		glm::vec3 col;
+		colorgrid->ClearColors();
+		for (int i = 0; i < size; ++i) {
+			_istream >> col.r >> col.g >> col.b;
+			colorgrid->AddColor(col);
+		}
 		_buffers->at(name)->Bind();
 		IInk* inks = (IInk*)_buffers->at(name)->MapBufferRange();
 		for (int i = 0; i < data.size; ++i) {

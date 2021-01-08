@@ -21,6 +21,7 @@ void FluidLib::BasicTool::AddAction(const std::string& name, ActionBase* action)
 {
 	_actions.insert(std::make_pair(name, action));
 	_actionkeys.push_back(name);
+	action->SetName(name);
 }
 
 void FluidLib::BasicTool::SetActiveSurface(const std::string& surfacename)

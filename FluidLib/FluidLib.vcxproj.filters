@@ -131,6 +131,8 @@
     <ClInclude Include="src\Util\Clipboard.h" />
     <ClInclude Include="src\Tools\Action\PasteAction.h" />
     <ClInclude Include="src\Tools\Action\CutAction.h" />
+    <ClInclude Include="src\Tools\Action\InkAction.h" />
+    <ClInclude Include="src\Grids\ColorGrid.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">
