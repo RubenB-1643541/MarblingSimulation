@@ -74,10 +74,10 @@ vec2 Collision(vec2 vec);
 
 void main() {
 	uint i = gl_GlobalInvocationID.x;
-	//frequencies[i] = uint(flagvals[i].x);
+	//frequencies[i] = uint(flagvals[i]);
 	bvec4 flags = bvec4(flagvals[i].x, flagvals[i].y, flagvals[i].z, flagvals[i].w);
 	ivec2 pos = IndexToPoint(i);
-	if(!flags.x) {//Freeze
+	if(!flags.x) {
 		StamAdvection(i, pos);
 		Pressure(i, pos);
 	}
@@ -95,7 +95,7 @@ Then the receiver will get less than 100
 */
 void StamAdvection(uint i, ivec2 pos) {
 			
-		vec2 velval = velocities[i]/100;//TODO 1000?
+		vec2 velval = velocities[i]/100;
 		//velocities[i].x += int(ceil(velval.x));
 		vec2 source = pos;
 
@@ -116,8 +116,7 @@ void StamAdvection(uint i, ivec2 pos) {
 			//int val = int(perc.x * frequencies[i]);
 			if(val > 0 && inkvals2[i].freq >= val) {
 				totalval += val;
-				inkvals2[i].freq -= val;
-				//atomicAdd(inkvals2[i].freq, -val);
+				atomicAdd(inkvals2[i].freq, -val);
 				if(highest.freq < inkvals2[i].freq){
 					highest.freq = inkvals2[i].freq;
 					highest.id = inkvals2[i].id;
@@ -128,8 +127,7 @@ void StamAdvection(uint i, ivec2 pos) {
 			//val = int(perc.y * frequencies[i]);
 			if(val > 0 && inkvals2[i].freq >= val) {
 				totalval += val;
-				inkvals2[i].freq -= val;
-				//atomicAdd(inkvals2[i].freq, -val);
+				atomicAdd(inkvals2[i].freq, -val);
 				if(highest.freq < inkvals2[i].freq){
 					highest.freq = inkvals2[i].freq;
 					highest.id = inkvals2[i].id;
@@ -140,8 +138,7 @@ void StamAdvection(uint i, ivec2 pos) {
 			//val = int(perc.z * frequencies[i]);
 			if(val > 0 && inkvals2[i].freq >= val) {
 				totalval += val;
-				inkvals2[i].freq -= val;
-				//atomicAdd(inkvals2[i].freq, -val);
+				atomicAdd(inkvals2[i].freq, -val);
 				if(highest.freq < inkvals2[i].freq){
 					highest.freq = inkvals2[i].freq;
 					highest.id = inkvals2[i].id;
@@ -152,8 +149,7 @@ void StamAdvection(uint i, ivec2 pos) {
 			//val = int(perc.w * frequencies[i]);
 			if(val > 0 && inkvals2[i].freq >= val) {
 				totalval += val;
-				inkvals2[i].freq -= val;
-				//atomicAdd(inkvals2[i].freq, -val);
+				atomicAdd(inkvals2[i].freq, -val);
 				if(highest.freq < inkvals2[i].freq){
 					highest.freq = inkvals2[i].freq;
 					highest.id = inkvals2[i].id;
@@ -163,8 +159,7 @@ void StamAdvection(uint i, ivec2 pos) {
 			i = PointToIndex(pos);
 			if(inkvals2[i].freq < highest.freq)
 				inkvals2[i].id = highest.id;
-			inkvals2[i].freq += totalval;
-			//atomicAdd(inkvals2[i].freq, totalval);
+			atomicAdd(inkvals2[i].freq, totalval);
 
 		}
 		
@@ -175,33 +170,53 @@ Special case for big forces
 Force > 500 (or more)
 */
 void Pressure(uint i, ivec2 pos) { // fix probs negative forces
-	if(pos.x - 1 > 0 && pos.y - 1 > 0) {//Check out of bounds 
+	if(pos.x + 1 < width && pos.y - 1 > 0) {//Check out of bounds 
 		ivec2 force = ivec2(inkvals[i].freq - inkvals[i-1].freq, inkvals[i].freq - inkvals[i+width].freq);
 		//if(force.x >= 1 || force.x <= -1)  {
-		velocities2[i].x += int(-force.x*a);
-		velocities2[i-1].x += int(-force.x*a);
-			//atomicAdd(velocities2[i].x, int(-force.x*a));
-			//atomicAdd(velocities2[i-1].x, int(-force.x*a));
+			atomicAdd(velocities2[i].x, int(-force.x*a));
+			atomicAdd(velocities2[i-1].x, int(-force.x*a));
 		//}
 		//if(force.y >= 1 || force.y <= -1 ) {
-		velocities2[i].y += int(force.y * a);
-		velocities2[i+width].y += int(force.y * a);
-			//atomicAdd(velocities2[i].y, int(force.y * a));
-			//atomicAdd(velocities2[i+width].y, int(force.y * a));
+			atomicAdd(velocities2[i].y, int(force.y * a));
+			atomicAdd(velocities2[i+width].y, int(force.y * a));
 		//}
 	}
 }
 
 void Diffuse(uint i) {
-	if(velocities2[i].x > 10000)
-		velocities2[i].x = 10000;
-	else if(velocities2[i].x < -10000)
-		velocities2[i].x = -10000;
-	if(velocities2[i].y > 10000)
-		velocities2[i].y = 10000;
-	else if(velocities2[i].y < -10000)
-		velocities2[i].y = -10000;
 	velocities2[i] = ivec2(velocities2[i] * d);
+}
+
+void InkPressure(uint src){
+	ivec2 pos = IndexToPoint(src);
+	if(pos.x + 1 < width && pos.y - 1 > 0) {//Check out of bounds 
+		//ivec2 force = ivec2(inkvals[src] - inkvals[src - 1], inkvals[src] - inkvals[src - width]);
+		//float force_x =  frequencies[src + 1] - frequencies[src];
+		//float force_y = frequencies[src + height] - frequencies[src];
+		//if(force.x > 10 || force.x < -10) {
+			//atomicAdd(velocities[src].x, force.x);		
+			//velocities[src].x += force.x;
+			//velocities[src].x += force.x * 0.001;
+			//atomicAdd(velocities[src-1].x, force.x);	
+			//velocities[src+1].x += force.x;
+			//velocities[src+1].x += force.x * 0.001;
+	}
+		//if(force.y > 10 || force.y < -10 ) {
+			//atomicAdd(velocities[src].y, force.y);	
+		//	velocities[src].y += force.y * 0.001;
+			//atomicAdd(velocities[src-width].y, force.y);
+			//atomicAdd(velocities[src+height].y, force.y);
+		//	velocities[src + width].y += force.y * 0.001;
+		//}
+		//debugvals[src].z = force.x;
+		//debugvals[src].w = force.y;
+	//}
+}
+
+//Check destinations in grid
+void ExecMovement(uint src, vec2 dest) {
+	
+	
 }
 
 void CleanEdges(uint i) {
