@@ -3,7 +3,7 @@
 
 void TopBar::OnInit()
 {
-
+	_settings = FluidLib::Simulation::Get()->GetSettings();
 }
 
 void TopBar::OnUpdate()
@@ -42,6 +42,12 @@ void TopBar::OnDraw()
 		ImGui::EndMenu();
 	}
 	if (ImGui::BeginMenu("Edit")) {
+		if (ImGui::MenuItem("Edit Surface", "Ctrl", &_settings->surfaceedit)) {
+			_settings->movementedit = false;
+		}
+		if (ImGui::MenuItem("Edit Movement", "Shift", &_settings->movementedit)) {
+			_settings->surfaceedit = false;
+		}
 		ImGui::EndMenu();
 	}
 	if (ImGui::BeginMenu("Window")) {

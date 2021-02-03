@@ -13,6 +13,6 @@ public:
 	void OnDraw() override;
 	void EndDraw() override;
 private:
-
+	FluidLib::Settings* _settings;
 };
 

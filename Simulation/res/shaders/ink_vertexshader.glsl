@@ -19,7 +19,7 @@ layout(std140, binding=5) buffer ink
 
 layout(binding=7) buffer flags
 {
-	vec4 flagvals[]; //freeze - unused - unused - unused
+	ivec4 flagvals[]; //freeze - unused - unused - unused
 };
 
 layout(std140, binding=8) uniform colors
@@ -30,6 +30,8 @@ layout(std140, binding=8) uniform colors
 
 uniform int width;
 uniform int height;
+uniform float intensity;
+uniform float freezeintensity;
 
 uniform mat4 projection;
 
@@ -37,17 +39,25 @@ out float ofreq;
 out vec4 oflags;
 out float inkfreq;
 out vec3 inkcolor;
+out vec3 watercolor;
+out float inkid;
+out float intensityout;
+out float freezeintensityout;
 
 
 void main() {
-	ofreq = float(frequencies[gl_VertexID]);
+	//ofreq = float(frequencies[gl_VertexID] * intensity);
+	intensityout = intensity;
+	freezeintensityout = freezeintensity;
 	inkfreq = inkvals[gl_VertexID].freq;
 	//inkfreq = inkvals[gl_VertexID].freq;
 	//inkcolor = vec3(1,0,0);
 	//inkcolor = colorvals[0];
+	inkid = inkvals[gl_VertexID].id;
 	inkcolor = colorvals[inkvals[gl_VertexID].id];
+	watercolor = colorvals[0];
 	//oink = float(inkvals[gl_VertexID]);
-	oflags = flagvals[gl_VertexID];
+	oflags = vec4(flagvals[gl_VertexID]);
 
 	//float x_pos = gl_VertexID;
 	float x_pos = gl_VertexID - (width * floor(gl_VertexID/width));//- height/2;

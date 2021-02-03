@@ -27,7 +27,11 @@ namespace FluidLib {
 		virtual inline std::vector<IPoint>& GetSurfacePoints() { return _points; }
 		inline virtual void SetProjection(glm::mat4 proj) { _projection = proj; }
 		std::string& GetType() { return _type; }
+
+		inline FPoint& GetTrans() { return _trans; }
+		inline void SetTrans(const FPoint& trans) { _trans = trans; }
 	protected:
+		FPoint _trans = { 0.0f,0.0f };
 		glm::mat4 _projection = glm::mat4(1.0);
 		std::vector<IPoint> _points;
 		bool _changed = false;

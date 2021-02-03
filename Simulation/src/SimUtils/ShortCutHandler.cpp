@@ -9,11 +9,13 @@ void ShortCutHandler::OnKeyPressEvent(RenderEngine::KeyPressEvent e)
 	if (key == KEY_LEFT_CONTROL || key == KEY_RIGHT_CONTROL)
 		_ctrl = true;
 
-	ShortCut shortcut = _shortcuts[key];
-	if (shortcut.key != -1 && shortcut.shift == _shift && shortcut.ctrl == _ctrl) {
-		shortcut.action();
+	std::vector<ShortCut> shortcuts = _shortcuts[key];
+	for (ShortCut& shortcut : shortcuts) {
+		if (shortcut.key != -1 && shortcut.shift == _shift && shortcut.ctrl == _ctrl) {
+			shortcut.action();
+		}
 	}
-	//Check Shortkcut
+	//Check Shortcut
 }
 
 void ShortCutHandler::OnKeyReleaseEvent(RenderEngine::KeyReleaseEvent e)
@@ -28,7 +30,8 @@ void ShortCutHandler::OnKeyReleaseEvent(RenderEngine::KeyReleaseEvent e)
 
 void ShortCutHandler::AddShortCut(ShortCut shortcut)
 {
-	_shortcuts.insert(std::make_pair(shortcut.key, shortcut));
+	_shortcuts[shortcut.key].push_back(shortcut);
+	//_shortcuts.insert(std::make_pair(shortcut.key, shortcut));
 }
 
 void ShortCutHandler::RemoveShortCut(ShortCut shortcut)

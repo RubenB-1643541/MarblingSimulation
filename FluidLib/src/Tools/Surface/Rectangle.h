@@ -41,11 +41,16 @@ namespace FluidLib {
 
 		void SetProjection(glm::mat4 proj) override;
 	private:
-		ControlPoint _controlpoints[4];
+		//ControlPoint _controlpoints[4];
+
+		ControlPoint _pos;
+		ControlPoint _size;
 		float _xpos = 0;
 		float _ypos = 0;
-		float _width = 10.0f;
-		float _height = 10.0f;
+		float _width = 75.0f;
+		float _widthold;
+		float _height = 50.0f;
+		float _heightold;
 		float _color[3] = { 1.0,1.0,1.0 };
 		STYLE _style = STYLE::BORDER;
 		bool _centered = false;

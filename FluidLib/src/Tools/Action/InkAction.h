@@ -21,10 +21,11 @@ namespace FluidLib {
 		//virtual void Execute(IPoint& p) override;
 		//virtual void Execute(std::vector<IPoint>& points) override;
 		glm::vec3* GetColorPtr() { return &_col; }
-		std::vector<glm::vec3>& GetColors();
+		std::vector<glm::vec4>& GetColors();
 		void SelectColor(int id);
 		void AddCurrentColorToPalette();
-
+		void Refresh();
+		void SetColor(int id, glm::vec3 col);
 	private:
 		glm::vec3 _col = {1.0f, 1.0f, 1.0f};
 		glm::vec3 _lastcol = { -1.0f, -1.0f, -1.0f };
@@ -48,7 +49,7 @@ namespace FluidLib {
 		_gridvals = nullptr;
 	}
 	template<class T>
-	inline std::vector<glm::vec3>& InkAction<T>::GetColors()
+	inline std::vector<glm::vec4>& InkAction<T>::GetColors()
 	{
 		ColorGrid<T>* colgrid = static_cast<ColorGrid<T>*>(_grid);
 		return colgrid->GetColors();
@@ -69,6 +70,22 @@ namespace FluidLib {
 			colgrid->AddColor(_col);
 			_lastcol = _col;
 			GetValue().id = colgrid->GetId();
+		}
+	}
+	template<class T>
+	inline void InkAction<T>::Refresh()
+	{
+		ColorGrid<T>* colgrid = static_cast<ColorGrid<T>*>(_grid);
+		colgrid->RefreshColors();
+	}
+	template<class T>
+	inline void InkAction<T>::SetColor(int id, glm::vec3 col)
+	{
+		ColorGrid<T>* colgrid = static_cast<ColorGrid<T>*>(_grid);
+		colgrid->SetColor(id, col);
+		if (GetValue().id == id) {
+			_col = col;
+			_lastcol = _col;
 		}
 	}
 	//template<class T>

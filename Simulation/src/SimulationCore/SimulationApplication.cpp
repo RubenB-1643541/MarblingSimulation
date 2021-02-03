@@ -40,7 +40,7 @@ void SimulationApplication::OnUpdate()
 		//RenderEngine::ShaderStorageBuffer* freq = _buffers.at("Freq");
 		//freq->Bind();
 		//IFrequency* freqs = (IFrequency*)freq->MapBufferRange();
-		//INFO(freqs[10].freq);
+		//INFO(freqs[0].freq);
 		//freq->UnMapBuffer();
 
 		_sim.Update();
@@ -61,6 +61,7 @@ void SimulationApplication::CreateInterface()
 	_interface.GetComponent("Left")->AddComponent(new SettingsComponent());
 	_interface.GetComponent("Left")->AddComponent(toolselect);
 	_interface.GetComponent("Left")->AddComponent(preset);
+	_interface.GetComponent("Right")->AddComponent(new MultiSurfaceComponent(_sim.GetTools(), "Basic"));
 	_sim.InitBasicToolComponent(toolselect);
 	_interface.AddComponent("Create", new CreateComponent(this, !_load));
 }
@@ -261,21 +262,26 @@ void SimulationApplication::CreateUniforms()
 	FluidLib::UniformVal heightval; heightval.intval = _sim.GetSizeY();
 	FluidLib::UniformVal aval; aval.floatptr = &_sim.GetSettings()->spreading;
 	FluidLib::UniformVal dval; dval.floatptr = &_sim.GetSettings()->diffuse;
+	FluidLib::UniformVal intensity; intensity.floatptr = &_sim.GetSettings()->intesity;
+	FluidLib::UniformVal freezeintensity; freezeintensity.floatptr = &_sim.GetSettings()->freezeintensity;
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, widthval, "width"));
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, aval, "a"));
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, dval, "d"));
+	//shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT_PTR, intensity, "intensity"));
 
 	FluidLib::GridRenderer* renderer = _sim.GetRenderer();
 	renderer->SetShader(_shader.GetId());
 	FluidLib::ShaderController* shader = renderer->GetShader();
 	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, widthval, "width"));
 	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
+	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, intensity, "intensity"));
+	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, freezeintensity, "freezeintensity"));
 }
 
 void SimulationApplication::InitShortCuts()
 {
-	_shortcuts.AddShortCut({ KEY_D , false, true,[]() {//Shift D select select tool
+	_shortcuts.AddShortCut({ KEY_S , false, true,[]() {//Shift S select select tool
 		INFO("SELECT TOOL");
 		FluidLib::Simulation::Get()->GetTools()->SetActive("Select");
 	} });
@@ -317,12 +323,31 @@ void SimulationApplication::InitShortCuts()
 		}
 	} });
 
+
 	_shortcuts.AddShortCut({ KEY_X , true, false,[]() {//Ctrl X cut with select tool
 		INFO("CUT");
 		FluidLib::ToolBase* tool = FluidLib::Simulation::Get()->GetTools()->GetActive();
 		if (tool->GetName() == "Select") {
 			FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(tool);
 			select->Cut();
+		}
+	} });
+
+	_shortcuts.AddShortCut({ KEY_F , true, false,[]() {//Ctrl F freeze with select tool
+		INFO("FREEZE");
+		FluidLib::ToolBase* tool = FluidLib::Simulation::Get()->GetTools()->GetActive();
+		if (tool->GetName() == "Select") {
+			FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(tool);
+			select->ExecuteAction("Freeze");
+		}
+	} });
+
+	_shortcuts.AddShortCut({ KEY_F , true, true,[]() {//ctrl shift F unfreeze with select tool
+		INFO("UNFREEZE");
+		FluidLib::ToolBase* tool = FluidLib::Simulation::Get()->GetTools()->GetActive();
+		if (tool->GetName() == "Select") {
+			FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(tool);
+			select->ExecuteAction("Unfreeze");
 		}
 	} });
 

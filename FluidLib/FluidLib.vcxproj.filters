@@ -133,6 +133,13 @@
     <ClInclude Include="src\Tools\Action\CutAction.h" />
     <ClInclude Include="src\Tools\Action\InkAction.h" />
     <ClInclude Include="src\Grids\ColorGrid.h" />
+    <ClInclude Include="src\Tools\Surface\Polygon.h" />
+    <ClInclude Include="src\Tools\Surface\Multisurface\MultiSurfaces.h" />
+    <ClInclude Include="src\Tools\Surface\Multisurface\MultiSurface.h" />
+    <ClInclude Include="src\Tools\Surface\Multisurface\SingleSurface.h" />
+    <ClInclude Include="src\Tools\Surface\Multisurface\CrossSurface.h" />
+    <ClInclude Include="src\Tools\Movement\CircleMovement.h" />
+    <ClInclude Include="src\Tools\Surface\Multisurface\Comb.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">
@@ -206,5 +213,11 @@
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="src\Util\Clipboard.cpp" />
+    <ClCompile Include="src\Tools\Surface\Polygon.cpp" />
+    <ClCompile Include="src\Tools\Surface\Multisurface\MultiSurface.cpp" />
+    <ClCompile Include="src\Tools\Surface\Multisurface\SingleSurface.cpp" />
+    <ClCompile Include="src\Tools\Surface\Multisurface\CrossSurface.cpp" />
+    <ClCompile Include="src\Tools\Movement\CircleMovement.cpp" />
+    <ClCompile Include="src\Tools\Surface\Multisurface\Comb.cpp" />
   </ItemGroup>
 </Project>

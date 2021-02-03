@@ -31,9 +31,9 @@ namespace FluidLib {
 		glVertexAttribPointer(0, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
 		GLuint x = glGetUniformLocation(_shader, "xpos");
-		glUniform1f(x, _xpos);
+		glUniform1f(x, _xpos + _trans.GetX());
 		GLuint y = glGetUniformLocation(_shader, "ypos");
-		glUniform1f(y, _ypos);
+		glUniform1f(y, _ypos + _trans.GetY());
 		GLuint size = glGetUniformLocation(_shader, "size");
 		glUniform1f(size, 1.0f);
 		GLuint color = glGetUniformLocation(_shader, "color");

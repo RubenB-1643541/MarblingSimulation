@@ -24,6 +24,8 @@ private:
 	void CreateTools();
 	void CreateBasicTool();
 
+	std::clock_t _prevtime;
+
 
 };
 

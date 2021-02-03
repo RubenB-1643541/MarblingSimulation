@@ -80,6 +80,7 @@ namespace RenderEngine {
 
 		static bool show = true;
 		ImGui::ShowDemoWindow(&show);
+		ImGui::ShowMetricsWindow();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

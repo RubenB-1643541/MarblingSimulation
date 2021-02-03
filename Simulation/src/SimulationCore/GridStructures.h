@@ -118,7 +118,9 @@ struct IInk {
 		}
 	}
 	inline void operator+=(const FluidLib::IPoint& move) { ink += move.GetX(); ink += move.GetY(); }
-	inline void operator-=(const IInk& val) { ink -= val.ink; }
+	inline void operator-=(const IInk& val) {
+		ink -= val.ink; if (ink <= 0) { ink = 0; id = 0; }
+	}
 	inline void operator*=(const IInk& val) { ink *= val.ink; }
 	inline void operator/=(const IInk& val) { ink /= val.ink; }
 	inline void operator*=(int val) { ink *= val; }
@@ -165,14 +167,14 @@ struct Flags {
 	int unamed1;
 	int unamed2;
 	int unamed3;
-	inline void operator+=(const Flags& val) {  }
+	inline void operator+=(const Flags& val) { if (val.freeze == 1) freeze = 1; if (val.unamed1 == 1) unamed1 = 1; if (val.unamed2 == 1) unamed2 = 1; if (val.unamed3 == 1) unamed3 = 1; }
 	inline void operator+=(const FluidLib::IPoint& move) {  }
-	inline void operator-=(const Flags& val) {  }
+	inline void operator-=(const Flags& val) { if (val.freeze == 1) freeze = 0; if (val.unamed1 == 1) unamed1 = 0; if (val.unamed2 == 1) unamed2 = 0; if (val.unamed3 == 1) unamed3 = 0; }
 	inline void operator*=(const Flags& val) {  }
 	inline void operator/=(const Flags& val) {  }
 	inline void operator*=(int val) {  }
 	inline void operator/=(int val) {  }
-	inline Flags operator*(float scale) { }
+	inline Flags operator*(float scale) { return { freeze, unamed1, unamed2, unamed3 }; }
 	inline bool operator==(const IInk& val) { return true; }
 	inline bool operator==(int val) { return true; }
 	friend std::ostream& operator<<(std::ostream& out, const Flags& flags) {

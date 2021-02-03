@@ -15,21 +15,29 @@ bool Exporter::Export()
 	int height = FluidLib::Simulation::Get()->GetSizeY();
 	uint8_t* pixels = new uint8_t[width * height * CHANNEL_NUM];
 	FluidLib::ColorGrid<IInk> * grid = static_cast<FluidLib::ColorGrid<IInk> *>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Ink"));
-	std::vector<glm::vec3> colors = grid->GetColors();
+	std::vector<glm::vec4> colors = grid->GetColors();
 	IInk* inkvals = grid->GetBufferPointer();
 	int index = 0;
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
-			//TODO Fix export
-			glm::vec3 col = colors[inkvals[i * width + j].id];
+			glm::vec4 col = colors[inkvals[i * width + j].id];
 			float freq = inkvals[i * width + j].ink;
-			pixels[index++] = int(255.99 * col.r * freq / 1000);
-			pixels[index++] = int(255.99 * col.g * freq / 1000);
-			pixels[index++] = int(255.99 * col.b * freq / 1000);
+			float scale = 0;
+			if (freq > 1000)
+				scale = 1;
+			else if (freq > 300)
+				scale = freq / 1000;
+			else if (freq > 0)
+				scale = 0.3;
+			else if (freq == 0)
+				scale = 0.1;
+			pixels[index++] = int(255.99 * col.r * scale);
+			pixels[index++] = int(255.99 * col.g * scale);
+			pixels[index++] = int(255.99 * col.b * scale);
 		}
 	}
 	stbi_write_png(file.c_str(), width, height, CHANNEL_NUM, pixels, width * CHANNEL_NUM);
 	grid->ReleaseBufferPointer();
-	delete pixels;
+	delete[] pixels;
 	return true;
 }

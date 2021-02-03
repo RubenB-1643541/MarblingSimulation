@@ -1,16 +1,22 @@
 #pragma once
 namespace FluidLib {
 
+	class FPoint;
+
 	class IPoint
 	{
 	public:
 		IPoint();
 		IPoint(int x, int y);
 		IPoint(const IPoint& p);
+		IPoint(const FPoint& p);
 
 		void operator=(const IPoint& p);
+		void operator=(const FPoint& p);
 		IPoint operator+(const IPoint& p2);
+		IPoint operator+(const FPoint& p2);
 		IPoint operator-(const IPoint& p2);
+		IPoint operator-(const FPoint& p2);
 		IPoint operator*(int i);
 		IPoint operator/(int i);
 		void operator+=(const IPoint& p2);
@@ -31,6 +37,7 @@ namespace FluidLib {
 	
 	private:
 		int _x, _y;
+		friend FPoint;
 	};
 
 	class FPoint
@@ -39,16 +46,20 @@ namespace FluidLib {
 		FPoint();
 		FPoint(float x, float y);
 		FPoint(const FPoint& p);
+		FPoint(const IPoint& p);
 
 		void operator=(const FPoint& p);
+		void operator=(const IPoint& p);
 		FPoint operator+(const FPoint& p2);
+		FPoint operator+(const IPoint& p2);
 		FPoint operator-(const FPoint& p2);
-		FPoint operator*(int i);
-		FPoint operator/(int i);
+		FPoint operator-(const IPoint& p2);
+		FPoint operator*(float i);
+		FPoint operator/(float i);
 		void operator+=(const FPoint& p2);
 		void operator-=(const FPoint& p2);
-		void operator*=(int i);
-		void operator/=(int i);
+		void operator*=(float i);
+		void operator/=(float i);
 
 		friend FPoint operator*(float f, const FPoint& p);
 		friend FPoint operator/(float f, const FPoint& p);
@@ -63,6 +74,7 @@ namespace FluidLib {
 	
 	private:
 		float _x, _y;
+		friend IPoint;
 	};
 
 

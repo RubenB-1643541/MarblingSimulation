@@ -31,6 +31,7 @@ private:
 	const static int namebuffersize = 128;
 	FluidLib::ToolManager* _tools = nullptr;
 	FluidLib::BasicTool* _basic = nullptr;
+	FluidLib::ToolBase* _active = nullptr;
 	std::string _basicname;
 	std::map<std::string, Preset> _presets;
 	bool _create = false;

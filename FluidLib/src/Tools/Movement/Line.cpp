@@ -9,12 +9,11 @@ namespace FluidLib {
     Line::Line()
     {
         _type = "Line";
-        _xpos = 20.0f;
-        _ypos = 200.0f;
-        _len = 930.0f;
+        _p1 = { 10.0f, 200.0f };
+        _p2 = { 800.0f, 200.0f };
         if (_buffer == -1) {
             glCreateBuffers(1, &_buffer);
-            std::vector<float> points = { 0.0, 0.0, 1.0, 0.0 };
+            std::vector<float> points = { 0.0, 0.0, 1.0, 1.0 };
             glBindBuffer(GL_ARRAY_BUFFER, _buffer);
             glBufferData(GL_ARRAY_BUFFER, sizeof(float) * points.size(), &points[0], GL_STATIC_DRAW);
         }
@@ -36,34 +35,68 @@ namespace FluidLib {
         glBindBuffer(GL_ARRAY_BUFFER, _buffer);
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-        GLuint xpos = glGetUniformLocation(_shader, "xpos");
-        glUniform1f(xpos, _xpos);
-        GLuint ypos = glGetUniformLocation(_shader, "ypos");
-        glUniform1f(ypos, _ypos);
-        GLuint width = glGetUniformLocation(_shader, "len");
-        glUniform1f(width, _len);
+        GLuint p1l = glGetUniformLocation(_shader, "p1");
+        glUniform2f(p1l, _p1.GetX(), _p1.GetY());
+        GLuint p2l = glGetUniformLocation(_shader, "p2");
+        glUniform2f(p2l, _p2.GetX(), _p2.GetY());
         GLuint color = glGetUniformLocation(_shader, "color");
         glUniform3f(color, 1.0f, 1.0f, 1.0f);
         GLuint proj = glGetUniformLocation(_shader, "projection");
         glUniformMatrix4fv(proj, 1, GL_FALSE, &_projection[0][0]);
-        //if (_style == STYLE::FILLED)
-        //    glDrawArrays(GL_POLYGON, 0, 6);
-        //else if (_style == STYLE::DASHED)
-        //    glDrawArrays(GL_LINES, 0, 6);//Dashed line
-        //else
         glDrawArrays(GL_LINES, 0, 2);
         glDisableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, NULL);
 	}
 
-    FPoint Line::Get(float x, float y)
+    void Line::OnEdithDraw()
     {
-        if(x < _xpos)
-            return { _xpos, _ypos };
-        else if (x > _xpos + _len)
-            return { _xpos + _len, _ypos };
-        else
-            return { x, _ypos };
+        _p1.Draw();
+        _p2.Draw();
+    }
+
+    bool Line::OnMoveClick(float x, float y)
+    {
+        if (_p1.OnClick(x, y))
+            return true;
+        if (_p2.OnClick(x, y))
+            return true;
+        return false;
+    }
+
+    bool Line::OnMoveRelease(float x, float y)
+    {
+        _p1.OnRelease();
+        _p2.OnRelease();
+
+        return false;
+    }
+
+    bool Line::OnMoveMove(float x, float y)
+    {
+        _p1.OnMove(x, y);
+        _p2.OnMove(x, y);
+        return false;
+    }
+
+    FPoint Line::Get(float x, float y)
+    {        
+        if (x <= _p1.GetX()) {
+            x = _p1.GetX();
+        }
+        else if (x >= _p2.GetX()) {
+            x = _p2.GetX();
+        }
+        float oldx = x;
+        x -= _p1.GetX();
+        y = _p1.GetY() +  x * (_p2.GetY() - _p1.GetY()) / (_p2.GetX() - _p1.GetX());
+        return {oldx, y};
+    }
+
+    void Line::SetProjection(glm::mat4 proj)
+    {
+        _projection = proj;
+        _p1.SetProjection(proj);
+        _p2.SetProjection(proj);
     }
 
 }

@@ -36,7 +36,19 @@ namespace FluidLib {
 
 	bool SelectTool::OnUseEvent(ToolUseEvent& event)
 	{
-		SwitchMode();
+		if (!_moveEdit && !_surfaceEdit) {
+			if (_move != MOVEMENT_MODE::SIZE)
+				SwitchMode();
+		}
+		return true;
+	}
+
+	bool SelectTool::OnEndUseEvent(ToolEndUseEvent& event)
+	{
+		if (!_moveEdit && !_surfaceEdit) {
+			if (_move == MOVEMENT_MODE::SIZE)
+				SwitchMode();
+		}
 		return true;
 	}
 
@@ -64,20 +76,47 @@ namespace FluidLib {
 
 	void SelectTool::SetCopyAction(ActionBase* copyaction)
 	{
-		_actions["Copy"] = copyaction;
-		copyaction->SetName("Copy");
+		AddAction("Copy", copyaction);
+		//_actions["Copy"] = copyaction;
+		//copyaction->SetName("Copy");
 	}
 
 	void SelectTool::SetPasteAction(ActionBase* pasteaction)
 	{
-		_actions["Paste"] = pasteaction;
-		pasteaction->SetName("Paste");
+		AddAction("Paste", pasteaction);
+		//_actions["Paste"] = pasteaction;
+		//pasteaction->SetName("Paste");
 	}
 
 	void SelectTool::SetCutAction(ActionBase* cutaction)
 	{
-		_actions["Cut"] = cutaction;
-		cutaction->SetName("Cut");
+		AddAction("Cut", cutaction);
+		//_actions["Cut"] = cutaction;
+		//cutaction->SetName("Cut");
+	}
+
+	void SelectTool::AddAction(const std::string& actionname, ActionBase* action)
+	{
+		_actions[actionname] = action;
+		action->SetName(actionname);
+		_actionnames.push_back(actionname);
+	}
+
+	bool SelectTool::ExecuteAction(const std::string& action)
+	{
+		std::vector<IPoint> points = _surface->GetSurfacePoints();
+
+		if (_actions.find(action) != _actions.end()) {
+			ActionBase* ac = _actions.at(action);
+			ac->SetPos(IPoint(_rect->GetX(), _rect->GetY()));
+			ac->Start();
+			for (IPoint& p : points)
+				ac->Execute(p);
+			ac->Stop();
+			return true;
+		}
+		else
+			return false;
 	}
 
 	bool SelectTool::Copy()

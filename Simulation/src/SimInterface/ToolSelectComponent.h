@@ -6,7 +6,7 @@
 #include <string>
 #include "GL/glew.h"
 
-enum class TOOL_PART {SURFACE, MOVEMENT, ACTION};
+enum class TOOL_PART {SURFACE, MOVEMENT, ACTION, TOOL};
 
 struct Button {
 	std::string icon;
@@ -26,17 +26,22 @@ public:
 	void EndDraw() override;
 	void AddButton(Button button);
 private:
+	void DrawBasic();
+	void DrawSelection();
 	FluidLib::ToolManager* _tools = nullptr;
 	FluidLib::BasicTool* _basic = nullptr;
+	FluidLib::ToolBase* _active = nullptr;
 	std::vector<Button> _surfaces;
 	std::vector<Button> _movements;
 	std::vector<Button> _actions;
+	std::vector<Button> _toolsbuttons;
 	std::string _basicname;
 	ImVec2 _iconSize = ImVec2(30, 30);
 	
 	int _selectedsurface = -1;
 	int _selectedmovement = -1;
 	int _selectedaction = -1;
+	int _selectedtool = -1;
 };
 
 

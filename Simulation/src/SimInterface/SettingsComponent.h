@@ -3,6 +3,8 @@
 #include "Interface/InterfaceComponent.h"
 #include "Simulation.h"
 #include "../SimUtils/Icon.h"
+#include "Grids/ColorGrid.h"
+#include "../SimulationCore/GridStructures.h"
 
 class SettingsComponent : public RenderEngine::InterfaceComponent
 {
@@ -17,5 +19,6 @@ private:
 	ImVec2 _iconSize = ImVec2(30, 30);
 	Icon _playicon;
 	Icon _pauseicon;
+	FluidLib::ColorGrid<IInk>* _colorgrid = nullptr;
 };
 

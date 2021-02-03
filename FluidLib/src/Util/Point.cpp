@@ -14,7 +14,17 @@ namespace FluidLib {
 	{
 	}
 
+	IPoint::IPoint(const FPoint& p) : _x(p._x), _y(p._y)
+	{
+	}
+
 	void IPoint::operator=(const IPoint& p)
+	{
+		_x = p._x;
+		_y = p._y;
+	}
+
+	void IPoint::operator=(const FPoint& p)
 	{
 		_x = p._x;
 		_y = p._y;
@@ -25,9 +35,19 @@ namespace FluidLib {
 		return IPoint(_x + p2._x, _y + p2._y);
 	}
 
+	IPoint IPoint::operator+(const FPoint& p2)
+	{
+		return IPoint(_x + p2._x, _y + p2._y);
+	}
+
 	IPoint IPoint::operator-(const IPoint& p2)
 	{
 		return IPoint(_x - p2._x, _y - p2._y );
+	}
+
+	IPoint IPoint::operator-(const FPoint& p2)
+	{
+		return IPoint(_x - p2._x, _y - p2._y);
 	}
 
 	IPoint IPoint::operator*(int i)
@@ -76,7 +96,17 @@ namespace FluidLib {
 	{
 	}
 
+	FPoint::FPoint(const IPoint& p) : _x(p._x), _y(p._y)
+	{
+	}
+
 	void FPoint::operator=(const FPoint& p)
+	{
+		_x = p._x;
+		_y = p._y;
+	}
+
+	void FPoint::operator=(const IPoint& p)
 	{
 		_x = p._x;
 		_y = p._y;
@@ -87,17 +117,27 @@ namespace FluidLib {
 		return FPoint( _x + p2._x, _y + p2._y );
 	}
 
+	FPoint FPoint::operator+(const IPoint& p2)
+	{
+		return FPoint(_x + p2._x, _y + p2._y);
+	}
+
 	FPoint FPoint::operator-(const FPoint& p2)
 	{
 		return FPoint(_x - p2._x, _y - p2._y );
 	}
 
-	FPoint FPoint::operator*(int i)
+	FPoint FPoint::operator-(const IPoint& p2)
+	{
+		return FPoint(_x - p2._x, _y - p2._y);
+	}
+
+	FPoint FPoint::operator*(float i)
 	{
 		return FPoint(_x * i, _y * i );
 	}
 
-	FPoint FPoint::operator/(int i)
+	FPoint FPoint::operator/(float i)
 	{
 		return FPoint(_x / i, _y / i );
 	}
@@ -114,13 +154,13 @@ namespace FluidLib {
 		_y -= p2._y;
 	}
 
-	void FPoint::operator*=(int i)
+	void FPoint::operator*=(float i)
 	{
 		_x *= i;
 		_y *= i;
 	}
 
-	void FPoint::operator/=(int i)
+	void FPoint::operator/=(float i)
 	{
 		_x /= i;
 		_y /= i;

@@ -7,3 +7,4 @@
 #include "SettingsComponent.h"
 #include "CreateComponent.h"
 #include "PresetComponent.h"
+#include "MultiSurfaceComponent.h"

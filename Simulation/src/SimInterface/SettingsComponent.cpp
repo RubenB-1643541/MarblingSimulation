@@ -6,10 +6,13 @@ void SettingsComponent::OnInit()
 	_lastfps = _settings->fps;
 	_pauseicon = Load("res/icons/Pause.png");
 	_playicon = Load("res/icons/Play.png");
+	//_colorgrid = static_cast<FluidLib::ColorGrid<IInk>*>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Ink"));
 }
 
 void SettingsComponent::OnUpdate()
 {
+	if(_colorgrid == nullptr)
+		_colorgrid = static_cast<FluidLib::ColorGrid<IInk>*>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Ink"));
 }
 
 void SettingsComponent::OnDraw()
@@ -37,14 +40,47 @@ void SettingsComponent::OnDraw()
 			ImGui::SliderInt("Updates/sec", &_settings->fps, 0.0, 60.0);
 			ImGui::SliderFloat("Ink Spreading", &_settings->spreading, 0.0f, 1.0f);
 			ImGui::SliderFloat("Diffuse", &_settings->diffuse, 0.0f, 1.0f);
+			
 		}
 		else {
 			ImGui::Text("No Settings");
 		}
-		ImGui::Separator();
+		
 		ImGui::TreePop();
 		
 	}
+	ImGui::Separator();
+	if (_first)
+		ImGui::SetNextTreeNodeOpen(true);
+	if (ImGui::TreeNode("Simulation Visual Settings")) {
+		if (_settings != nullptr) {
+			ImGui::SliderFloat("Color Intesity", &_settings->intesity, 0.0f, 1.0f);
+			ImGui::SliderFloat("Freeze Intesity", &_settings->freezeintensity, 0.0f, 1.0f);
+			if (_colorgrid != nullptr) {
+				glm::vec3 col = _colorgrid->GetColor(0);
+				ImVec4 imcol = ImVec4(col.x, col.y, col.z, 1);
+				ImGui::Text("Water Color");
+				ImGui::SameLine();
+				ImGui::ColorButton("Water color", imcol);
+				if (ImGui::BeginPopupContextItem("watercolorcontext"))
+				{
+					//std::string editcolname = nameedit + "col";
+					ImGui::ColorEdit3("Water Color", &col.x);
+					_colorgrid->SetColor(0, col);
+					//if (ImGui::Button("Change Color")) {
+					//	ERROR("EDIT COLOR NOT implemented");
+					//}
+					_colorgrid->RefreshColors();
+					ImGui::EndPopup();
+				}
+			}
+		}
+		else {
+			ImGui::Text("No Settings");
+		}
+		ImGui::TreePop();
+	}
+	ImGui::Separator();
 	
 }
 

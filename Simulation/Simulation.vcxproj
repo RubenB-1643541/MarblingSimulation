@@ -96,6 +96,7 @@
     <ClInclude Include="src\FileIO\SimulationSaveLoad.h" />
     <ClInclude Include="src\SimInterface\CreateComponent.h" />
     <ClInclude Include="src\SimInterface\InterfaceComponentsList.h" />
+    <ClInclude Include="src\SimInterface\MultiSurfaceComponent.h" />
     <ClInclude Include="src\SimInterface\PresetComponent.h" />
     <ClInclude Include="src\SimInterface\SettingsComponent.h" />
     <ClInclude Include="src\SimInterface\SideComponent.h" />
@@ -114,6 +115,7 @@
     <ClCompile Include="src\FileIO\FileDialog.cpp" />
     <ClCompile Include="src\FileIO\SimulationSaveLoad.cpp" />
     <ClCompile Include="src\SimInterface\CreateComponent.cpp" />
+    <ClCompile Include="src\SimInterface\MultiSurfaceComponent.cpp" />
     <ClCompile Include="src\SimInterface\PresetComponent.cpp" />
     <ClCompile Include="src\SimInterface\SettingsComponent.cpp" />
     <ClCompile Include="src\SimInterface\SideComponent.cpp" />

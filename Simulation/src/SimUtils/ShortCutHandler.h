@@ -3,6 +3,7 @@
 #include "Consts/Keys.h"
 #include "Core/Events/Events.h"
 #include <map>
+#include <vector>
 #define MAX_KEYS 350
 
 struct ShortCut {
@@ -28,7 +29,7 @@ private:
 	bool _shift = false;
 	bool _ctrl = false;
 	bool _keys[MAX_KEYS];
-	std::map<int, ShortCut> _shortcuts;
+	std::map<int, std::vector<ShortCut>> _shortcuts;
 
 };
 

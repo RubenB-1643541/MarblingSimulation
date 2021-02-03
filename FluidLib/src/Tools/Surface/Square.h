@@ -2,6 +2,7 @@
 
 #include "Tools/Surface.h"
 #include "GL/glew.h"
+#include <Util/ControlPoint.h>
 
 namespace FluidLib {
 
@@ -17,15 +18,24 @@ namespace FluidLib {
 		std::vector<IPoint>& GetSurfacePoints() override;
 		inline float* GetLen() { return &_len; }
 		inline void SetStyle(STYLE style) { _style = style; }
+
+		virtual void StartEdit() override;
+		virtual void EditDraw() override;
+		virtual bool OnEditMove(float x, float y) override;
+		virtual bool OnEditClick(float x, float y) override;
+		virtual bool OnEditRelease(float x, float y) override;
+
+		void SetProjection(glm::mat4 proj) override;
 	private:
 		float _xpos = 0;
 		float _ypos = 0;
-		float _len = 10.0f;
+		float _len = 50.0f;
 		float _color[3] = { 1.0,1.0,1.0 };
 		STYLE _style = STYLE::BORDER;
 		bool _centered = false;
 
-	
+		ControlPoint _pos;
+		ControlPoint _size;
 
 		static GLuint _buffer;
 		static GLuint _shader;

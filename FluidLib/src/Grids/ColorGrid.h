@@ -24,8 +24,11 @@ namespace FluidLib {
 		void AddColor(glm::vec3 col);
 		void ClearColors();
 		glm::vec3 GetColor(int id) { return _colors[id]; }
-		std::vector<glm::vec3>& GetColors() { return _colors; }
+		std::vector<glm::vec4>& GetColors() { return _colors; }
 		void SetColAttr(int attr) { _colattr = attr; }
+
+		void RefreshColors();
+		void SetColor(int id, glm::vec3 col);
 
 		void UseGrid() override;
 		void DrawGrid() override;
@@ -33,11 +36,12 @@ namespace FluidLib {
 	private:
 		void CreateColorBuffer();
 		uint32_t _id = 0;
-		std::vector<glm::vec3> _colors = { {0,0,0} };
+		std::vector<glm::vec4> _colors = { {0,0,0,1} };
 		bool _colorchange = false;
 
 		int _colattr = 0;
 		GLuint _colid = -1;
+		int _buffersize = 2;
 	};
 
 	template<class T>
@@ -75,7 +79,8 @@ namespace FluidLib {
 	template<class T>
 	inline void ColorGrid<T>::AddColor(glm::vec3 col)
 	{
-		_colors.push_back(col); 
+		glm::vec4 ncol = { col.x, col.y, col.z, 1 };
+		_colors.push_back(ncol); 
 		++_id; 
 		_colorchange = true;
 	}
@@ -85,6 +90,19 @@ namespace FluidLib {
 	{
 		_colors.clear();
 		_id = 0;
+	}
+
+	template<class T>
+	inline void ColorGrid<T>::RefreshColors()
+	{
+		glNamedBufferSubData(_colid, 0, _colors.size() * sizeof(glm::vec4), &_colors[0]);
+	}
+
+	template<class T>
+	inline void ColorGrid<T>::SetColor(int id, glm::vec3 col)
+	{
+		glm::vec4 ncol = { col.x, col.y, col.z, 1 };
+		_colors[id] = ncol;
 	}
 
 	template<class T>
@@ -99,8 +117,13 @@ namespace FluidLib {
 		if (GetRender()) {
 
 			if (_colorchange) {
-				//TODO Change buffer size of more then 10 cols
-				glNamedBufferSubData(_colid, (_colors.size()-1) * sizeof(glm::vec4), sizeof(glm::vec4), &_colors[_colors.size()-1]);
+				if (_colors.size() > _buffersize) {
+					_buffersize *= 2;
+					glBufferData(GL_UNIFORM_BUFFER, _buffersize * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
+					glNamedBufferSubData(_colid, 0, _colors.size() * sizeof(glm::vec4), &_colors[0]);
+				}
+				else
+					glNamedBufferSubData(_colid, (_colors.size()-1) * sizeof(glm::vec4), sizeof(glm::vec4), &_colors[_colors.size()-1]);
 				_colorchange = false;
 				//GLint bufMask = GL_MAP_WRITE_BIT;
 				//glBindBuffer(GL_SHADER_STORAGE_BUFFER, _colid);
@@ -147,7 +170,7 @@ namespace FluidLib {
 		//_colors.push_back({ 0,0,0 });
 		glGenBuffers(1, &_colid);
 		glBindBuffer(GL_UNIFORM_BUFFER, _colid);
-		glBufferData(GL_UNIFORM_BUFFER, 10 * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
+		glBufferData(GL_UNIFORM_BUFFER, _buffersize * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
 		//glBufferData(GL_SHADER_STORAGE_BUFFER, _colors.size() * sizeof(glm::vec3), &_colors[0], GL_STATIC_DRAW);
 		//Copy buffer data
 		//if(_colors.size() > 0)

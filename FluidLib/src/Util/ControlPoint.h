@@ -22,9 +22,10 @@ namespace FluidLib {
 		void OnMove(float x, float y);
 		inline bool Selected() { return _selected; }
 		inline void SetProjection(glm::mat4 proj) { _projection = proj; }
+		void VisualTranslate(const FPoint& p);
 	private:
 		void Init();
-
+		FPoint _trans = {0.0f,0.0f};
 		bool _selected = false;
 		float _size = 10.0f;
 

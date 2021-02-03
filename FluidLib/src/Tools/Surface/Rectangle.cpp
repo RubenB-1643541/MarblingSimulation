@@ -20,10 +20,8 @@ namespace FluidLib {
         if (_shader == -1) {
             _shader = CompileShader(vertex, fragment);
         }
-        _controlpoints[0].Set(_xpos, _ypos);
-        _controlpoints[1].Set(_xpos, _height);
-        _controlpoints[2].Set(_width, _ypos);
-        _controlpoints[3].Set(_width, _height);
+        _widthold = _width;
+        _heightold = _height;
     }
 
     void Rectangle::Draw() const
@@ -35,9 +33,9 @@ namespace FluidLib {
 
 
         GLuint xpos = glGetUniformLocation(_shader, "xpos");
-        glUniform1f(xpos, _xpos);
+        glUniform1f(xpos, _xpos + _trans.GetX());
         GLuint ypos = glGetUniformLocation(_shader, "ypos");
-        glUniform1f(ypos, _ypos);
+        glUniform1f(ypos, _ypos + _trans.GetY());
         GLuint width = glGetUniformLocation(_shader, "width");
         glUniform1f(width, _width);
         GLuint height = glGetUniformLocation(_shader, "height");
@@ -81,7 +79,14 @@ namespace FluidLib {
 
     std::vector<IPoint>& Rectangle::GetSurfacePoints()
     {
+        if (_widthold != _width)
+            _changed = true;
+        if (_heightold != _height)
+            _changed = true;
         if (_changed) {
+            _widthold = _width;
+            _heightold = _height;
+            _changed = false;
             _points.clear();
             if (_centered) {
                 for (int i = -abs(_width / 2); i < abs(_width / 2); ++i) {
@@ -103,66 +108,66 @@ namespace FluidLib {
 
     void Rectangle::StartEdit()
     {
-        if (_centered) {
-            _controlpoints[0].Set(_xpos - _width / 2, _ypos - _height / 2);
-            _controlpoints[1].Set(_xpos - _width / 2, _ypos + _height / 2);
-            _controlpoints[2].Set(_xpos + _width / 2, _ypos - _height / 2);
-            _controlpoints[3].Set(_xpos + _width / 2, _ypos + _height / 2);
-        }
-        else {
-            _controlpoints[0].Set(_xpos, _ypos);
-            _controlpoints[1].Set(_xpos, _ypos + _height);
-            _controlpoints[2].Set(_xpos + _width, _ypos);
-            _controlpoints[3].Set(_xpos + _width, _ypos + _height);
-        }
+        //if (_centered) {
+        //    _controlpoints[0].Set(_xpos - _width / 2, _ypos - _height / 2);
+        //    _controlpoints[1].Set(_xpos - _width / 2, _ypos + _height / 2);
+        //    _controlpoints[2].Set(_xpos + _width / 2, _ypos - _height / 2);
+        //    _controlpoints[3].Set(_xpos + _width / 2, _ypos + _height / 2);
+        //}
+        //else {
+        //    _controlpoints[0].Set(_xpos, _ypos);
+        //    _controlpoints[1].Set(_xpos, _ypos + _height);
+        //    _controlpoints[2].Set(_xpos + _width, _ypos);
+        //    _controlpoints[3].Set(_xpos + _width, _ypos + _height);
+        //}
     }
 
     void Rectangle::EditDraw()
     {
-        if (_controlpoints[0].Selected()) {
-            _xpos = _controlpoints[0].GetX() + _width/2;
-            _ypos = _controlpoints[0].GetY() + _height/2;
-        }
-        if (_controlpoints[3].Selected()) {
-            _width = (_controlpoints[3].GetX() -_xpos) * 2;
-            _height = (_controlpoints[3].GetY() -_ypos) * 2;
-        }
-        for (int i = 0; i < 4; ++i) {
-            _controlpoints[i].Draw();
 
-        }
+        _pos.SetX(_xpos);
+        _pos.SetY(_ypos);
+        _size.SetX(_width/2);
+        _size.SetY(_height/2);
+        _size.VisualTranslate({ _xpos, _ypos });
+        _pos.Draw();
+        _size.Draw();
     }
 
     bool Rectangle::OnEditMove(float x, float y)
     {
-        for (int i = 0; i < 4; ++i) {
-            _controlpoints[i].OnMove(x, y);
+        _pos.OnMove(x, y);
+        if (_pos.Selected()) {
+            _xpos = _pos.GetX();
+            _ypos = _pos.GetY();
+        }
+        _size.OnMove(x, y);
+        if (_size.Selected()) {
+            _width = _size.GetX() * 2;
+            _height = _size.GetY() * 2;
         }
         return false;
     }
 
     bool Rectangle::OnEditClick(float x, float y)
     {
-        for (int i = 0; i < 4; ++i) {
-            if (_controlpoints[i].OnClick(x, y))
-                return true;
-        }
-        return false;
+        if (_pos.OnClick(x, y))
+            return true;
+        return _size.OnClick(x, y);
     }
 
     bool Rectangle::OnEditRelease(float x, float y)
     {
-        for (int i = 0; i < 4; ++i) {
-            _controlpoints[i].OnRelease();
-        }
+        _pos.OnRelease();
+        _size.OnRelease();
         return true;
     }
 
     void Rectangle::SetProjection(glm::mat4 proj)
     {
         _projection = proj;
-        for (int i = 0; i < 4; ++i)
-            _controlpoints[i].SetProjection(proj);
+        _pos.SetProjection(proj);
+        _size.SetProjection(proj);
     }
 
 }

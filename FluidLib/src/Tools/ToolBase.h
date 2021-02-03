@@ -46,12 +46,13 @@ namespace FluidLib {
 		Surface* _surface = nullptr;
 		glm::mat4 _proj;
 		bool _using = false;
-	private:
 		bool _moveEdit = false;
 		bool _surfaceEdit = false;
+	private:
 		float _x = 0;
 		float _y = 0;
 		std::string _name = "Base";
+
 
 	};
 

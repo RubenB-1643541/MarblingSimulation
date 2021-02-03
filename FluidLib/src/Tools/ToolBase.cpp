@@ -19,12 +19,12 @@ namespace FluidLib {
     }
     void ToolBase::Update()
     {
-        if (Simulation::Get()->GetKeys()->shift) {
+        if (Simulation::Get()->GetKeys()->shift || FluidLib::Simulation::Get()->GetSettings()->movementedit) {
             _moveEdit = true;
             _surfaceEdit = false;
             _using = false;
         }
-        else if(Simulation::Get()->GetKeys()->ctr){
+        else if(Simulation::Get()->GetKeys()->ctr || FluidLib::Simulation::Get()->GetSettings()->surfaceedit){
             if (!_surfaceEdit)
                 _surface->StartEdit();
             _moveEdit = false;

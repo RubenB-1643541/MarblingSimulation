@@ -41,7 +41,7 @@ layout(std140, binding=6) buffer ink2
 
 layout(binding=7) buffer flags
 {
-	vec4 flagvals[]; //freeze - unused - unused - unused
+	ivec4 flagvals[]; //freeze - unused - unused - unused
 };
 
 
@@ -74,7 +74,7 @@ vec2 Collision(vec2 vec);
 
 void main() {
 	uint i = gl_GlobalInvocationID.x;
-	//frequencies2[i] = 1;
+	frequencies[i] = uint(flagvals[i]);
 	//frequencies[i] = int( inkvals[i].id);
 	//frequencies2[i].y = int( inkvals[i].id);
 	bvec4 flags = bvec4(flagvals[i].x, flagvals[i].y, flagvals[i].z, flagvals[i].w);
@@ -112,10 +112,15 @@ void StamAdvection(uint i, ivec2 pos) {
 			int totalval = 0;
 			uint i = PointToIndex(ivec2(sqpoints.x, sqpoints.y));
 			int val = int(perc.x * 100);
+			InkStruct highest = {0,0};
 			//int val = int(perc.x * frequencies[i]);
 			if(val > 0 && inkvals2[i].freq >= val) {
 				totalval += val;
 				atomicAdd(inkvals2[i].freq, -val);
+				if(highest.freq < inkvals2[i].freq){
+					highest.freq = inkvals2[i].freq;
+					highest.id = inkvals2[i].id;
+				}
 			}
 			i = PointToIndex(ivec2(sqpoints.z, sqpoints.y));
 			val = int(perc.y * 100);
@@ -123,6 +128,10 @@ void StamAdvection(uint i, ivec2 pos) {
 			if(val > 0 && inkvals2[i].freq >= val) {
 				totalval += val;
 				atomicAdd(inkvals2[i].freq, -val);
+				if(highest.freq < inkvals2[i].freq){
+					highest.freq = inkvals2[i].freq;
+					highest.id = inkvals2[i].id;
+				}
 			}
 			i = PointToIndex(ivec2(sqpoints.x, sqpoints.w));
 			val = int(perc.z * 100);
@@ -130,6 +139,10 @@ void StamAdvection(uint i, ivec2 pos) {
 			if(val > 0 && inkvals2[i].freq >= val) {
 				totalval += val;
 				atomicAdd(inkvals2[i].freq, -val);
+				if(highest.freq < inkvals2[i].freq){
+					highest.freq = inkvals2[i].freq;
+					highest.id = inkvals2[i].id;
+				}
 			}
 			i = PointToIndex(ivec2(sqpoints.z, sqpoints.w));
 			val = int(perc.w * 100);
@@ -137,10 +150,17 @@ void StamAdvection(uint i, ivec2 pos) {
 			if(val > 0 && inkvals2[i].freq >= val) {
 				totalval += val;
 				atomicAdd(inkvals2[i].freq, -val);
+				if(highest.freq < inkvals2[i].freq){
+					highest.freq = inkvals2[i].freq;
+					highest.id = inkvals2[i].id;
+				}
 			}
 			
 			i = PointToIndex(pos);
+			if(inkvals2[i].freq < highest.freq)
+				inkvals2[i].id = highest.id;
 			atomicAdd(inkvals2[i].freq, totalval);
+
 		}
 		
 }

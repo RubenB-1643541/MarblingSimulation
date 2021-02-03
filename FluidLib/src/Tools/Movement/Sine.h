@@ -2,6 +2,7 @@
 
 #include "../Movement.h"
 #include "Util/Point.h"
+#include "Util/ControlPoint.h"
 #include "GL/glew.h"
 #include <vector>
 #include "corecrt_math_defines.h"
@@ -16,6 +17,11 @@ namespace FluidLib {
 
 		bool OnScroll(float x, float y) override;
 		void DrawPath() override;
+		void OnEdithDraw() override;
+
+		bool OnMoveClick(float x, float y) override;
+		bool OnMoveRelease(float x, float y) override;
+		bool OnMoveMove(float x, float y) override;
 
 		/*
 		Changes input position to new position
@@ -28,12 +34,15 @@ namespace FluidLib {
 		float* GetAmp() { return &_amplitude; }
 		float* GetPeriod() { return &_period; }
 
+		void SetProjection(glm::mat4 proj) override;
 	private:
 		float _verttrans = 250.0f;
 		float _hortrans = 0.0f;
 		float _amplitude = 30.0f;
 		float _period = 30.0f;
 
+		ControlPoint _pos;
+		ControlPoint _size;
 
 		std::vector<float> _sinepoints;
 		const float _precision = 0.001f;

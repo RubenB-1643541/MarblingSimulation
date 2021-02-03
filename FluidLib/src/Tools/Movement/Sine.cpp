@@ -1,5 +1,6 @@
 #include "Sine.h"
 #include "Util/Rendering.h"
+#include <Simulation.h>
 
 namespace FluidLib {
 
@@ -22,6 +23,8 @@ namespace FluidLib {
 		if (_shader == -1) {
 			_shader = CompileShader(vertex, fragment);
 		}
+		_size.VisualTranslate({ _hortrans,  _verttrans});
+
 	}
 
 	bool Sine::OnScroll(float x, float y)
@@ -58,9 +61,57 @@ namespace FluidLib {
 		glBindBuffer(GL_ARRAY_BUFFER, NULL);
 	}
 
+	void Sine::OnEdithDraw()
+	{
+		_pos.SetX(_hortrans);
+		_pos.SetY(_verttrans);
+		_size.SetX(_period*2);
+		_size.SetY(-_amplitude);
+		_pos.Draw();
+		_size.Draw();
+	}
+
+	bool Sine::OnMoveClick(float x, float y)
+	{
+		if (_pos.OnClick(x, y))
+			return true;
+		return _size.OnClick(x, y);
+
+	}
+
+	bool Sine::OnMoveRelease(float x, float y)
+	{
+		_pos.OnRelease();
+		_size.OnRelease();
+		return false;
+	}
+
+	bool Sine::OnMoveMove(float x, float y)
+	{
+		_pos.OnMove(x, y);
+		if (_pos.Selected()) {
+			_hortrans = _pos.GetX();
+			_verttrans = _pos.GetY();
+			_size.VisualTranslate({ _hortrans, _verttrans });
+		}
+		_size.OnMove(x, y);
+		if (_size.Selected()) {
+			_period = _size.GetX()/2;
+			_amplitude = -_size.GetY();
+		}
+		return false;
+	}
+
 	FPoint Sine::Get(float x, float y)
 	{
 		return FPoint(x, sinf((x - _hortrans) /_period)*_amplitude + _verttrans);
+	}
+
+	void Sine::SetProjection(glm::mat4 proj)
+	{
+		_projection = proj;
+		_pos.SetProjection(proj);
+		_size.SetProjection(proj);
 	}
 
 }

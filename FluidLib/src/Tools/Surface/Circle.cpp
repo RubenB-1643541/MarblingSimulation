@@ -40,9 +40,9 @@ namespace FluidLib {
 
         
         GLuint xpos = glGetUniformLocation(_shader, "xpos");
-        glUniform1f(xpos, _x);
+        glUniform1f(xpos, _x + _trans.GetX());
         GLuint ypos = glGetUniformLocation(_shader, "ypos"); 
-        glUniform1f(ypos, _y);
+        glUniform1f(ypos, _y + _trans.GetY());
         GLuint radius = glGetUniformLocation(_shader, "radius");
         glUniform1f(radius, _r);
         GLuint color = glGetUniformLocation(_shader, "color");
@@ -57,6 +57,49 @@ namespace FluidLib {
             glDrawArrays(GL_LINE_LOOP, 0, (int)(1 / _precision));
         glDisableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, NULL);
+    }
+
+    void Circle::EditDraw()
+    {
+        _pos.SetX(_x);
+        _pos.SetY(_y);
+        _size.SetX(_r);
+        _size.SetY(0);
+        _size.VisualTranslate({ _x, _y });
+        _pos.Draw();
+        _size.Draw();
+    }
+
+    void Circle::StartEdit()
+    {
+    }
+
+    bool Circle::OnEditMove(float x, float y)
+    {
+        _pos.OnMove(x, y);
+        if (_pos.Selected()) {
+            _x = _pos.GetX();
+            _y = _pos.GetY();
+        }
+        _size.OnMove(x, y);
+        if(_size.Selected()) {
+            _r = _size.GetX();
+        }
+        return false;
+    }
+
+    bool Circle::OnEditClick(float x, float y)
+    {
+        if (_pos.OnClick(x, y))
+            return true;
+        return _size.OnClick(x,y);
+    }
+
+    bool Circle::OnEditRelease(float x, float y)
+    {
+        _pos.OnRelease();
+        _size.OnRelease();
+        return false;
     }
 
     void Circle::OnScroll(float x, float y)
@@ -94,6 +137,13 @@ namespace FluidLib {
             _changed = false;
         }
         return _points;
+    }
+
+    void Circle::SetProjection(glm::mat4 proj)
+    {
+        _projection = proj;
+        _pos.SetProjection(proj);
+        _size.SetProjection(proj);
     }
 
 }

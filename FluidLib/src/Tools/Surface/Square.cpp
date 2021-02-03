@@ -31,9 +31,9 @@ namespace FluidLib {
 
 
         GLuint xpos = glGetUniformLocation(_shader, "xpos");
-        glUniform1f(xpos, _xpos);
+        glUniform1f(xpos, _xpos + _trans.GetX());
         GLuint ypos = glGetUniformLocation(_shader, "ypos");
-        glUniform1f(ypos, _ypos);
+        glUniform1f(ypos, _ypos + _trans.GetY());
         GLuint width = glGetUniformLocation(_shader, "width");
         glUniform1f(width, _len);
         GLuint height = glGetUniformLocation(_shader, "height");
@@ -92,6 +92,56 @@ namespace FluidLib {
             }
         }
         return _points;
+    }
+
+    void Square::StartEdit()
+    {
+    }
+
+    void Square::EditDraw()
+    {
+        _pos.SetX(_xpos);
+        _pos.SetY(_ypos);
+        _size.SetX(_len/2);
+        _size.SetY(0);
+        _size.VisualTranslate({ _xpos, _ypos });
+        _pos.Draw();
+        _size.Draw();
+    }
+
+    bool Square::OnEditMove(float x, float y)
+    {
+        _pos.OnMove(x, y);
+        if (_pos.Selected()) {
+            _xpos = _pos.GetX();
+            _ypos = _pos.GetY();
+        }
+        _size.OnMove(x, y);
+        if (_size.Selected()) {
+            _len = _size.GetX()*2;
+        }
+        return true;
+    }
+
+    bool Square::OnEditClick(float x, float y)
+    {
+        if (_pos.OnClick(x, y))
+            return true;
+        return _size.OnClick(x, y);
+    }
+
+    bool Square::OnEditRelease(float x, float y)
+    {
+        _pos.OnRelease();
+        _size.OnRelease();
+        return false;
+    }
+
+    void Square::SetProjection(glm::mat4 proj)
+    {
+        _projection = proj;
+        _pos.SetProjection(proj);
+        _size.SetProjection(proj);
     }
 
 }

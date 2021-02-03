@@ -28,9 +28,9 @@ namespace FluidLib {
 		glVertexAttribPointer(0, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
 		GLuint x = glGetUniformLocation(_shader, "xpos");
-		glUniform1f(x, GetX());
+		glUniform1f(x, GetX() + _trans.GetX());
 		GLuint y = glGetUniformLocation(_shader, "ypos");
-		glUniform1f(y, GetY());
+		glUniform1f(y, GetY() + _trans.GetY());
 		GLuint size = glGetUniformLocation(_shader, "size");
 		glUniform1f(size, _size);
 		GLuint color = glGetUniformLocation(_shader, "color");
@@ -48,7 +48,7 @@ namespace FluidLib {
 
 	bool ControlPoint::OnClick(float x, float y)
 	{
-		if (floor(x) >= floor(GetX() - _size * 2) && floor(x) <= floor(GetX() + _size * 2) && floor(y) >= floor(GetY() - _size * 2) && floor(y) <= floor(GetY() + _size * 2)) {
+		if (floor(x) >= floor(GetX() + _trans.GetX() - _size * 2) && floor(x) <= floor(GetX() + _trans.GetX() + _size * 2) && floor(y) >= floor(GetY() + _trans.GetY() - _size * 2) && floor(y) <= floor(GetY() + _trans.GetY() + _size * 2)) {
 			_selected = true;
 			return true;
 		}
@@ -63,8 +63,13 @@ namespace FluidLib {
 	void ControlPoint::OnMove(float x, float y)
 	{
 		if (_selected) {
-			SetX(x); SetY(y);
+			SetX(x - _trans.GetX()); SetY(y - _trans.GetY());
 		}
+	}
+
+	void ControlPoint::VisualTranslate(const FPoint& p)
+	{
+		_trans = p;
 	}
 
 	void ControlPoint::Init()

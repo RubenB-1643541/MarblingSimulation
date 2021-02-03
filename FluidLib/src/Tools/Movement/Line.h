@@ -4,6 +4,8 @@
 #include "Util/Point.h"
 #include "GL/glew.h"
 #include <vector>
+#include <Util/ControlPoint.h>
+#include <cmath>
 
 namespace FluidLib {
 
@@ -15,20 +17,25 @@ namespace FluidLib {
 		bool OnScroll(float x, float y) override;
 		void DrawPath() override;
 
+		void OnEdithDraw();
+		bool OnMoveClick(float x, float y) override;
+		bool OnMoveRelease(float x, float y) override;
+		bool OnMoveMove(float x, float y) override;
 		/*
 		Changes input position to new position
 		@param float x, y : mouse position
 		@return FPoint: Stays on the line
 		*/
 		virtual FPoint Get(float x, float y) override;
-		float* GetX() { return &_xpos; }
-		float* GetY() { return &_ypos; }
-		float* GetLen() { return &_len; }
+
+		FPoint* GetP1Ptr() { return &_p1; }
+		FPoint* GetP2Ptr() { return &_p2; }
+
+		void SetProjection(glm::mat4 proj) override;
 		
 	private:
-		float _xpos = 0;
-		float _ypos = 0;
-		float _len = 0;
+		ControlPoint _p1;
+		ControlPoint _p2;
 
 		static GLuint _buffer;
 		static GLuint _shader;

@@ -15,7 +15,9 @@ namespace FluidLib {
     }
     GridBase* GridManager::GetGrid(const std::string& name)
     {
-        return _grids[name];
+        if(_grids.find(name) != _grids.end())
+            return _grids[name];
+        return nullptr;
     }
     void GridManager::BindGrids()
     {
