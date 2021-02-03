@@ -21,9 +21,6 @@ in float freezeintensityout;
 void main() {
 	bvec4 flags = bvec4(oflags.x, oflags.y, oflags.z, oflags.w);
 	vec3 result = vec3(0,0,0);
-	if(inkid == 0) {
-
-	}
 	if (inkfreq > 1000)
 		result = inkcolor;
 	else if (inkfreq > 300)

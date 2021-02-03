@@ -62,14 +62,21 @@ namespace FluidLib {
         glBindBuffer(GL_ARRAY_BUFFER, NULL);
     }
 
-    void BezierCurve::OnEdithDraw()
+    void BezierCurve::OnEditDraw()
     {
         for (int i = 0; i < 4; ++i) {
             _controlpoints[i].Draw();
         }
     }
 
-    bool BezierCurve::OnMoveClick(float x, float y)
+    void BezierCurve::StartEdit()
+    {
+        for (int i = 0; i < 4; ++i) {
+            _controlpoints[i].OnRelease();
+        }
+    }
+
+    bool BezierCurve::OnEditClick(float x, float y)
     {
         for (int i = 0; i < 4; ++i) {
             if (_controlpoints[i].OnClick(x, y))
@@ -78,7 +85,7 @@ namespace FluidLib {
         return false;
     }
 
-    bool BezierCurve::OnMoveRelease(float x, float y)
+    bool BezierCurve::OnEditRelease(float x, float y)
     {
         for (int i = 0; i < 4; ++i) {
             _controlpoints[i].OnRelease();
@@ -86,7 +93,7 @@ namespace FluidLib {
         return false;
     }
 
-    bool BezierCurve::OnMoveMove(float x, float y)
+    bool BezierCurve::OnEditMove(float x, float y)
     {
         for (int i = 0; i < 4; ++i) {
             _controlpoints[i].OnMove(x, y);

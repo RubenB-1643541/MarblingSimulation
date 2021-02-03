@@ -5,11 +5,12 @@
 #include "Simulation.h"
 #include "../SimulationCore/GridStructures.h"
 
-bool Exporter::Export()
+bool Exporter::Export(bool askfile)
 {
 	//Select File
-	std::string file = FileDialog::Export();
-	if(file == "")
+	if(askfile)
+		_file = FileDialog::Export();
+	if(_file == "")
 		return false;
 	int width = FluidLib::Simulation::Get()->GetSizeX();
 	int height = FluidLib::Simulation::Get()->GetSizeY();
@@ -18,9 +19,12 @@ bool Exporter::Export()
 	std::vector<glm::vec4> colors = grid->GetColors();
 	IInk* inkvals = grid->GetBufferPointer();
 	int index = 0;
+	glm::vec4 watercolor = colors[0];
+	float intensity = FluidLib::Simulation::Get()->GetSettings()->intesity;
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
-			glm::vec4 col = colors[inkvals[i * width + j].id];
+			int colid = inkvals[i * width + j].id;
+			glm::vec4 col = colors[colid];
 			float freq = inkvals[i * width + j].ink;
 			float scale = 0;
 			if (freq > 1000)
@@ -31,13 +35,32 @@ bool Exporter::Export()
 				scale = 0.3;
 			else if (freq == 0)
 				scale = 0.1;
-			pixels[index++] = int(255.99 * col.r * scale);
-			pixels[index++] = int(255.99 * col.g * scale);
-			pixels[index++] = int(255.99 * col.b * scale);
+
+			if (colid == 0)
+				scale = 1;
+			//mix =  v1 * (1 - a) + v2 * a
+			pixels[index++] = int(255.99 * (watercolor.r * (1-intensity) + (col.r * scale) * intensity));
+			pixels[index++] = int(255.99 * (watercolor.g * (1-intensity) + (col.g * scale) * intensity));
+			pixels[index++] = int(255.99 * (watercolor.b * (1-intensity) + (col.b * scale) * intensity));
+			if (_watertrans) {
+				if (colid == 0)
+					pixels[index++] = 0;
+				else if (_inktrans)
+					pixels[index++] = 255 * scale;
+				else
+					pixels[index++] = 255;
+			}
+			else
+				pixels[index++] = 255;
 		}
 	}
-	stbi_write_png(file.c_str(), width, height, CHANNEL_NUM, pixels, width * CHANNEL_NUM);
+	stbi_write_png(_file.c_str(), width, height, CHANNEL_NUM, pixels, width * CHANNEL_NUM);
 	grid->ReleaseBufferPointer();
 	delete[] pixels;
 	return true;
+}
+
+void Exporter::SetFile(std::string file)
+{
+	_file = file;
 }

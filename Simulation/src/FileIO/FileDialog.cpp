@@ -184,6 +184,10 @@ std::string FileDialog::Export()
         using convert_type = std::codecvt_utf8<wchar_t>;
         std::wstring_convert<convert_type, wchar_t> converter;
         std::string result = converter.to_bytes(wstr);
+        std::string token = result.substr(result.size() - 4, result.size());
+        std::cout << token << std::endl;
+        if (token != ".png" && token != ".PNG")
+            result.append(".png");
         return result;
         //return filename;
     }

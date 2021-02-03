@@ -108,18 +108,8 @@ namespace FluidLib {
 
     void Rectangle::StartEdit()
     {
-        //if (_centered) {
-        //    _controlpoints[0].Set(_xpos - _width / 2, _ypos - _height / 2);
-        //    _controlpoints[1].Set(_xpos - _width / 2, _ypos + _height / 2);
-        //    _controlpoints[2].Set(_xpos + _width / 2, _ypos - _height / 2);
-        //    _controlpoints[3].Set(_xpos + _width / 2, _ypos + _height / 2);
-        //}
-        //else {
-        //    _controlpoints[0].Set(_xpos, _ypos);
-        //    _controlpoints[1].Set(_xpos, _ypos + _height);
-        //    _controlpoints[2].Set(_xpos + _width, _ypos);
-        //    _controlpoints[3].Set(_xpos + _width, _ypos + _height);
-        //}
+        _pos.OnRelease();
+        _size.OnRelease();
     }
 
     void Rectangle::EditDraw()

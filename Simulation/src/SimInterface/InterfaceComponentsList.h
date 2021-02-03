@@ -6,5 +6,6 @@
 #include "ToolSelectComponent.h"
 #include "SettingsComponent.h"
 #include "CreateComponent.h"
+#include "ExportComponent.h"
 #include "PresetComponent.h"
 #include "MultiSurfaceComponent.h"

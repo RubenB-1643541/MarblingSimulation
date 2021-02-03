@@ -61,7 +61,7 @@ namespace FluidLib {
 		glBindBuffer(GL_ARRAY_BUFFER, NULL);
 	}
 
-	void Sine::OnEdithDraw()
+	void Sine::OnEditDraw()
 	{
 		_pos.SetX(_hortrans);
 		_pos.SetY(_verttrans);
@@ -71,7 +71,13 @@ namespace FluidLib {
 		_size.Draw();
 	}
 
-	bool Sine::OnMoveClick(float x, float y)
+	void Sine::StartEdit()
+	{
+		_pos.OnRelease();
+		_size.OnRelease();
+	}
+
+	bool Sine::OnEditClick(float x, float y)
 	{
 		if (_pos.OnClick(x, y))
 			return true;
@@ -79,14 +85,14 @@ namespace FluidLib {
 
 	}
 
-	bool Sine::OnMoveRelease(float x, float y)
+	bool Sine::OnEditRelease(float x, float y)
 	{
 		_pos.OnRelease();
 		_size.OnRelease();
 		return false;
 	}
 
-	bool Sine::OnMoveMove(float x, float y)
+	bool Sine::OnEditMove(float x, float y)
 	{
 		_pos.OnMove(x, y);
 		if (_pos.Selected()) {

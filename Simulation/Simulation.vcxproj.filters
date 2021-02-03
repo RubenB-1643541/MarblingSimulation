@@ -56,6 +56,7 @@
     <ClInclude Include="src\FileIO\FileDialog.h" />
     <ClInclude Include="src\FileIO\Exporter.h" />
     <ClInclude Include="src\SimInterface\MultiSurfaceComponent.h" />
+    <ClInclude Include="src\SimInterface\ExportComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SimInterface\CreateComponent.cpp">
@@ -97,5 +98,6 @@
     <ClCompile Include="src\FileIO\FileDialog.cpp" />
     <ClCompile Include="src\FileIO\Exporter.cpp" />
     <ClCompile Include="src\SimInterface\MultiSurfaceComponent.cpp" />
+    <ClCompile Include="src\SimInterface\ExportComponent.cpp" />
   </ItemGroup>
 </Project>

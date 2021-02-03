@@ -11,7 +11,7 @@ namespace FluidLib {
 	{
 		if (_moveEdit) {
 			_movement->DrawPath();
-			_movement->OnEdithDraw();
+			_movement->OnEditDraw();
 		}
 		else if (_surfaceEdit) {
 			_surface->Draw();

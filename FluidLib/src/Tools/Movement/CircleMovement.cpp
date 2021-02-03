@@ -52,7 +52,13 @@ namespace FluidLib {
 		glBindBuffer(GL_ARRAY_BUFFER, NULL);
 	}
 
-	void CircleMovement::OnEdithDraw()
+	void CircleMovement::StartEdit()
+	{
+		_pos.OnRelease();
+		_size.OnRelease();
+	}
+
+	void CircleMovement::OnEditDraw()
 	{
 		_pos.SetX(_x);
 		_pos.SetY(_y);
@@ -63,21 +69,21 @@ namespace FluidLib {
 		_size.Draw();
 	}
 
-	bool CircleMovement::OnMoveClick(float x, float y)
+	bool CircleMovement::OnEditClick(float x, float y)
 	{
 		if (_pos.OnClick(x, y))
 			return true;
 		return _size.OnClick(x, y);
 	}
 
-	bool CircleMovement::OnMoveRelease(float x, float y)
+	bool CircleMovement::OnEditRelease(float x, float y)
 	{
 		_pos.OnRelease();
 		_size.OnRelease();
 		return false;
 	}
 
-	bool CircleMovement::OnMoveMove(float x, float y)
+	bool CircleMovement::OnEditMove(float x, float y)
 	{
 		_pos.OnMove(x, y);
 		if (_pos.Selected()) {

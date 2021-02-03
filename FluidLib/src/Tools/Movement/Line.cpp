@@ -48,13 +48,19 @@ namespace FluidLib {
         glBindBuffer(GL_ARRAY_BUFFER, NULL);
 	}
 
-    void Line::OnEdithDraw()
+    void Line::StartEdit()
+    {
+        _p1.OnRelease();
+        _p2.OnRelease();
+    }
+
+    void Line::OnEditDraw()
     {
         _p1.Draw();
         _p2.Draw();
     }
 
-    bool Line::OnMoveClick(float x, float y)
+    bool Line::OnEditClick(float x, float y)
     {
         if (_p1.OnClick(x, y))
             return true;
@@ -63,7 +69,7 @@ namespace FluidLib {
         return false;
     }
 
-    bool Line::OnMoveRelease(float x, float y)
+    bool Line::OnEditRelease(float x, float y)
     {
         _p1.OnRelease();
         _p2.OnRelease();
@@ -71,7 +77,7 @@ namespace FluidLib {
         return false;
     }
 
-    bool Line::OnMoveMove(float x, float y)
+    bool Line::OnEditMove(float x, float y)
     {
         _p1.OnMove(x, y);
         _p2.OnMove(x, y);

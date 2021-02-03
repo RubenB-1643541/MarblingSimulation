@@ -122,6 +122,7 @@
     <ClInclude Include="src\Tools\Movement\Line.h" />
     <ClInclude Include="src\Tools\Movement\MouseMovement.h" />
     <ClInclude Include="src\Tools\Movement\Movements.h" />
+    <ClInclude Include="src\Tools\Movement\PointMovement.h" />
     <ClInclude Include="src\Tools\Movement\Sine.h" />
     <ClInclude Include="src\Tools\Surface.h" />
     <ClInclude Include="src\Tools\Surface\Circle.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="src\Tools\Movement\BezierCurve.cpp" />
     <ClCompile Include="src\Tools\Movement\CircleMovement.cpp" />
     <ClCompile Include="src\Tools\Movement\Line.cpp" />
+    <ClCompile Include="src\Tools\Movement\PointMovement.cpp" />
     <ClCompile Include="src\Tools\Movement\Sine.cpp" />
     <ClCompile Include="src\Tools\Surface\Circle.cpp" />
     <ClCompile Include="src\Tools\Surface\Multisurface\Comb.cpp" />

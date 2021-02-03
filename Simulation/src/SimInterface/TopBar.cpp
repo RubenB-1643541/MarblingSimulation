@@ -1,5 +1,6 @@
 #include "TopBar.h"
 #include "../FileIO/SimulationSaveLoad.h"
+#include <Core/Application.h>
 
 void TopBar::OnInit()
 {
@@ -36,8 +37,10 @@ void TopBar::OnDraw()
 		ImGui::Separator();
 		if (ImGui::MenuItem("Export")) {
 			INFO("EXPORT");
-			Exporter ex;
-			ex.Export();
+			if(_export != nullptr)
+				_export->Open();
+			//Exporter ex;
+			//ex.Export();
 		}
 		ImGui::EndMenu();
 	}

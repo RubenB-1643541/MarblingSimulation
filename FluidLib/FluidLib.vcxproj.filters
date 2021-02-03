@@ -140,6 +140,7 @@
     <ClInclude Include="src\Tools\Surface\Multisurface\CrossSurface.h" />
     <ClInclude Include="src\Tools\Movement\CircleMovement.h" />
     <ClInclude Include="src\Tools\Surface\Multisurface\Comb.h" />
+    <ClInclude Include="src\Tools\Movement\PointMovement.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">
@@ -219,5 +220,6 @@
     <ClCompile Include="src\Tools\Surface\Multisurface\CrossSurface.cpp" />
     <ClCompile Include="src\Tools\Movement\CircleMovement.cpp" />
     <ClCompile Include="src\Tools\Surface\Multisurface\Comb.cpp" />
+    <ClCompile Include="src\Tools\Movement\PointMovement.cpp" />
   </ItemGroup>
 </Project>

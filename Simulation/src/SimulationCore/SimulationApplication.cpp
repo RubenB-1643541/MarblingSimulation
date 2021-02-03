@@ -54,7 +54,8 @@ void SimulationApplication::CreateInterface()
 	//_interface.AddComponent("Left", new SideComponent("Left", ImVec2(0, 30), ImVec2(RenderEngine::Application::Get()->GetWidth() / 5, RenderEngine::Application::Get()->GetHeight() - 50)));
 	_interface.AddComponent("Right", new SideComponent("Right", ImVec2(1920 - 1920/5, 30), ImVec2(1920 / 5, 1001 - 50)));
 	//_interface.AddComponent("Right", new SideComponent("Right", ImVec2(RenderEngine::Application::Get()->GetWidth() - RenderEngine::Application::Get()->GetWidth()/5, 30), ImVec2(RenderEngine::Application::Get()->GetWidth() / 5, RenderEngine::Application::Get()->GetHeight() - 50)));
-	_interface.AddComponent("Menu", new TopBar());
+	TopBar* top = new TopBar();
+	_interface.AddComponent("Menu", top);
 	_interface.GetComponent("Right")->AddComponent(new ToolParameters(_sim.GetTools()));
 	ToolSelectComponent* toolselect = new ToolSelectComponent(_sim.GetTools(), "Basic");
 	PresetComponent* preset = new PresetComponent(_sim.GetTools(), "Basic");
@@ -64,6 +65,9 @@ void SimulationApplication::CreateInterface()
 	_interface.GetComponent("Right")->AddComponent(new MultiSurfaceComponent(_sim.GetTools(), "Basic"));
 	_sim.InitBasicToolComponent(toolselect);
 	_interface.AddComponent("Create", new CreateComponent(this, !_load));
+	ExportComponent* exp = new ExportComponent();
+	_interface.AddComponent("Export", exp);
+	top->SetExportComponent(exp);
 }
 
 bool SimulationApplication::OnWindowResizeEvent(RenderEngine::WindowResizeEvent& e)

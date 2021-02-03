@@ -72,6 +72,8 @@ namespace FluidLib {
 
     void Circle::StartEdit()
     {
+        _pos.OnRelease();
+        _size.OnRelease();
     }
 
     bool Circle::OnEditMove(float x, float y)

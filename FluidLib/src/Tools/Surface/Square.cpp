@@ -96,6 +96,8 @@ namespace FluidLib {
 
     void Square::StartEdit()
     {
+        _pos.OnRelease();
+        _size.OnRelease();
     }
 
     void Square::EditDraw()

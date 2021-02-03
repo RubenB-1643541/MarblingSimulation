@@ -5,4 +5,5 @@
 #include "Sine.h"
 #include "BezierCurve.h"
 #include "CircleMovement.h"
+#include "PointMovement.h"
 #include "../Movement.h"

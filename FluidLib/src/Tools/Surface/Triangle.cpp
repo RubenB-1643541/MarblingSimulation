@@ -104,6 +104,9 @@ namespace FluidLib {
 
 	void Triangle::StartEdit()
 	{
+		_pos.OnRelease();
+		_wcon.OnRelease();
+		_hcon.OnRelease();
 	}
 
 	void Triangle::EditDraw()

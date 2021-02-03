@@ -108,7 +108,9 @@ void MarblingSimulation::CreateBasicTool()
 	basic->AddMovement("Sine", new FluidLib::Sine());
 	basic->AddMovement("BezierCurve", new FluidLib::BezierCurve());
 	basic->AddMovement("Circle", new FluidLib::CircleMovement());
+	basic->AddMovement("Point", new FluidLib::PointMovement());
 	basic->SetActiveMovement("Mouse");
+
 	basic->AddSurface("Square", new FluidLib::Square());
 	basic->AddSurface("Rectangle", new FluidLib::Rectangle());
 	basic->AddSurface("Triangle", new FluidLib::Triangle());
@@ -150,6 +152,7 @@ void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
 	comp->AddButton(Button("res/icons/Sine.png", "Sine", TOOL_PART::MOVEMENT));
 	comp->AddButton(Button("res/icons/BezierCurve.png", "BezierCurve", TOOL_PART::MOVEMENT));
 	comp->AddButton(Button("res/icons/Circle.png", "Circle", TOOL_PART::MOVEMENT));
+	comp->AddButton(Button("res/icons/Point.png", "Point", TOOL_PART::MOVEMENT));
 
 	//comp->AddButton(Button("res/icons/Ink.png", "AddFreq", TOOL_PART::ACTION));
 	comp->AddButton(Button("res/icons/Ink.png", "AddInk", TOOL_PART::ACTION));

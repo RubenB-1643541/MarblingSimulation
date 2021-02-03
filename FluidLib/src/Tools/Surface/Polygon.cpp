@@ -86,6 +86,9 @@ namespace FluidLib {
 
 	void Polygon::StartEdit()
 	{
+		for (int i = 0; i < PointCount(); ++i) {
+			_controlpoints[i].OnRelease();
+		}
 	}
 
 	void Polygon::EditDraw()

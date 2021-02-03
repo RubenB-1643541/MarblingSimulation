@@ -13,7 +13,7 @@ namespace FluidLib {
 		@param float x, y : mouse position
 		@return FPoint: the same mouse position
 		*/
-		inline virtual FPoint Get(float x, float y) { return { x, y }; }
+		inline virtual FPoint Get(float x, float y) override { return { x, y }; } 
 	};
 
 }

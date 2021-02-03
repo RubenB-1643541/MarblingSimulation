@@ -5,7 +5,7 @@ namespace FluidLib {
     {
         if (_moveEdit) {
             _movement->DrawPath();
-            _movement->OnEdithDraw();
+            _movement->OnEditDraw();
         }
         else if (_surfaceEdit) {
             _surface->Draw();
@@ -32,8 +32,13 @@ namespace FluidLib {
             _using = false;
         }
         else {
+            if (!_moveEdit)
+                _movement->StartEdit();
             _moveEdit = false;
             _surfaceEdit = false;
+            FPoint p = _movement->Get(_x, _y);
+            _surface->OnMove(p.GetX(), p.GetY());
+            _action->SetPos({ (int)p.GetX(), (int)p.GetY() });
         }
         if (_using) {
             OnBeginUse();
@@ -55,7 +60,7 @@ namespace FluidLib {
     bool ToolBase::OnUseEvent(ToolUseEvent& event)
     {
         if (_moveEdit) {
-            _movement->OnMoveClick(_x, _y);
+            _movement->OnEditClick(_x, _y);
             return true;
         }
         else if (_surfaceEdit) {
@@ -73,7 +78,7 @@ namespace FluidLib {
     {
         _using = false;
         if (_moveEdit) {
-            _movement->OnMoveRelease(_x, _y);
+            _movement->OnEditRelease(_x, _y);
             return true;
         }
         else if (_surfaceEdit) {
@@ -87,16 +92,20 @@ namespace FluidLib {
         _x = event.GetX();
         _y = event.GetY();
         if (_moveEdit) {
-            _movement->OnMoveMove(_x, _y);
-        }
-        else if (_surfaceEdit) {
-            _surface->OnEditMove(_x, _y);
-        }
-        else {
+            _movement->OnEditMove(_x, _y);
+
             FPoint p = _movement->Get(_x, _y);
             _surface->OnMove(p.GetX(), p.GetY());
             _action->SetPos({ (int)p.GetX(), (int)p.GetY() });
         }
+        else if (_surfaceEdit) {
+            _surface->OnEditMove(_x, _y);
+        }
+        //else {
+        //    FPoint p = _movement->Get(_x, _y);
+        //    _surface->OnMove(p.GetX(), p.GetY());
+        //    _action->SetPos({ (int)p.GetX(), (int)p.GetY() });
+        //}
         return true;
     }
     bool ToolBase::OnScrollEvent(ToolScrollEvent& event)

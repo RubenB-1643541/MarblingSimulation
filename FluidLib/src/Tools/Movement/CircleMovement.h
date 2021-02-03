@@ -18,10 +18,11 @@ namespace FluidLib {
 		bool OnScroll(float x, float y) override;
 		void DrawPath() override;
 
-		void OnEdithDraw();
-		bool OnMoveClick(float x, float y) override;
-		bool OnMoveRelease(float x, float y) override;
-		bool OnMoveMove(float x, float y) override;
+		void StartEdit() override;
+		void OnEditDraw() override;
+		bool OnEditClick(float x, float y) override;
+		bool OnEditRelease(float x, float y) override;
+		bool OnEditMove(float x, float y) override;
 
 		float GetR() { return _r; }
 		void SetR(float r) { _r = r; }
