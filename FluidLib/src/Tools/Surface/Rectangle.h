@@ -45,6 +45,7 @@ namespace FluidLib {
 
 		ControlPoint _pos;
 		ControlPoint _size;
+		ControlPoint _rotcon;
 		float _xpos = 0;
 		float _ypos = 0;
 		float _width = 75.0f;

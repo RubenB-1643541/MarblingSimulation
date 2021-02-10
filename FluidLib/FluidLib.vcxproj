@@ -115,6 +115,7 @@
     <ClInclude Include="src\Tools\Action\InkAction.h" />
     <ClInclude Include="src\Tools\Action\PasteAction.h" />
     <ClInclude Include="src\Tools\Basic Tools\BasicTool.h" />
+    <ClInclude Include="src\Tools\Basic Tools\DrippingTool.h" />
     <ClInclude Include="src\Tools\Basic Tools\SelectTool.h" />
     <ClInclude Include="src\Tools\Movement.h" />
     <ClInclude Include="src\Tools\Movement\BezierCurve.h" />
@@ -126,6 +127,7 @@
     <ClInclude Include="src\Tools\Movement\Sine.h" />
     <ClInclude Include="src\Tools\Surface.h" />
     <ClInclude Include="src\Tools\Surface\Circle.h" />
+    <ClInclude Include="src\Tools\Surface\Multisurface\CircleMultiSurface.h" />
     <ClInclude Include="src\Tools\Surface\Multisurface\Comb.h" />
     <ClInclude Include="src\Tools\Surface\Multisurface\CrossSurface.h" />
     <ClInclude Include="src\Tools\Surface\Multisurface\MultiSurface.h" />
@@ -155,6 +157,7 @@
     <ClCompile Include="src\Grids\Uniforms.cpp" />
     <ClCompile Include="src\Simulation.cpp" />
     <ClCompile Include="src\Tools\Basic Tools\BasicTool.cpp" />
+    <ClCompile Include="src\Tools\Basic Tools\DrippingTool.cpp" />
     <ClCompile Include="src\Tools\Basic Tools\SelectTool.cpp" />
     <ClCompile Include="src\Tools\Movement\BezierCurve.cpp" />
     <ClCompile Include="src\Tools\Movement\CircleMovement.cpp" />
@@ -162,6 +165,7 @@
     <ClCompile Include="src\Tools\Movement\PointMovement.cpp" />
     <ClCompile Include="src\Tools\Movement\Sine.cpp" />
     <ClCompile Include="src\Tools\Surface\Circle.cpp" />
+    <ClCompile Include="src\Tools\Surface\Multisurface\CircleMultiSurface.cpp" />
     <ClCompile Include="src\Tools\Surface\Multisurface\Comb.cpp" />
     <ClCompile Include="src\Tools\Surface\Multisurface\CrossSurface.cpp" />
     <ClCompile Include="src\Tools\Surface\Multisurface\MultiSurface.cpp" />

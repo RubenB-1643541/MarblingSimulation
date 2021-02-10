@@ -1,4 +1,7 @@
 #pragma once
+
+#include <cmath>
+
 namespace FluidLib {
 
 	class FPoint;
@@ -34,6 +37,8 @@ namespace FluidLib {
 
 		inline int* GetXPtr() { return &_x; }
 		inline int* GetYPtr() { return &_y; }
+
+		IPoint& Rotate(float r);
 	
 	private:
 		int _x, _y;
@@ -71,7 +76,8 @@ namespace FluidLib {
 		inline void Set(float x, float y) { _x = x; _y = y; }
 		inline float* GetXPtr() { return &_x; }
 		inline float* GetYPtr() { return &_y; }
-	
+		
+		FPoint& Rotate(float r);
 	private:
 		float _x, _y;
 		friend IPoint;

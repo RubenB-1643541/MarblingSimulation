@@ -27,8 +27,8 @@ namespace FluidLib {
 		virtual bool OnMoveEvent(ToolMoveEvent& event);
 		virtual bool OnScrollEvent(ToolScrollEvent& event);
 
-		void OnBeginUse();
-		void OnEndUse();
+		virtual void OnBeginUse();
+		virtual void OnEndUse();
 		virtual void OnUse();
 
 		inline virtual void SetAction(ActionBase* action) { _action = action; }

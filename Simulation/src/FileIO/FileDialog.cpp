@@ -172,7 +172,7 @@ std::string FileDialog::Export()
     ofn.lpstrFilter = L"Image\0*.png\0Any File\0*.*\0";
     ofn.lpstrFile = filename;
     ofn.nMaxFile = MAX_PATH;
-    ofn.lpstrTitle = L"Select a save file";
+    ofn.lpstrTitle = L"Select an export file";
     ofn.Flags = OFN_DONTADDTORECENT;
     if (GetSaveFileNameW(&ofn))
     {
@@ -185,7 +185,6 @@ std::string FileDialog::Export()
         std::wstring_convert<convert_type, wchar_t> converter;
         std::string result = converter.to_bytes(wstr);
         std::string token = result.substr(result.size() - 4, result.size());
-        std::cout << token << std::endl;
         if (token != ".png" && token != ".PNG")
             result.append(".png");
         return result;

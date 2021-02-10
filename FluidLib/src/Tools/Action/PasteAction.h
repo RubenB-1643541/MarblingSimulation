@@ -51,36 +51,46 @@ namespace FluidLib {
 	inline void PasteAction<T>::Set(IPoint& p)
 	{
 		IPoint temp = IPoint(*_x, *_y) + p;
-		T* data = static_cast<T*>(Clipboard::GetData());
-		_gridvals[POINT_TO_1D(temp)] = data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX()];
+		if (IN_GRID(temp)) {
+			T* data = static_cast<T*>(Clipboard::GetData());
+			_gridvals[POINT_TO_1D(temp)] = data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX()];
+		}
 	}
 	template<class T>
 	inline void PasteAction<T>::Add(IPoint& p)
 	{
 		IPoint temp = IPoint(*_x, *_y) + p;
-		T* data = static_cast<T*>(Clipboard::GetData());
-		_gridvals[POINT_TO_1D(temp)] += data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX()];
+		if (IN_GRID(temp)) {
+			T* data = static_cast<T*>(Clipboard::GetData());
+			_gridvals[POINT_TO_1D(temp)] += data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX()];
+		}
 	}
 	template<class T>
 	inline void PasteAction<T>::Sub(IPoint& p)
 	{
 		IPoint temp = IPoint(*_x, *_y) + p;
-		T* data = static_cast<T*>(Clipboard::GetData());
-		_gridvals[POINT_TO_1D(temp)] -= data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX()];
+		if (IN_GRID(temp)) {
+			T* data = static_cast<T*>(Clipboard::GetData());
+			_gridvals[POINT_TO_1D(temp)] -= data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX()];
+		}
 	}
 	template<class T>
 	inline void PasteAction<T>::Mul(IPoint& p)
 	{
 		IPoint temp = IPoint(*_x, *_y) + p;
-		T* data = static_cast<T*>(Clipboard::GetData());
-		_gridvals[POINT_TO_1D(temp)] *= data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX()];
+		if (IN_GRID(temp)) {
+			T* data = static_cast<T*>(Clipboard::GetData());
+			_gridvals[POINT_TO_1D(temp)] *= data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX()];
+		}
 	}
 	template<class T>
 	inline void PasteAction<T>::Div(IPoint& p)
 	{
 		IPoint temp = IPoint(*_x, *_y) + p;
-		T* data = static_cast<T*>(Clipboard::GetData());
-		_gridvals[POINT_TO_1D(temp)] /= data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX()];
+		if (IN_GRID(temp)) {
+			T* data = static_cast<T*>(Clipboard::GetData());
+			_gridvals[POINT_TO_1D(temp)] /= data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX()];
+		}
 	}
 	template<class T>
 	inline void PasteAction<T>::Move(IPoint& p)

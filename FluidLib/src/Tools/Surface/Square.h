@@ -30,12 +30,14 @@ namespace FluidLib {
 		float _xpos = 0;
 		float _ypos = 0;
 		float _len = 50.0f;
+		float _lenold;
 		float _color[3] = { 1.0,1.0,1.0 };
 		STYLE _style = STYLE::BORDER;
 		bool _centered = false;
 
 		ControlPoint _pos;
 		ControlPoint _size;
+		ControlPoint _rotcon;
 
 		static GLuint _buffer;
 		static GLuint _shader;

@@ -5,6 +5,7 @@
 
 #define COOR_2D_TO_1D(x,y) Simulation::Get()->GetSizeX() * y + x
 #define POINT_TO_1D(p) Simulation::Get()->GetSizeX() * p.GetY() + p.GetX()
+#define IN_GRID(p) p.GetX()>0 && p.GetY()>0 && p.GetX() < Simulation::Get()->GetSizeX() &&  p.GetY() < Simulation::Get()->GetSizeY()
 
 namespace FluidLib {
 

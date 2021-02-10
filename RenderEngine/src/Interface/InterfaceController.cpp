@@ -79,7 +79,7 @@ namespace RenderEngine {
 			c.second->Draw();
 
 		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
+		//ImGui::ShowDemoWindow(&show);
 		ImGui::ShowMetricsWindow();
 
 		ImGui::Render();

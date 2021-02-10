@@ -50,9 +50,11 @@ void SimulationApplication::OnUpdate()
 
 void SimulationApplication::CreateInterface()
 {
-	_interface.AddComponent("Left", new SideComponent("Left", ImVec2(0, 30), ImVec2(1920 / 5, 1001 - 50)));
+	int h = GetHeight();
+	int w = GetWidth();
+	_interface.AddComponent("Left", new SideComponent("Left", ImVec2(0, 30), ImVec2(w / 5, h - 50)));
 	//_interface.AddComponent("Left", new SideComponent("Left", ImVec2(0, 30), ImVec2(RenderEngine::Application::Get()->GetWidth() / 5, RenderEngine::Application::Get()->GetHeight() - 50)));
-	_interface.AddComponent("Right", new SideComponent("Right", ImVec2(1920 - 1920/5, 30), ImVec2(1920 / 5, 1001 - 50)));
+	_interface.AddComponent("Right", new SideComponent("Right", ImVec2(w - w/5, 30), ImVec2(w / 5, h - 50)));
 	//_interface.AddComponent("Right", new SideComponent("Right", ImVec2(RenderEngine::Application::Get()->GetWidth() - RenderEngine::Application::Get()->GetWidth()/5, 30), ImVec2(RenderEngine::Application::Get()->GetWidth() / 5, RenderEngine::Application::Get()->GetHeight() - 50)));
 	TopBar* top = new TopBar();
 	_interface.AddComponent("Menu", top);

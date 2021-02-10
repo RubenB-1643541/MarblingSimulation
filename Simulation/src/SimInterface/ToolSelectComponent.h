@@ -6,6 +6,7 @@
 #include <string>
 #include "GL/glew.h"
 
+
 enum class TOOL_PART {SURFACE, MOVEMENT, ACTION, TOOL};
 
 struct Button {

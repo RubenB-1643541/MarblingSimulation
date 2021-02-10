@@ -137,57 +137,66 @@ namespace FluidLib {
 	inline void Action<T>::Set(IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] = _value * _scale;
+		if(IN_GRID(temp))
+			_gridvals[POINT_TO_1D(temp)] = _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Add(IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] += _value * _scale;
+		if (IN_GRID(temp))
+			_gridvals[POINT_TO_1D(temp)] += _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Sub(IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] -= _value * _scale;
+		if (IN_GRID(temp))
+			_gridvals[POINT_TO_1D(temp)] -= _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Mul(IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] *= _value * _scale;
+		if (IN_GRID(temp))
+			_gridvals[POINT_TO_1D(temp)] *= _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Div(IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] /= _value * _scale;
+		if (IN_GRID(temp))
+			_gridvals[POINT_TO_1D(temp)] /= _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Move(IPoint& p)
 	{
 		IPoint temp = _oldpos + p;
-		IPoint move = _pos - _oldpos;
-		_gridvals[POINT_TO_1D(temp)] += move * 20 *_scale;
+		if (IN_GRID(temp)) {
+			IPoint move = _pos - _oldpos;
+			_gridvals[POINT_TO_1D(temp)] += move * 20 * _scale;
+		}
 	}
 
 	template<class T>
 	inline void Action<T>::Mul(float f, IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] *= f * _scale;
+		if (IN_GRID(temp))
+			_gridvals[POINT_TO_1D(temp)] *= f * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Div(float f, IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_gridvals[POINT_TO_1D(temp)] /= f * _scale;
+		if (IN_GRID(temp))
+			_gridvals[POINT_TO_1D(temp)] /= f * _scale;
 	}
 
 	template<class T>

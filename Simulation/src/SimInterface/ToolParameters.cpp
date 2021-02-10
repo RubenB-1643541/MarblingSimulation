@@ -55,6 +55,11 @@ void ToolParameters::SurfaceParams()
 		ImGui::SetNextTreeNodeOpen(true);
 	FluidLib::Surface* surface = _active->GetSurface();
 	if (surface != nullptr && ImGui::TreeNode("Surface (Ctrl)")) {
+		ImGui::SliderFloat("Rotation", surface->GetRotationPtr(), 0.0f, 10.0f);
+		if (_active->GetName() == "Dripping") {
+			FluidLib::DrippingTool* drip = static_cast<FluidLib::DrippingTool*>(_active);
+			ImGui::SliderFloat("Percentage", drip->GetPercentagePtr(), 0.0, 1.0);
+		}
 		if (surface->GetType() == "Square") {
 			FluidLib::Square* sq = static_cast<FluidLib::Square*>(surface);
 			if (sq != nullptr) {
@@ -146,6 +151,13 @@ void ToolParameters::MovementParams()
 			}
 		}
 
+		else if (movement->GetType() == "Point") {
+			FluidLib::PointMovement* p = static_cast<FluidLib::PointMovement*>(movement);
+			if (p != nullptr) {
+				ImGui::SliderFloat2("Position", p->GetPosPtr()->GetXPtr(), 0, FluidLib::Simulation::Get()->GetSizeX());
+			}
+		}
+
 
 		ImGui::TreePop();
 	}
@@ -158,6 +170,17 @@ void ToolParameters::ActionParams()
 	if (ImGui::TreeNode("Action")) {
 		FluidLib::ActionBase* action = _active->GetAction();
 		if (action != nullptr) {
+			if (_active->GetName() == "Select") {
+				SelectToolActions();
+			}
+			else if (_active->GetName() == "Basic") {
+				if (ImGui::Button("Execute")) {
+					_active->OnBeginUse();
+					_active->OnUse();
+					_active->OnEndUse();
+				}
+			}
+
 			ImGui::SliderFloat("Scale", action->GetScale(), 0.1f, 10.0f);
 			if (action->GetName() == "AddInk") {
 				FluidLib::InkAction<IInk>* inkaction = static_cast<FluidLib::InkAction<IInk>*>(action);
@@ -165,9 +188,7 @@ void ToolParameters::ActionParams()
 					InkActionParams(inkaction);
 				}
 			}
-			if (_active->GetName() == "Select") {
-				SelectToolActions();
-			}
+			
 		}
 		ImGui::TreePop();
 	}

@@ -84,6 +84,17 @@ namespace FluidLib {
 		_y /= i;
 	}
 
+	IPoint& IPoint::Rotate(float r)
+	{
+		float s = sin(r);
+		float c = cos(r);
+		float xnew = float(_x) * c - float(_y) * s;
+		float ynew = float(_x) * s + float(_y) * c;
+		_x =floor( xnew);
+		_y = floor( ynew);
+		return *this;
+	}
+
 	FPoint::FPoint() : _x(0.0f), _y(0.0f)
 	{
 	}
@@ -164,6 +175,17 @@ namespace FluidLib {
 	{
 		_x /= i;
 		_y /= i;
+	}
+
+	FPoint& FPoint::Rotate(float r)
+	{
+		float s = sin(r);
+		float c = cos(r);
+		float xnew = _x * c - _y * s;
+		float ynew = _x * s + _y * c;
+		_x = xnew;
+		_y = ynew;
+		return *this;
 	}
 
 	IPoint operator*(float f, const IPoint& p)

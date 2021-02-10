@@ -50,9 +50,9 @@ namespace RenderEngine {
 	{
 		//TODO Assert Window not null
 		
-		OnStart();
 		if (_props.window != nullptr)
 			_props.window->Start();
+		OnStart();
 
 		Run();
 

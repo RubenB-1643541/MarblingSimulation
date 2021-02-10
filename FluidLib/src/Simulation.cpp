@@ -86,6 +86,18 @@ namespace FluidLib {
 			_keys.ctr = false;
 	}
 
+	void Simulation::OnMousePress(int button)
+	{
+		if(button < N_MOUSEBUTTONS)
+			_keys.mouse[button] = true;
+	}
+
+	void Simulation::OnMouseRelease(int button)
+	{
+		if (button < N_MOUSEBUTTONS)
+			_keys.mouse[button] = false;
+	}
+
 	void Simulation::SetSize(int sizex, int sizey)
 	{
 		_sizex = sizex; _sizey = sizey; 

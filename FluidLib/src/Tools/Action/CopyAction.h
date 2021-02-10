@@ -49,7 +49,8 @@ namespace FluidLib {
 	{
 		IPoint temp = _pos + p;
 		T* data = static_cast<T*>(Clipboard::GetData());
-		data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX() ] = _gridvals[POINT_TO_1D(temp)];
+		if (IN_GRID(temp))
+			data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX() ] = _gridvals[POINT_TO_1D(temp)];
 	}
 
 	template<class T>

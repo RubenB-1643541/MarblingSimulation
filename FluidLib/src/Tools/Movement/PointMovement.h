@@ -19,6 +19,9 @@ namespace FluidLib {
 		bool OnEditRelease(float x, float y) override;
 		bool OnEditMove(float x, float y) override;
 
+		inline ControlPoint* GetPosPtr() { return &_pos; }
+		inline FPoint GetPos() { return _pos; }
+
 		virtual FPoint Get(float x, float y) override;
 		void SetProjection(glm::mat4 proj) override;
 	private:

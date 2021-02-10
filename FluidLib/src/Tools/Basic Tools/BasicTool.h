@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <Tools/Surface/Multisurface/MultiSurfaces.h>
+#include "Simulation.h"
 
 namespace FluidLib {
 
@@ -21,6 +22,7 @@ namespace FluidLib {
 		void SetActiveSurface(const std::string& surfacename);
 		void SetActiveMovement(const std::string& movementname);
 		void SetActiveAction(const std::string& actionname);
+		void SetActiveAction(const std::string& actionname, int button);
 		void SetActiveMultisurface(const std::string& multisurfacename);
 
 		inline const std::vector<std::string>& GetSurfaceKeys() { return _surfacekeys; }
@@ -29,10 +31,14 @@ namespace FluidLib {
 		inline const std::vector<std::string>& GetMultisurfaceKeys() { return _multisurfacekeys; }
 
 		inline MultiSurface* GetMultisurface() { return _multisurface; }
+		void OnBeginUse() override;
+		void OnEndUse() override;
 		void OnUse() override;
+	protected:
+		MultiSurface* _multisurface = nullptr;
+
 	private:
 		void DrawSurface();
-		MultiSurface* _multisurface = nullptr;
 		std::map<std::string, Surface*> _surfaces;
 		std::map<std::string, Movement*> _movements;
 		std::map<std::string, ActionBase*> _actions;
@@ -41,6 +47,7 @@ namespace FluidLib {
 		std::vector<std::string> _movementkeys;
 		std::vector<std::string> _actionkeys;
 		std::vector<std::string> _multisurfacekeys;
+		std::vector<std::string> _activeactions;
 	};
 
 }

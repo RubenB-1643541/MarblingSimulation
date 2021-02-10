@@ -30,13 +30,18 @@ namespace FluidLib {
 
 		inline FPoint& GetTrans() { return _trans; }
 		inline void SetTrans(const FPoint& trans) { _trans = trans; }
+
+		inline float GetRotation() { return _rotation; }
+		inline void SetRotation(float rot) { _rotation = rot; }
+		inline float* GetRotationPtr() { return &_rotation; }
 	protected:
 		FPoint _trans = { 0.0f,0.0f };
 		glm::mat4 _projection = glm::mat4(1.0);
 		std::vector<IPoint> _points;
 		bool _changed = false;
 		std::string _type = "None";
-
+		float _rotation = 0.0f;
+		float _rotold;
 	};
 
 }

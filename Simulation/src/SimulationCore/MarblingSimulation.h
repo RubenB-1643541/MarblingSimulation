@@ -6,6 +6,7 @@
 #include "Tools/Basic Tools/BasicTool.h"
 #include "../SimInterface/ToolSelectComponent.h"
 #include "Tools/Basic Tools/SelectTool.h"
+#include "Tools/Basic Tools/DrippingTool.h"
 
 class MarblingSimulation : public FluidLib::Simulation
 {

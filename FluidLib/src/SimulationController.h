@@ -17,11 +17,13 @@ namespace FluidLib {
 		static void MouseClick(int button) {
 			if(ingrid.in)
 				Simulation::Get()->OnEvent(ToolUseEvent(button));
+			Simulation::Get()->OnMousePress(button);
 		}
 
 		static void MouseRelease(int button) {
 			if(ingrid.in)
 				Simulation::Get()->OnEvent(ToolEndUseEvent(button));
+			Simulation::Get()->OnMouseRelease(button);
 		}
 
 		static void MouseMove(float x, float y) {

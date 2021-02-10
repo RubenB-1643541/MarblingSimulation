@@ -44,8 +44,10 @@ namespace FluidLib {
 	{
 		IPoint temp = _pos + p;
 		T* data = static_cast<T*>(Clipboard::GetData());
-		data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX()] = _gridvals[POINT_TO_1D(temp)];
-		_gridvals[POINT_TO_1D(temp)] = _value;
+		if (IN_GRID(temp)) {
+			data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX()] = _gridvals[POINT_TO_1D(temp)];
+			_gridvals[POINT_TO_1D(temp)] = _value;
+		}
 	}
 	template<class T>
 	inline void CutAction<T>::Execute(std::vector<IPoint>& points)

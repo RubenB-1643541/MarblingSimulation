@@ -7,6 +7,7 @@ namespace FluidLib {
 
 	PointMovement::PointMovement()
 	{
+		_type = "Point";
 		if (_buffer == -1) {
 			glCreateBuffers(1, &_buffer);
 			std::vector<float> points;

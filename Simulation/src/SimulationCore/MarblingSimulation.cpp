@@ -13,7 +13,7 @@ MarblingSimulation::MarblingSimulation(int sizex, int sizey) : Simulation(sizex,
 
 void MarblingSimulation::OnInit()
 {
-	_settings.fps = 30;
+	//_settings.fps = 30;
 	_prevtime = std::clock();
 	CreateTools();
 }
@@ -78,6 +78,7 @@ void MarblingSimulation::CreateTools()
 void MarblingSimulation::CreateBasicTool()
 {
 	FluidLib::BasicTool* basic = new FluidLib::BasicTool();
+	FluidLib::DrippingTool* dripping = new FluidLib::DrippingTool();
 	//FluidLib::Action<IFrequency>* addfreq = new FluidLib::Action<IFrequency>(IFrequency(16), static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), FluidLib::ACTION_OPERATION::ADD);
 	//FluidLib::Action<IVelocity>* addvel = new FluidLib::Action<IVelocity>(IVelocity(100, 100), static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")), FluidLib::ACTION_OPERATION::MOVE);
 	
@@ -101,6 +102,8 @@ void MarblingSimulation::CreateBasicTool()
 	basic->AddAction("RemoveInk", removeink);
 	basic->AddAction("SoftenInk", softenink);
 	basic->AddAction("AddVel", addvel);
+	basic->AddAction("Freeze", freeze);
+	basic->AddAction("UnFreeze", unfreeze);
 	//basic->AddAction("Freeze", freeze);
 	basic->SetActiveAction("AddInk");
 	basic->AddMovement("Mouse", new FluidLib::MouseMovement());
@@ -121,6 +124,7 @@ void MarblingSimulation::CreateBasicTool()
 	basic->AddMultisurface("SingleSurface", new FluidLib::SingleSurface());
 	basic->AddMultisurface("CrossSurface", new FluidLib::CrossSurface());
 	basic->AddMultisurface("Comb", new FluidLib::Comb());
+	basic->AddMultisurface("CircleSurface", new FluidLib::CircleMultiSurface());
 	basic->SetActiveMultisurface("SingleSurface");
 	_tools.AddTool("Basic", basic);
 	
@@ -140,12 +144,42 @@ void MarblingSimulation::CreateBasicTool()
 	_tools.AddTool("Select", sel);
 	//_tools.SetActive("Select");
 
+	dripping->AddAction("AddInk", addink);
+	dripping->AddAction("RemoveInk", removeink);
+	dripping->AddAction("SoftenInk", softenink);
+	dripping->AddAction("AddVel", addvel);
+	dripping->AddAction("Freeze", freeze);
+	dripping->AddAction("UnFreeze", unfreeze);
+	dripping->SetActiveAction("AddInk");
+
+	dripping->AddMovement("Mouse", new FluidLib::MouseMovement());
+	dripping->AddMovement("Line", new FluidLib::Line());
+	dripping->AddMovement("Sine", new FluidLib::Sine());
+	dripping->AddMovement("BezierCurve", new FluidLib::BezierCurve());
+	dripping->AddMovement("Circle", new FluidLib::CircleMovement());
+	dripping->AddMovement("Point", new FluidLib::PointMovement());
+	dripping->SetActiveMovement("Mouse");
+
+	dripping->AddSurface("Square", new FluidLib::Square());
+	dripping->AddSurface("Rectangle", new FluidLib::Rectangle());
+	dripping->AddSurface("Triangle", new FluidLib::Triangle());
+	dripping->AddSurface("Circle", new FluidLib::Circle());
+	dripping->AddSurface("Point", new FluidLib::PointSurface());
+	dripping->AddSurface("Polygon", new FluidLib::Polygon());
+	dripping->SetActiveSurface("Circle");
+	dripping->AddMultisurface("SingleSurface", new FluidLib::SingleSurface());
+	dripping->AddMultisurface("CrossSurface", new FluidLib::CrossSurface());
+	dripping->AddMultisurface("Comb", new FluidLib::Comb());
+	dripping->SetActiveMultisurface("SingleSurface");
+	_tools.AddTool("Dripping", dripping);
+
 }
 
 void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
 {
 	comp->AddButton(Button("res/icons/Basic.png", "Basic", TOOL_PART::TOOL));
 	comp->AddButton(Button("res/icons/Select.png", "Select", TOOL_PART::TOOL));
+	comp->AddButton(Button("res/icons/Basic.png", "Dripping", TOOL_PART::TOOL));
 
 	comp->AddButton(Button("res/icons/Mouse.png", "Mouse", TOOL_PART::MOVEMENT));
 	comp->AddButton(Button("res/icons/Line.png", "Line", TOOL_PART::MOVEMENT));
@@ -159,6 +193,8 @@ void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
 	comp->AddButton(Button("res/icons/RemoveInk.png", "RemoveInk", TOOL_PART::ACTION));
 	comp->AddButton(Button("res/icons/SoftenInk.png", "SoftenInk", TOOL_PART::ACTION));
 	comp->AddButton(Button("res/icons/Force.png", "AddVel", TOOL_PART::ACTION));
+	comp->AddButton(Button("res/icons/Freeze.png", "Freeze", TOOL_PART::ACTION));
+	comp->AddButton(Button("res/icons/UnFreeze.png", "UnFreeze", TOOL_PART::ACTION));
 
 	comp->AddButton(Button("res/icons/Square.png", "Square", TOOL_PART::SURFACE));
 	comp->AddButton(Button("res/icons/Rectangle.png", "Rectangle", TOOL_PART::SURFACE));

@@ -6,7 +6,6 @@ namespace FluidLib {
 
 	Comb::Comb()
 	{
-
 		_lenold = _len;
 		_repold = _rep;
 		_vertold = _vert;

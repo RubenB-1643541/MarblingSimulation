@@ -35,9 +35,9 @@ namespace FluidLib {
 	private:
 		float _xpos = 0;
 		float _ypos = 0;
-		float _width = 20.0f;
+		float _width = 50.0f;
 		float _widthold;
-		float _height = 20.0f;
+		float _height = 60.0f;
 		float _heightold;
 		float _color[3] = { 1.0,1.0,1.0 };
 		STYLE _style = STYLE::BORDER;
@@ -46,6 +46,7 @@ namespace FluidLib {
 		ControlPoint _pos;
 		ControlPoint _wcon;
 		ControlPoint _hcon;
+		ControlPoint _rotcon;
 
 		static GLuint _buffer;
 		static GLuint _shader;

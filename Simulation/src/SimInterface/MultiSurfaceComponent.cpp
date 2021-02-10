@@ -51,6 +51,8 @@ void MultiSurfaceComponent::OnDraw()
 					DrawCrossSurface(static_cast<FluidLib::CrossSurface*>(_basic->GetMultisurface()));
 				else if (_selectedstr == "Comb")
 					DrawCombSurface(static_cast<FluidLib::Comb*>(_basic->GetMultisurface()));
+				else if (_selectedstr == "CircleSurface")
+					DrawCircleSurface(static_cast<FluidLib::CircleMultiSurface*>(_basic->GetMultisurface()));
 			}
 			ImGui::TreePop();
 			ImGui::Separator();
@@ -73,4 +75,11 @@ void MultiSurfaceComponent::DrawCombSurface(FluidLib::Comb* s)
 	ImGui::SliderFloat("Length", s->GetLenPtr(), 0.0f, 500.0f);
 	ImGui::SliderInt("Repetition", s->GetRepPtr(), 0, 50);
 	ImGui::Checkbox("Vertical", s->GetVertPtr());
+}
+
+void MultiSurfaceComponent::DrawCircleSurface(FluidLib::CircleMultiSurface* s)
+{
+	ImGui::SliderFloat("R", s->GetRPtr(), 0.0f, 500.0f);
+	ImGui::SliderInt("Repetition", s->GetRepetitionPtr(), 0, 50);
+	ImGui::SliderFloat("Offset", s->GetOffsetPtr(), -2*M_PI,2*M_PI);
 }

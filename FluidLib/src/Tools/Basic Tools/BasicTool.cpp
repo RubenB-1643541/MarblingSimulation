@@ -5,6 +5,7 @@ namespace FluidLib {
 	BasicTool::BasicTool()
 	{
 		SetName("Basic");
+		_activeactions.resize(N_MOUSEBUTTONS);
 	}
 
 	void BasicTool::Draw()
@@ -66,9 +67,31 @@ namespace FluidLib {
 		SetAction(_actions[actionname]);
 	}
 
+	void BasicTool::SetActiveAction(const std::string& actionname, int button)
+	{
+		_activeactions[button] = actionname;
+	}
+
 	void BasicTool::SetActiveMultisurface(const std::string& multisurfacename)
 	{
 		_multisurface = _multisurfaces[multisurfacename];
+	}
+
+	void BasicTool::OnBeginUse()
+	{
+		for (int i = 0; i < N_MOUSEBUTTONS; ++i) {
+			if (Simulation::Get()->GetKeys()->mouse[i]) {
+				if (_activeactions[i] != "")
+					SetActiveAction(_activeactions[i]);
+				break;
+			}
+		}
+		_action->Start();
+	}
+
+	void BasicTool::OnEndUse()
+	{
+		_action->Stop();
 	}
 
 	void BasicTool::OnUse()
@@ -78,9 +101,11 @@ namespace FluidLib {
 		if(_multisurface != nullptr)
 			transpoints = _multisurface->GetPoints();
 		
-		for (IPoint& p : points) {
-			for (FPoint& t : transpoints) {
-				_action->Execute(p + t);
+		if (_action != nullptr) {
+			for (IPoint& p : points) {
+				for (FPoint& t : transpoints) {
+					_action->Execute(p + t);
+				}
 			}
 		}
 	}

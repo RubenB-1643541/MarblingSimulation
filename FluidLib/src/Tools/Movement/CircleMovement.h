@@ -39,8 +39,8 @@ namespace FluidLib {
 	private:
 		float _r = 50.0f;
 		float _rold = 50.0f;
-		float _x = 150.0f;
-		float _y = 150.0f;
+		float _x = 450.0f;
+		float _y = 250.0f;
 		float _color[3] = { 1.0,1.0,1.0 };
 
 		ControlPoint _pos;

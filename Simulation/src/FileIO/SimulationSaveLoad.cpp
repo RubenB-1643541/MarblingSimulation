@@ -52,6 +52,8 @@ bool SimSave::SaveSimData()
 	//Save Grid Size
 	_ostream << FluidLib::Simulation::Get()->GetSizeX() << " " << FluidLib::Simulation::Get()->GetSizeY() << std::endl;
 	//Save Settings
+	FluidLib::Settings * settings = FluidLib::Simulation::Get()->GetSettings();
+	_ostream << settings->fps << " " << settings->freezeintensity << " " << settings->intesity << " " << settings->diffuse << " " << settings->spreading << std::endl;
 	return true;
 }
 
@@ -96,6 +98,8 @@ bool SimLoad::LoadSimData()
 	int width, height;
 	_istream >> width >> height;
 	FluidLib::Simulation::Get()->SetSize(width, height);
+	FluidLib::Settings* settings = FluidLib::Simulation::Get()->GetSettings();
+	_istream >> settings->fps >> settings->freezeintensity >> settings->intesity >> settings->diffuse >> settings->spreading;
 	return true;
 }
 

@@ -10,6 +10,7 @@
 #include "Tools/ToolManager.h"
 
 #define WORK_GROUP_SIZE 100
+#define N_MOUSEBUTTONS 5
 
 namespace FluidLib {
 
@@ -17,6 +18,7 @@ namespace FluidLib {
 		bool keys[500] = {false};
 		bool shift = false;
 		bool ctr = false;
+		bool mouse[N_MOUSEBUTTONS] = { false };
 	};
 
 	class Simulation
@@ -45,6 +47,8 @@ namespace FluidLib {
 		virtual void OnFrameRateChange(FrameRateChangeEvent& event) {}
 		void OnKeyPress(int key);
 		void OnKeyRelease(int key);
+		void OnMousePress(int button);
+		void OnMouseRelease(int button);
 
 		inline ComputeShaderController* GetShader() { return &_computeshader; }
 		inline GridManager* GetGrids() { return &_grids; }

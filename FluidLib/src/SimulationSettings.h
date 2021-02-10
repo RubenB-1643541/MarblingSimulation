@@ -4,7 +4,7 @@ namespace FluidLib {
 
 	struct Settings {
 		int fps = 30;
-		float spreading = 0.1;
+		float spreading = 0.5;
 		float diffuse = 0.9;
 
 		float intesity = 0.5;

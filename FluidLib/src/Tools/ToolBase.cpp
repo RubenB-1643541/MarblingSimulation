@@ -1,5 +1,6 @@
 #include "ToolBase.h"
 #include "Simulation.h"
+#include "../../../RenderEngine/src/Core/Log.h"
 namespace FluidLib {
     void ToolBase::Draw()
     {
@@ -20,6 +21,8 @@ namespace FluidLib {
     void ToolBase::Update()
     {
         if (Simulation::Get()->GetKeys()->shift || FluidLib::Simulation::Get()->GetSettings()->movementedit) {
+            if (!_moveEdit)
+                _movement->StartEdit();
             _moveEdit = true;
             _surfaceEdit = false;
             _using = false;
@@ -32,13 +35,15 @@ namespace FluidLib {
             _using = false;
         }
         else {
-            if (!_moveEdit)
-                _movement->StartEdit();
             _moveEdit = false;
             _surfaceEdit = false;
-            FPoint p = _movement->Get(_x, _y);
-            _surface->OnMove(p.GetX(), p.GetY());
-            _action->SetPos({ (int)p.GetX(), (int)p.GetY() });
+            if (_movement != nullptr) {
+                FPoint p = _movement->Get(_x, _y);
+                FPoint r = _movement->GetNormal(_x, _y);
+                //INFO("Normal: {0},{1}", r.GetX(), r.GetY());
+                _surface->OnMove(p.GetX(), p.GetY());
+                _action->SetPos({ (int)p.GetX(), (int)p.GetY() });
+            }
         }
         if (_using) {
             OnBeginUse();

@@ -18,6 +18,7 @@ public:
 private:
 	void DrawCrossSurface(FluidLib::CrossSurface* s);
 	void DrawCombSurface(FluidLib::Comb* s);
+	void DrawCircleSurface(FluidLib::CircleMultiSurface* s);
 	FluidLib::ToolManager* _tools = nullptr;
 	FluidLib::BasicTool* _basic = nullptr;
 	FluidLib::ToolBase* _active = nullptr;

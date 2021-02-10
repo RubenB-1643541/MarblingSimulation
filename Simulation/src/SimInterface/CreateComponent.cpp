@@ -16,8 +16,13 @@ void CreateComponent::OnInit()
 
 void CreateComponent::OnUpdate()
 {
-	if (_open && !_startup) {
-		
+	static bool first = true;
+	if (first) {
+		_width = _app->GetWidth() / 2;
+		_height = _app->GetHeight() / 2;
+		INFO("Screen Width = {0} - Sim Width = {1}", _app->GetWidth(), _width);
+		INFO("Screen Height = {0} - Sim Height = {1}", _app->GetHeight(), _height);
+		first = false;
 	}
 }
 

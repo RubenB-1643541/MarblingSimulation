@@ -11,6 +11,7 @@ namespace FluidLib {
 	{
 		_type = "Triangle";
 		_centered = true;
+		_changed = true;
 		if (_buffer == -1) {
 			glCreateBuffers(1, &_buffer);
 			std::vector<float> points = { 0.0f, 1.0f, 0.5f, 0.0f, 1.0f, 1.0f };
@@ -22,6 +23,7 @@ namespace FluidLib {
 		}
 		_widthold = _width;
 		_heightold = _height;
+		_rotold = _rotation;
 	}
 
 	void Triangle::Draw() const
@@ -46,6 +48,12 @@ namespace FluidLib {
 		glUniform3f(color, _color[0], _color[1], _color[2]);
 		GLuint proj = glGetUniformLocation(_shader, "projection");
 		glUniformMatrix4fv(proj, 1, GL_FALSE, &_projection[0][0]);
+		glm::mat4 rotation = glm::rotate(_rotation, glm::vec3(0, 0, 1));
+		GLuint rot = glGetUniformLocation(_shader, "rotation");
+		glUniformMatrix4fv(rot, 1, GL_FALSE, &rotation[0][0]);
+		glm::mat4 translation = glm::translate(glm::vec3(_xpos + _trans.GetX(), _ypos + _trans.GetY(), 0));
+		GLuint trans = glGetUniformLocation(_shader, "translation");
+		glUniformMatrix4fv(trans, 1, GL_FALSE, &translation[0][0]);
 		if (_style == STYLE::FILLED)
 			glDrawArrays(GL_POLYGON, 0, 3);
 		else if (_style == STYLE::DASHED)
@@ -79,22 +87,25 @@ namespace FluidLib {
 			_changed = true;
 		if (_heightold != _height)
 			_changed = true;
+		if (_rotold != _rotation)
+			_changed = true;
 		if (_changed) {
 			_widthold = _width;
 			_heightold = _height;
+			_rotold = _rotation;
 			_changed = false;
 			_points.clear();
 			if (_centered) {
 				for (int y = -_height/2; y < _height/2; ++y) {
 					for(int x = -_width/2 * (y+_height/2)/_height; x < _width/2  * (y + _height / 2)/_height; ++x) {
-						_points.push_back(IPoint(x, y));
+						_points.push_back(IPoint(x, y).Rotate(_rotation));
 					}
 				}
 			}
 			else {
 				for (int y = 0; y < abs(_height); ++y) {
 					for (int x = _width/2 * (_height - y)/_height; x < _width - _width/2  * (_height - y) / _height; ++x) {
-						_points.push_back(IPoint(x, y));
+						_points.push_back(IPoint(x, y).Rotate(_rotation));
 					}
 				}
 			}
@@ -107,6 +118,7 @@ namespace FluidLib {
 		_pos.OnRelease();
 		_wcon.OnRelease();
 		_hcon.OnRelease();
+		_rotcon.OnRelease();
 	}
 
 	void Triangle::EditDraw()
@@ -114,14 +126,20 @@ namespace FluidLib {
 		_pos.SetX(_xpos);
 		_pos.SetY(_ypos);
 		_wcon.SetX(_width/2);
-		_wcon.SetY(0);
+		_wcon.SetY(_height / 2);
+		_wcon.Rotate(_rotation);
+		_wcon.VisualTranslate({ _xpos, _ypos  });
 		_hcon.SetX(0);
 		_hcon.SetY(-_height/2);
-		_wcon.VisualTranslate({ _xpos, _ypos + _height / 2 });
+		_hcon.Rotate(_rotation);
 		_hcon.VisualTranslate({ _xpos, _ypos });
+		_rotcon.SetY(_width * sin(_rotation));
+		_rotcon.SetX(_width * cos(_rotation));
+		_rotcon.VisualTranslate(FPoint(_xpos, _ypos));
 		_wcon.Draw();
 		_hcon.Draw();
 		_pos.Draw();
+		_rotcon.Draw();
 	}
 
 	bool Triangle::OnEditMove(float x, float y)
@@ -133,11 +151,17 @@ namespace FluidLib {
 		}
 		_wcon.OnMove(x, y);
 		if (_wcon.Selected()) {
+			_wcon.Rotate(-_rotation);
 			_width = _wcon.GetX()*2;
 		}
 		_hcon.OnMove(x, y);
 		if (_hcon.Selected()) {
+			_hcon.Rotate(-_rotation);
 			_height = -_hcon.GetY()*2;
+		}
+		_rotcon.OnMove(x, y);
+		if (_rotcon.Selected()) {
+			_rotation = atan2(y - _ypos, x - _xpos);
 		}
 		return false;
 	}
@@ -148,7 +172,9 @@ namespace FluidLib {
 			return true;
 		if (_wcon.OnClick(x, y))
 			return true;
-		return _hcon.OnClick(x, y);
+		if (_hcon.OnClick(x, y))
+			return true;
+		return _rotcon.OnClick(x, y);
 	}
 
 	bool Triangle::OnEditRelease(float x, float y)
@@ -156,6 +182,7 @@ namespace FluidLib {
 		_pos.OnRelease();
 		_wcon.OnRelease();
 		_hcon.OnRelease();
+		_rotcon.OnRelease();
 		return false;
 	}
 
@@ -165,6 +192,7 @@ namespace FluidLib {
 		_pos.SetProjection(proj);
 		_wcon.SetProjection(proj);
 		_hcon.SetProjection(proj);
+		_rotcon.SetProjection(proj);
 	}
 
 }
