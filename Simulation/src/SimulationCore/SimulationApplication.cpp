@@ -133,7 +133,7 @@ bool SimulationApplication::LoadSimulation(const std::string& file)
 	loader.SetFile(file);
 	loader.SetBuffers(&_buffers);
 	loader.SetGrids(_sim.GetGrids());
-	//loader.Load();
+	////loader.Load();
 	if (!loader.StartLoad()) {
 		ERROR("Failed to open file : ");
 		ERROR(file.c_str());
@@ -143,6 +143,7 @@ bool SimulationApplication::LoadSimulation(const std::string& file)
 		ERROR("Failed To Load Simulation Data");
 		return false;
 	}
+	FluidLib::Simulation::Get()->SetSize(960, 500);
 	CreateGrids();
 	loader.LoadGrids();
 	loader.EndLoad();
@@ -151,6 +152,10 @@ bool SimulationApplication::LoadSimulation(const std::string& file)
 	
 	_sim.Init();
 	_simrunning = true;
+	int tempfps = _sim.GetSettings()->fps;//Force 1 update for rendering -> if fps = 0 no rendering (for some fucking reason)
+	_sim.GetSettings()->fps = 10000;	  //Force 1 update for rendering -> if fps = 0 no rendering (for some fucking reason)
+	_sim.Update();						  //Force 1 update for rendering -> if fps = 0 no rendering (for some fucking reason)
+	_sim.GetSettings()->fps = tempfps;	  //Force 1 update for rendering -> if fps = 0 no rendering (for some fucking reason)
 	if(_load)
 		Start();
 	return true;
@@ -226,7 +231,7 @@ void SimulationApplication::CreateGrids()
 	flagbuf->BufferData(_sim.GetSize() * sizeof(Flags));
 	Flags* flags = (Flags*)flagbuf->MapBufferRange();
 	for (int i = 0; i < _sim.GetSize(); ++i) {
-		flags[i] = { 0, 0, 0, 0 };
+		flags[i] = { 1, 0, 0, 0 };
 	}
 	flagbuf->UnMapBuffer();
 	_buffers.insert(std::make_pair("Flag", flagbuf));

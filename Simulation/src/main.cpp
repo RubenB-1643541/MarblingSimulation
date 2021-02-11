@@ -18,6 +18,7 @@ int main(int argc, char* argv[]) {
 		//Load file
 		std::string file = argv[1];
 		//sim.Start();
+		
 		sim.LoadSimulation(file);
 	}
 	else {

@@ -42,7 +42,7 @@ bool SimSave::StartSave()
 	//Open File
 	_ostream.open(_file, std::ios::out | std::ios::trunc);
 	_ostream.close();
-	_ostream.open(_file, std::ios::out | std::ios::app);
+	_ostream.open(_file, std::ios::out | std::ios::binary);
 	
 	return _ostream.is_open();
 }
@@ -67,6 +67,8 @@ bool SimSave::SaveGrid(const std::string& name, FluidLib::GridBase* grid)
 	//Buffer Data
 	FluidLib::BufferData data = grid->GetBufferData();
 	_ostream << data.id << " " << data.size << " " << data.elementsize << " " << data.attrpointer << " " << data.type << std::endl;
+	//FluidLib::Grid<Flags>* f = static_cast<FluidLib::Grid<Flags>*>(grid);
+	//Flags* d = f->GetBufferPointer();
 	grid->WriteToFile(_ostream);
 	_ostream << std::endl;
 	return true;
@@ -89,7 +91,7 @@ void SimLoad::SetBuffers(std::map<std::string, RenderEngine::ShaderStorageBuffer
 
 bool SimLoad::StartLoad()
 {
-	_istream.open(_file, std::ios::in);
+	_istream.open(_file, std::ios::in | std::ios::binary);
 	return _istream.is_open();
 }
 
@@ -100,6 +102,7 @@ bool SimLoad::LoadSimData()
 	FluidLib::Simulation::Get()->SetSize(width, height);
 	FluidLib::Settings* settings = FluidLib::Simulation::Get()->GetSettings();
 	_istream >> settings->fps >> settings->freezeintensity >> settings->intesity >> settings->diffuse >> settings->spreading;
+	INFO("Sim Data Loaded");
 	return true;
 }
 
@@ -107,29 +110,35 @@ bool SimLoad::LoadGrid()
 {
 	std::string name;
 	_istream >> name;
+	
+	INFO("Loading {0}", name);
 	//Buffer Data
 	FluidLib::BufferData data;
 	_istream >> data.id >> data.size >> data.elementsize >> data.attrpointer >> data.type;
 	if (name == "Vel") {
+		_istream.seekg(1, std::ios::cur);//Clear CR and newline (\n)
 		_buffers->at(name)->Bind();
 		IVelocity* vels = (IVelocity*)_buffers->at(name)->MapBufferRange();
-		for (int i = 0; i < data.size; ++i) {
-			_istream >> vels[i];
-		}
+		_istream.read((char*)vels, sizeof(IVelocity) * data.size);
+		//for (int i = 0; i < data.size; ++i) {
+		//	_istream >> vels[i];
+		//}
 		_buffers->at(name)->UnMapBuffer();
 	}
 	else if (name == "Freq") {
+		_istream.seekg(1, std::ios::cur);//Clear CR and newline (\n)
 		_buffers->at(name)->Bind();
 		IFrequency* freqs = (IFrequency*)_buffers->at(name)->MapBufferRange();
-		for (int i = 0; i < data.size; ++i) {
-			_istream >> freqs[i];
-		}
+		_istream.read((char*)freqs, sizeof(IFrequency) * data.size);
+		//for (int i = 0; i < data.size; ++i) {
+		//	_istream >> freqs[i];
+		//}
 		_buffers->at(name)->UnMapBuffer();
 	}
 	else if (name == "Ink") {
 		//Load Colors
 		FluidLib::ColorGrid<IInk>* colorgrid = static_cast<FluidLib::ColorGrid<IInk>*>(_grids->GetGrid("Ink"));
-		int size;
+		int size;	
 		_istream >> size;
 		glm::vec3 col;
 		colorgrid->ClearColors();
@@ -137,21 +146,32 @@ bool SimLoad::LoadGrid()
 			_istream >> col.r >> col.g >> col.b;
 			colorgrid->AddColor(col);
 		}
+		colorgrid->SetId(0);
+		_istream.seekg(2, std::ios::cur);//Clear SPACE, CR and newline (\n)
 		_buffers->at(name)->Bind();
+		INFO("Ink: {0} - size: {1} - tot: {2}", sizeof(IInk), data.size, sizeof(IInk) * data.size);
 		IInk* inks = (IInk*)_buffers->at(name)->MapBufferRange();
-		for (int i = 0; i < data.size; ++i) {
-			_istream >> inks[i];
-		}
+		_istream.read((char*)inks, sizeof(IInk) * data.size);
+		INFO("Read: {}", _istream.peek());
+		//for (int i = 0; i < data.size; ++i) {
+		//	_istream >> inks[i];
+		//}
 		_buffers->at(name)->UnMapBuffer();
 	}
 	else if (name == "Flag") {
+		_istream.seekg(1, std::ios::cur);//Clear CR and newline (\n)
 		_buffers->at(name)->Bind();
-		Flags* flags = (Flags*)_buffers->at(name)->MapBufferRange();
-		for (int i = 0; i < data.size; ++i) {
-			_istream >> flags[i];
-		}
+		Flags* flags = (Flags*)_buffers->at(name)->MapBufferRange(GL_MAP_WRITE_BIT);
+		INFO("Read: {}", _istream.peek());
+		_istream.read((char*)flags, sizeof(Flags) * data.size);
+		
+		//for (int i = 0; i < data.size; ++i) {
+		//	_istream >> flags[i];
+		//}
 		_buffers->at(name)->UnMapBuffer();
 	}
+	INFO("LOADED {0}", name);
+	INFO("Read: {}", _istream.peek());
 	return true;
 }
 

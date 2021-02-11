@@ -48,7 +48,9 @@ namespace FluidLib {
 
 	void Simulation::Draw()
 	{
+		
 		glViewport(_screenwidth / 2 - _sizex / 2, _screenheight / 2 - _sizey / 2, _sizex, _sizey);
+		//glViewport(_screenwidth / 2 - _sizex / 2, _screenheight / 2 - _sizey / 2, _sizex, _sizey);
 		_tools.Draw();
 		_renderer.Draw();
 		OnDraw();

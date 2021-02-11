@@ -158,9 +158,10 @@ namespace FluidLib {
 		stream << std::endl;
 		//Write Data;
 		T* data = GetBufferPointer();
-		for (int i = 0; i < _data.size; ++i) {
-			stream << data[i] << " ";
-		}
+		stream.write((char*)data, sizeof(T) * _data.size);
+		//for (int i = 0; i < _data.size; ++i) {
+		//	stream << data[i] << " ";
+		//}
 		ReleaseBufferLock();
 	}
 

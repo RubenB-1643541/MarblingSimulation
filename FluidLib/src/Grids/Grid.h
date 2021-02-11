@@ -5,7 +5,7 @@
 
 #define COOR_2D_TO_1D(x,y) Simulation::Get()->GetSizeX() * y + x
 #define POINT_TO_1D(p) Simulation::Get()->GetSizeX() * p.GetY() + p.GetX()
-#define IN_GRID(p) p.GetX()>0 && p.GetY()>0 && p.GetX() < Simulation::Get()->GetSizeX() &&  p.GetY() < Simulation::Get()->GetSizeY()
+#define IN_GRID(p) p.GetX()>=0 && p.GetY()>=0 && p.GetX() < Simulation::Get()->GetSizeX() &&  p.GetY() < Simulation::Get()->GetSizeY()
 
 namespace FluidLib {
 
@@ -76,7 +76,7 @@ namespace FluidLib {
 		/*
 		Gives the number of elements in the buffer
 		*/
-		inline int GetSize() { return _size; }
+		inline int GetSize() { return _data.size; }
 		
 		inline void SetElementSize(int size) { _data.elementsize = size; }
 		inline int GetElementSize() { return _data.elementsize; }
@@ -180,9 +180,10 @@ namespace FluidLib {
 	inline void Grid<T>::WriteToFile(std::ofstream& stream)
 	{
 		T* data = GetBufferPointer();
-		for (int i = 0; i < _data.size; ++i) {
-			stream << data[i] << " ";
-		}
+		stream.write((char*)data, sizeof(T) * _data.size);
+		//for (int i = 0; i < _data.size; ++i) {
+		//	stream << data[i] << " ";
+		//}
 		ReleaseBufferLock();
 	}
 
