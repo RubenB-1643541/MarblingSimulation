@@ -23,6 +23,7 @@ SimulationApplication::~SimulationApplication()
 
 void SimulationApplication::OnStart()
 {
+	SaveStateHandler::Init();
 	CreateInterface();
 	
 }
@@ -65,6 +66,7 @@ void SimulationApplication::CreateInterface()
 	_interface.GetComponent("Left")->AddComponent(toolselect);
 	_interface.GetComponent("Left")->AddComponent(preset);
 	_interface.GetComponent("Right")->AddComponent(new MultiSurfaceComponent(_sim.GetTools(), "Basic"));
+	_interface.GetComponent("Right")->AddComponent(new SaveStateComponent());
 	_sim.InitBasicToolComponent(toolselect);
 	_interface.AddComponent("Create", new CreateComponent(this, !_load));
 	ExportComponent* exp = new ExportComponent();
@@ -231,7 +233,7 @@ void SimulationApplication::CreateGrids()
 	flagbuf->BufferData(_sim.GetSize() * sizeof(Flags));
 	Flags* flags = (Flags*)flagbuf->MapBufferRange();
 	for (int i = 0; i < _sim.GetSize(); ++i) {
-		flags[i] = { 1, 0, 0, 0 };
+		flags[i] = { 0, 0, 0, 0 };
 	}
 	flagbuf->UnMapBuffer();
 	_buffers.insert(std::make_pair("Flag", flagbuf));
@@ -369,6 +371,22 @@ void SimulationApplication::InitShortCuts()
 		saver.SetGrids(FluidLib::Simulation::Get()->GetGrids());
 		saver.Save();
 	} });
+
+	_shortcuts.AddShortCut({ KEY_E, true, false,[]() {//Ctrl E create save state
+		INFO("CREATE SAVE STATE");
+		SaveStateHandler::CreateSaveState();
+	} });
+
+	_shortcuts.AddShortCut({ KEY_W, true, false,[]()  {//Ctrl Z undo
+		INFO("UNDO");
+		SaveStateHandler::PrevState();
+	} });
+
+	_shortcuts.AddShortCut({ KEY_W, true, true,[]() {//Ctrl Shift Z redo
+		INFO("REDO");
+		SaveStateHandler::NextState();
+	} });
+
 }
 
 /*

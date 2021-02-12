@@ -11,6 +11,7 @@
 #include "../SimUtils/ShortCutHandler.h"
 #include "../FileIO/SimulationSaveLoad.h"
 #include "Grids/ColorGrid.h"
+#include "../SimUtils/SaveStateHandler.h"
 
 class SimulationApplication : public RenderEngine::Application
 {

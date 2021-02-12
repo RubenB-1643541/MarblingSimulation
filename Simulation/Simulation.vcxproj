@@ -15,6 +15,7 @@
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Simulation</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -64,6 +65,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/MDd %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -91,6 +93,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\FileIO\Exporter.h" />
     <ClInclude Include="src\FileIO\FileDialog.h" />
     <ClInclude Include="src\FileIO\SimulationSaveLoad.h" />
@@ -99,12 +102,14 @@
     <ClInclude Include="src\SimInterface\InterfaceComponentsList.h" />
     <ClInclude Include="src\SimInterface\MultiSurfaceComponent.h" />
     <ClInclude Include="src\SimInterface\PresetComponent.h" />
+    <ClInclude Include="src\SimInterface\SaveStateComponent.h" />
     <ClInclude Include="src\SimInterface\SettingsComponent.h" />
     <ClInclude Include="src\SimInterface\SideComponent.h" />
     <ClInclude Include="src\SimInterface\ToolParameters.h" />
     <ClInclude Include="src\SimInterface\ToolSelectComponent.h" />
     <ClInclude Include="src\SimInterface\TopBar.h" />
     <ClInclude Include="src\SimUtils\Icon.h" />
+    <ClInclude Include="src\SimUtils\SaveStateHandler.h" />
     <ClInclude Include="src\SimUtils\ShortCutHandler.h" />
     <ClInclude Include="src\SimulationCore\GridStructures.h" />
     <ClInclude Include="src\SimulationCore\MarblingSimulation.h" />
@@ -119,12 +124,14 @@
     <ClCompile Include="src\SimInterface\ExportComponent.cpp" />
     <ClCompile Include="src\SimInterface\MultiSurfaceComponent.cpp" />
     <ClCompile Include="src\SimInterface\PresetComponent.cpp" />
+    <ClCompile Include="src\SimInterface\SaveStateComponent.cpp" />
     <ClCompile Include="src\SimInterface\SettingsComponent.cpp" />
     <ClCompile Include="src\SimInterface\SideComponent.cpp" />
     <ClCompile Include="src\SimInterface\ToolParameters.cpp" />
     <ClCompile Include="src\SimInterface\ToolSelectComponent.cpp" />
     <ClCompile Include="src\SimInterface\TopBar.cpp" />
     <ClCompile Include="src\SimUtils\Icon.cpp" />
+    <ClCompile Include="src\SimUtils\SaveStateHandler.cpp" />
     <ClCompile Include="src\SimUtils\ShortCutHandler.cpp" />
     <ClCompile Include="src\SimulationCore\MarblingSimulation.cpp" />
     <ClCompile Include="src\SimulationCore\SimulationApplication.cpp" />
@@ -138,6 +145,12 @@
     <ProjectReference Include="..\FluidLib\FluidLib.vcxproj">
       <Project>{90E6D4A7-7CB3-2FB3-A5CC-1D5B91F86441}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Simulation.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\icons\Icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

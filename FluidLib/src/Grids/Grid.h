@@ -42,7 +42,7 @@ namespace FluidLib {
 		virtual void UseGrid() = 0;
 		virtual void DrawGrid() = 0;
 		BufferData& GetBufferData() { return _data; }
-		virtual void WriteToFile(std::ofstream& stream) = 0;
+		virtual void WriteToFile(std::ofstream& stream, bool valsonly = false) = 0;
 	protected:
 		BufferData _data;
 	private:
@@ -94,7 +94,7 @@ namespace FluidLib {
 		inline void SetRender(bool state) { _render = state; }
 		inline bool GetRender() { return _render; }
 
-		virtual void WriteToFile(std::ofstream& stream) override;
+		virtual void WriteToFile(std::ofstream& stream, bool valsonly = false) override;
 	private:
 		
 		bool _render = false;
@@ -177,7 +177,7 @@ namespace FluidLib {
 	}
 
 	template<class T>
-	inline void Grid<T>::WriteToFile(std::ofstream& stream)
+	inline void Grid<T>::WriteToFile(std::ofstream& stream, bool valsonly)
 	{
 		T* data = GetBufferPointer();
 		stream.write((char*)data, sizeof(T) * _data.size);

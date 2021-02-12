@@ -1,8 +1,11 @@
 #include "SimulationWindow.h"
+#include "../SimUtils/Icon.h"
+
 
 SimulationWindow::SimulationWindow() : RenderEngine::WindowBase("Marbling Simulation")
 {
-	
+	GLFWimage* icon = LoadGLFWimage("res/icons/Icon.png");
+	glfwSetWindowIcon(_window, 1, icon);
 }
 
 void SimulationWindow::OnDraw()

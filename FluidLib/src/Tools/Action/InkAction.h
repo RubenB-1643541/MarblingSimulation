@@ -11,10 +11,10 @@ namespace FluidLib {
 	class InkAction : public Action<T>
 	{
 	public:
-		inline InkAction() {}
-		inline InkAction(T value, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetValue(value); SetOperation(op); }
-		inline InkAction(ColorGrid<T>* grid, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetGrid(grid); SetOperation(op); }
-		inline InkAction(T value, Grid<T>* grid, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetValue(value); SetGrid(grid); SetOperation(op); }
+		inline InkAction();
+		inline InkAction(T value, ACTION_OPERATION op = ACTION_OPERATION::NONE);
+		inline InkAction(ColorGrid<T>* grid, ACTION_OPERATION op = ACTION_OPERATION::NONE);
+		inline InkAction(T value, ColorGrid<T>* grid, ACTION_OPERATION op = ACTION_OPERATION::NONE);
 
 		virtual void Start() override;
 		virtual void Stop() override;
@@ -31,6 +31,37 @@ namespace FluidLib {
 		glm::vec3 _lastcol = { -1.0f, -1.0f, -1.0f };
 
 	};
+	template<class T>
+	inline InkAction<T>::InkAction()
+	{
+	}
+	template<class T>
+	inline InkAction<T>::InkAction(T value, ACTION_OPERATION op)
+	{
+		SetValue(value);
+		SetOperation(op);
+	}
+	template<class T>
+	inline InkAction<T>::InkAction(ColorGrid<T>* grid, ACTION_OPERATION op)
+	{
+		SetGrid(grid); 
+		SetOperation(op);
+		if (grid->GetColors().size() > 1) {
+			_col = grid->GetColor(1);
+			_lastcol = _col;
+		}
+	}
+	template<class T>
+	inline InkAction<T>::InkAction(T value, ColorGrid<T>* grid, ACTION_OPERATION op)
+	{
+		SetValue(value); 
+		SetGrid(grid); 
+		SetOperation(op);
+		if (grid->GetColors().size() > 1) {
+			_col = grid->GetColor(1);
+			_lastcol = _col;
+		}
+	}
 	template<class T>
 	inline void InkAction<T>::Start()
 	{

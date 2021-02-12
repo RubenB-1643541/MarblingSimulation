@@ -12,6 +12,8 @@ namespace FluidLib {
 
 		bool surfaceedit = false;
 		bool movementedit = false;
+	
+		bool autosavestate = true;
 	};
 
 

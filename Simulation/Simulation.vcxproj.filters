@@ -57,6 +57,9 @@
     <ClInclude Include="src\FileIO\Exporter.h" />
     <ClInclude Include="src\SimInterface\MultiSurfaceComponent.h" />
     <ClInclude Include="src\SimInterface\ExportComponent.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="src\SimInterface\SaveStateComponent.h" />
+    <ClInclude Include="src\SimUtils\SaveStateHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SimInterface\CreateComponent.cpp">
@@ -99,5 +102,13 @@
     <ClCompile Include="src\FileIO\Exporter.cpp" />
     <ClCompile Include="src\SimInterface\MultiSurfaceComponent.cpp" />
     <ClCompile Include="src\SimInterface\ExportComponent.cpp" />
+    <ClCompile Include="src\SimInterface\SaveStateComponent.cpp" />
+    <ClCompile Include="src\SimUtils\SaveStateHandler.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Simulation.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\icons\Icon.ico" />
   </ItemGroup>
 </Project>

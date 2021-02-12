@@ -1,4 +1,5 @@
 #include "SimulationSaveLoad.h"
+#include "../SimUtils/SaveStateHandler.h"
 
 std::string SimSave::_file = "";
 
@@ -54,6 +55,7 @@ bool SimSave::SaveSimData()
 	//Save Settings
 	FluidLib::Settings * settings = FluidLib::Simulation::Get()->GetSettings();
 	_ostream << settings->fps << " " << settings->freezeintensity << " " << settings->intesity << " " << settings->diffuse << " " << settings->spreading << std::endl;
+	_ostream << SaveStateHandler::GetLocation() << std::endl;
 	return true;
 }
 
@@ -102,6 +104,9 @@ bool SimLoad::LoadSimData()
 	FluidLib::Simulation::Get()->SetSize(width, height);
 	FluidLib::Settings* settings = FluidLib::Simulation::Get()->GetSettings();
 	_istream >> settings->fps >> settings->freezeintensity >> settings->intesity >> settings->diffuse >> settings->spreading;
+	std::string file;
+	_istream >> file;
+	SaveStateHandler::SetLocation(file, true);
 	INFO("Sim Data Loaded");
 	return true;
 }
@@ -146,7 +151,8 @@ bool SimLoad::LoadGrid()
 			_istream >> col.r >> col.g >> col.b;
 			colorgrid->AddColor(col);
 		}
-		colorgrid->SetId(0);
+		
+		colorgrid->SetId(colorgrid->GetColors().size()-1);
 		_istream.seekg(2, std::ios::cur);//Clear SPACE, CR and newline (\n)
 		_buffers->at(name)->Bind();
 		INFO("Ink: {0} - size: {1} - tot: {2}", sizeof(IInk), data.size, sizeof(IInk) * data.size);

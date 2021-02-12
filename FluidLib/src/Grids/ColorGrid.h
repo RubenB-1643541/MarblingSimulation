@@ -32,7 +32,7 @@ namespace FluidLib {
 
 		void UseGrid() override;
 		void DrawGrid() override;
-		void WriteToFile(std::ofstream& stream) override;
+		void WriteToFile(std::ofstream& stream, bool valsonly = false) override;
 	private:
 		void CreateColorBuffer();
 		uint32_t _id = 0;
@@ -148,14 +148,16 @@ namespace FluidLib {
 	}
 
 	template<class T>
-	inline void ColorGrid<T>::WriteToFile(std::ofstream& stream)
+	inline void ColorGrid<T>::WriteToFile(std::ofstream& stream, bool valsonly)
 	{
 		//Write Colors
-		stream << _colors.size() << std::endl;
-		for (int i = 0; i < _colors.size(); ++i) {
-			stream << _colors[i].r << " " << _colors[i].g << " " << _colors[i].b << " ";
+		if (!valsonly) {
+			stream << _colors.size() << std::endl;
+			for (int i = 0; i < _colors.size(); ++i) {
+				stream << _colors[i].r << " " << _colors[i].g << " " << _colors[i].b << " ";
+			}
+			stream << std::endl;
 		}
-		stream << std::endl;
 		//Write Data;
 		T* data = GetBufferPointer();
 		stream.write((char*)data, sizeof(T) * _data.size);

@@ -64,6 +64,7 @@ namespace RenderEngine {
 		void CreateCursor(Cursor cursor, std::string name);
 		void SetDefaultCursor();
 		void HideCursor(bool state);
+
 	protected:
 		bool b_closing;
 		GLFWwindow* _window;

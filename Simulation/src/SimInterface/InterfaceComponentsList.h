@@ -9,3 +9,4 @@
 #include "ExportComponent.h"
 #include "PresetComponent.h"
 #include "MultiSurfaceComponent.h"
+#include "SaveStateComponent.h"

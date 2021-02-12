@@ -1,6 +1,7 @@
 #include "TopBar.h"
 #include "../FileIO/SimulationSaveLoad.h"
 #include <Core/Application.h>
+#include "../SimUtils/SaveStateHandler.h"
 
 void TopBar::OnInit()
 {
@@ -51,6 +52,13 @@ void TopBar::OnDraw()
 		if (ImGui::MenuItem("Edit Movement", "Shift", &_settings->movementedit)) {
 			_settings->surfaceedit = false;
 		}
+		if (ImGui::MenuItem("Create Save State", "Ctrl+E"))
+			SaveStateHandler::CreateSaveState();
+		if (ImGui::MenuItem("Undo", "Ctrl+Z"))
+			SaveStateHandler::PrevState();
+		if (ImGui::MenuItem("Redo", "Ctrl+Shift+Z"))
+			SaveStateHandler::NextState();
+
 		ImGui::EndMenu();
 	}
 	if (ImGui::BeginMenu("Window")) {

@@ -27,6 +27,7 @@ namespace FluidLib {
 	void Simulation::Update()
 	{
 		_tools.Update();
+		OnUpdate();
 		if (!_paused && (std::clock() - _prev)/ (double) CLOCKS_PER_SEC >= 1.0f / _settings.fps) {
 			//std::cout << "update: " << (std::clock() - _prev) / (double) CLOCKS_PER_SEC << " fps: " << _settings.fps << std::endl;
 			_prev = std::clock();

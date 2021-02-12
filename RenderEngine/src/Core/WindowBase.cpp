@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "WindowBase.h"
 
+
 namespace RenderEngine {
 
     WindowBase::WindowBase(std::string name) : b_closing(false)

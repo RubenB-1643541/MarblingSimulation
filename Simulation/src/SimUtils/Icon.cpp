@@ -17,3 +17,10 @@ Icon Load(const std::string& name) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
     return { image_width, image_height, texture };
 }
+
+GLFWimage * LoadGLFWimage(const std::string& png)
+{
+    GLFWimage icon[1];
+    icon->pixels = stbi_load("res/icons/Icon.png", &icon->width, &icon->height, NULL, 4);
+    return icon;
+}

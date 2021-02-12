@@ -2,6 +2,7 @@
 #include "Tools/Movement/Movements.h"
 #include "Tools/Surface/Surfaces.h"
 #include "Tools/Action/Actions.h"
+#include "../SimUtils/SaveStateHandler.h"
 
 MarblingSimulation::MarblingSimulation()
 {
@@ -16,6 +17,20 @@ void MarblingSimulation::OnInit()
 	//_settings.fps = 30;
 	_prevtime = std::clock();
 	CreateTools();
+}
+
+void MarblingSimulation::OnUpdate()
+{
+	static bool use = false;
+	if (_tools.GetActive()->IsUsing())
+		use = true;
+	if (use) {
+		if (!_tools.GetActive()->IsUsing()) {
+			use = false;
+			if (_settings.autosavestate)
+				SaveStateHandler::CreateSaveState();
+		}
+	}
 }
 
 void MarblingSimulation::BeforeUpdate()
@@ -64,7 +79,6 @@ void MarblingSimulation::AfterUpdate()
 
 void MarblingSimulation::OnDraw()
 {
-	
 
 }
 

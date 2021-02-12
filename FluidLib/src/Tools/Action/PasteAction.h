@@ -31,7 +31,7 @@ namespace FluidLib {
 
 	};
 	template<class T>
-	inline PasteAction<T>::PasteAction(Grid<T>* grid, ACTION_OPERATION op = ACTION_OPERATION::NONE)
+	inline PasteAction<T>::PasteAction(Grid<T>* grid, ACTION_OPERATION op)
 	{
 		SetGrid(grid);
 		SetOperation(op);

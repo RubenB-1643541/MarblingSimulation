@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GL/glew.h"
+#include "GLFW/glfw3.h"
 #include <string>
 
 
@@ -11,3 +12,4 @@ struct Icon {
 };
 
 Icon Load(const std::string& name);
+GLFWimage * LoadGLFWimage(const std::string& png);

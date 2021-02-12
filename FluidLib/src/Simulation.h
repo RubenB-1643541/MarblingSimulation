@@ -36,6 +36,7 @@ namespace FluidLib {
 		void Stop();
 
 		inline virtual void OnInit() {}
+		inline virtual void OnUpdate() {}
 		inline virtual void BeforeUpdate() {}
 		inline virtual void AfterUpdate() {}
 		inline virtual void OnDraw() {}
