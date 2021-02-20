@@ -39,9 +39,10 @@ namespace FluidLib {
             _surfaceEdit = false;
             if (_movement != nullptr) {
                 FPoint p = _movement->Get(_x, _y);
-                FPoint r = _movement->GetNormal(_x, _y);
+                float r = _movement->GetNormalRotation(_x, _y);
                 //INFO("Normal: {0},{1}", r.GetX(), r.GetY());
                 _surface->OnMove(p.GetX(), p.GetY());
+                _surface->OnRotate(r);
                 _action->SetPos({ (int)p.GetX(), (int)p.GetY() });
             }
         }

@@ -55,7 +55,11 @@ void ToolParameters::SurfaceParams()
 		ImGui::SetNextTreeNodeOpen(true);
 	FluidLib::Surface* surface = _active->GetSurface();
 	if (surface != nullptr && ImGui::TreeNode("Surface (Ctrl)")) {
+		ImGui::Checkbox("Auto rotate", surface->GetAutoRotatePtr());
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Rotate surface to normal of the movement patron");
 		ImGui::SliderFloat("Rotation", surface->GetRotationPtr(), 0.0f, 10.0f);
+
 		if (_active->GetName() == "Dripping") {
 			FluidLib::DrippingTool* drip = static_cast<FluidLib::DrippingTool*>(_active);
 			ImGui::SliderFloat("Percentage", drip->GetPercentagePtr(), 0.0, 1.0);
@@ -168,27 +172,38 @@ void ToolParameters::ActionParams()
 	if (_first)
 		ImGui::SetNextTreeNodeOpen(true);
 	if (ImGui::TreeNode("Action")) {
-		FluidLib::ActionBase* action = _active->GetAction();
-		if (action != nullptr) {
-			if (_active->GetName() == "Select") {
-				SelectToolActions();
-			}
-			else if (_active->GetName() == "Basic") {
-				if (ImGui::Button("Execute")) {
-					_active->OnBeginUse();
-					_active->OnUse();
-					_active->OnEndUse();
-				}
-			}
+		if (_active->GetName() == "Select") {
+			SelectToolActions();
+		}
 
-			ImGui::SliderFloat("Scale", action->GetScale(), 0.1f, 10.0f);
-			if (action->GetName() == "AddInk") {
-				FluidLib::InkAction<IInk>* inkaction = static_cast<FluidLib::InkAction<IInk>*>(action);
-				if (inkaction != nullptr) {
-					InkActionParams(inkaction);
+		else if (_active->GetName() == "Basic") {
+			if (ImGui::Button("Execute")) {
+				_active->OnBeginUse();
+				_active->OnUse();
+				_active->OnEndUse();
+			}
+			FluidLib::BasicTool* basic = static_cast<FluidLib::BasicTool*>(_active);
+			for (const std::string& a : basic->GetActiveActions()) {
+
+				FluidLib::ActionBase* action = basic->GetAction(a);
+				if (action != nullptr) {
+					ImVec2 size = { 320, 50 };
+					if(action->GetName() == "AddInk")
+						size = {320,150};
+					ImGui::BeginChild(a.c_str(), size);
+					ImGui::Text(a.c_str());
+					ImGui::SliderFloat("Scale", action->GetScale(), 0.1f, 10.0f);
+					
+					if (action->GetName() == "AddInk") {
+						FluidLib::InkAction<IInk>* inkaction = static_cast<FluidLib::InkAction<IInk>*>(action);
+						if (inkaction != nullptr) {
+							InkActionParams(inkaction);
+						}
+					}
+					ImGui::EndChild();
+
 				}
 			}
-			
 		}
 		ImGui::TreePop();
 	}

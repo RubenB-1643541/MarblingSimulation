@@ -118,7 +118,7 @@ namespace FluidLib {
 
 			if (_colorchange) {
 				if (_colors.size() > _buffersize) {
-					_buffersize *= 2;
+					_buffersize = _colors.size() * 2;
 					glBufferData(GL_UNIFORM_BUFFER, _buffersize * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
 					glNamedBufferSubData(_colid, 0, _colors.size() * sizeof(glm::vec4), &_colors[0]);
 				}

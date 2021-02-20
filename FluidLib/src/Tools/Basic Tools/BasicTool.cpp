@@ -26,6 +26,17 @@ namespace FluidLib {
 		OnDraw();
 	}
 
+	void BasicTool::OnUpdate()
+	{
+		if (_action != nullptr) {
+			for (const std::string& k : _activeactions) {
+				if (k != "" && k != _action->GetName()) {
+					GetAction(k)->SetPos(_action->GetPos());
+				}
+			}
+		}
+	}
+
 	void BasicTool::AddSurface(const std::string& name, Surface* surface)
 	{
 		_surfaces.insert(std::make_pair(name, surface));
@@ -62,9 +73,11 @@ namespace FluidLib {
 		SetMovement(_movements[movementname]);
 	}
 
-	void BasicTool::SetActiveAction(const std::string& actionname)
+	void BasicTool::SetActiveAction(const std::string& actionname, bool firstactive)
 	{
 		SetAction(_actions[actionname]);
+		if(firstactive)
+			_activeactions[0] = actionname;
 	}
 
 	void BasicTool::SetActiveAction(const std::string& actionname, int button)

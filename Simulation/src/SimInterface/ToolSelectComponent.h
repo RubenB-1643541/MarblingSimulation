@@ -25,7 +25,7 @@ public:
 	void OnUpdate() override;
 	void OnDraw() override;
 	void EndDraw() override;
-	void AddButton(Button button);
+	void AddButton(Button button, bool selected = false);
 private:
 	void DrawBasic();
 	void DrawSelection();
@@ -41,7 +41,7 @@ private:
 	
 	int _selectedsurface = -1;
 	int _selectedmovement = -1;
-	int _selectedaction = -1;
+	std::vector<std::string> _selectedactions;
 	int _selectedtool = -1;
 };
 

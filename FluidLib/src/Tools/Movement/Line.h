@@ -28,6 +28,7 @@ namespace FluidLib {
 		@return FPoint: Stays on the line
 		*/
 		virtual FPoint Get(float x, float y) override;
+		virtual float GetNormalRotation(float x, float y) override;
 
 		FPoint* GetP1Ptr() { return &_p1; }
 		FPoint* GetP2Ptr() { return &_p2; }

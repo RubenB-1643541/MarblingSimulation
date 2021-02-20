@@ -11,6 +11,7 @@
 #include "../SimUtils/ShortCutHandler.h"
 #include "../FileIO/SimulationSaveLoad.h"
 #include "Grids/ColorGrid.h"
+#include "Grids/FlagGrid.h"
 #include "../SimUtils/SaveStateHandler.h"
 
 class SimulationApplication : public RenderEngine::Application
@@ -34,6 +35,7 @@ public:
 	inline virtual bool OnKeyReleaseEvent(RenderEngine::KeyReleaseEvent& e) override;
 	void StartSimulation();
 	bool LoadSimulation(const std::string& file);
+	bool ImportImage(const std::string& file);
 	inline void SetLoad(bool l) { _load = l; }
 private:
 	void CreateGrids();

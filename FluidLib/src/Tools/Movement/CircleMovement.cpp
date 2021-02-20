@@ -106,6 +106,12 @@ namespace FluidLib {
 		return FPoint(newx, newy);
 	}
 
+	float CircleMovement::GetNormalRotation(float x, float y)
+	{
+		//return { (1 - x) / (x / _x),(1 - y) / (y / _y) };
+		return atan2(y - _y, x - _x);
+	}
+
 	void CircleMovement::SetProjection(glm::mat4 proj)
 	{
 		_projection = proj;

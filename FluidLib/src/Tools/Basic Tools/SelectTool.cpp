@@ -36,11 +36,13 @@ namespace FluidLib {
 
 	bool SelectTool::OnUseEvent(ToolUseEvent& event)
 	{
-		if (!_moveEdit && !_surfaceEdit) {
-			if (_move != MOVEMENT_MODE::SIZE)
-				SwitchMode();
+		if (event.GetAction() == 0) {
+			if (!_moveEdit && !_surfaceEdit) {
+				if (_move != MOVEMENT_MODE::SIZE)
+					SwitchMode();
+			}
+			return true;
 		}
-		return true;
 	}
 
 	bool SelectTool::OnEndUseEvent(ToolEndUseEvent& event)

@@ -107,6 +107,15 @@ namespace FluidLib {
         return pow((1 - t), 3) * _controlpoints[0] + 3 * pow((1 - t), 2) * t * _controlpoints[1] + 3 * (1 - t) * pow(t, 2) * _controlpoints[2] + pow(t, 3) * _controlpoints[3];
     }
 
+    float BezierCurve::GetNormalRotation(float x, float y)
+    {
+        float t = x / FluidLib::Simulation::Get()->GetSizeX();
+        //Derivative
+        FPoint p = pow(3 * (1 - t), 2)* _controlpoints[1] - _controlpoints[0] + 6 * (1 - t) * t * (_controlpoints[2] - _controlpoints[1]) + 3 * pow(t, 2) * (_controlpoints[3] - _controlpoints[2]);
+        //return p.GetY()/ p.GetX();
+        return atan2(p.GetY(), p.GetX());
+    }
+
     void BezierCurve::SetProjection(glm::mat4 proj)
     {
         _projection = proj; 

@@ -101,6 +101,7 @@
     <ClInclude Include="src\Events\ToolEvent.h" />
     <ClInclude Include="src\Grids\ColorGrid.h" />
     <ClInclude Include="src\Grids\ComputeShaderController.h" />
+    <ClInclude Include="src\Grids\FlagGrid.h" />
     <ClInclude Include="src\Grids\Grid.h" />
     <ClInclude Include="src\Grids\GridManager.h" />
     <ClInclude Include="src\Grids\Renderer\GridRenderer.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="src\Tools\Movement\Line.cpp" />
     <ClCompile Include="src\Tools\Movement\PointMovement.cpp" />
     <ClCompile Include="src\Tools\Movement\Sine.cpp" />
+    <ClCompile Include="src\Tools\Surface.cpp" />
     <ClCompile Include="src\Tools\Surface\Circle.cpp" />
     <ClCompile Include="src\Tools\Surface\Multisurface\CircleMultiSurface.cpp" />
     <ClCompile Include="src\Tools\Surface\Multisurface\Comb.cpp" />

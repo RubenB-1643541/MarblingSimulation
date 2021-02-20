@@ -41,7 +41,13 @@ void CreateComponent::OnDraw()
 			_app->LoadSimulation(file);
 			_open = false;
 		}
-		ImGui::SameLine(0, 200.0f);
+		ImGui::SameLine();
+		if (ImGui::Button("Load Png")) {
+			std::string file = FileDialog::Import();
+			_app->ImportImage(file);
+			_open = false;
+		}
+		ImGui::SameLine(0, 150.0f);
 		if (ImGui::Button("Create")) {
 			FluidLib::Simulation::Get()->SetSize(_width, _height);
 			_app->StartSimulation();

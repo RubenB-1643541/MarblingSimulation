@@ -144,6 +144,7 @@
     <ClInclude Include="src\Tools\Basic Tools\DrippingTool.h" />
     <ClInclude Include="src\Tools\Surface\Multisurface\CircleMultiSurface.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="src\Grids\FlagGrid.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">
@@ -226,6 +227,7 @@
     <ClCompile Include="src\Tools\Movement\PointMovement.cpp" />
     <ClCompile Include="src\Tools\Basic Tools\DrippingTool.cpp" />
     <ClCompile Include="src\Tools\Surface\Multisurface\CircleMultiSurface.cpp" />
+    <ClCompile Include="src\Tools\Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FluidLib.rc" />

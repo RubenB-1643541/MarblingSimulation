@@ -1,6 +1,7 @@
 #include "SimulationApplication.h"
 #include "GridStructures.h"
 #include "SimulationController.h"
+#include "../FileIO/Importer.h"
 
 
 SimulationApplication::SimulationApplication() : Application("Marbling Simulation", new SimulationWindow())
@@ -71,6 +72,7 @@ void SimulationApplication::CreateInterface()
 	_interface.AddComponent("Create", new CreateComponent(this, !_load));
 	ExportComponent* exp = new ExportComponent();
 	_interface.AddComponent("Export", exp);
+	_interface.AddComponent("ToolPopup", new ToolPopupComponent(_sim.GetTools()));
 	top->SetExportComponent(exp);
 }
 
@@ -145,7 +147,6 @@ bool SimulationApplication::LoadSimulation(const std::string& file)
 		ERROR("Failed To Load Simulation Data");
 		return false;
 	}
-	FluidLib::Simulation::Get()->SetSize(960, 500);
 	CreateGrids();
 	loader.LoadGrids();
 	loader.EndLoad();
@@ -160,6 +161,25 @@ bool SimulationApplication::LoadSimulation(const std::string& file)
 	_sim.GetSettings()->fps = tempfps;	  //Force 1 update for rendering -> if fps = 0 no rendering (for some fucking reason)
 	if(_load)
 		Start();
+	return true;
+}
+
+bool SimulationApplication::ImportImage(const std::string& file)
+{
+	Importer importer;
+	importer.SetFile(file);
+	if (!importer.Import(false))
+		return false;
+	Image im = importer.GetImportedImage();
+	_sim.SetSize(im.width, im.height);
+	CreateGrids();
+	FluidLib::ColorGrid<IInk>* colorgrid = static_cast<FluidLib::ColorGrid<IInk>*>(_sim.GetGrids()->GetGrid("Ink"));
+	//Load Image Data
+	importer.ImportInGrid(colorgrid);
+	
+	CreateUniforms();
+	_sim.Init();
+	_simrunning = true;
 	return true;
 }
 
@@ -262,7 +282,8 @@ void SimulationApplication::CreateGrids()
 	inkgrid2->SetElementSize(2);
 	gridman->AddGrid("Ink2", inkgrid2);
 
-	FluidLib::Grid<Flags>* flaggrid = new FluidLib::Grid<Flags>(_buffers.at("Flag")->GetId(), _sim.GetSize(), 7, true);
+	FluidLib::Grid<Flags>* flaggrid = new FluidLib::FlagGrid<Flags>(_buffers.at("Flag")->GetId(), _sim.GetSize(), 7, true);
+	static_cast<FluidLib::FlagGrid<Flags>*>(flaggrid)->CopyFromGPU();
 	flaggrid->SetElementSize(4);
 	gridman->AddGrid("Flag", flaggrid);
 }

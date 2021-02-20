@@ -13,6 +13,7 @@ namespace FluidLib {
 	public:
 		BasicTool();
 		void Draw() override;
+		virtual void OnUpdate() override;
 
 		void AddSurface(const std::string& name, Surface* surface);
 		void AddMovement(const std::string& name, Movement* movement);
@@ -21,7 +22,7 @@ namespace FluidLib {
 
 		void SetActiveSurface(const std::string& surfacename);
 		void SetActiveMovement(const std::string& movementname);
-		void SetActiveAction(const std::string& actionname);
+		void SetActiveAction(const std::string& actionname, bool firstactive = false);
 		void SetActiveAction(const std::string& actionname, int button);
 		void SetActiveMultisurface(const std::string& multisurfacename);
 
@@ -29,8 +30,15 @@ namespace FluidLib {
 		inline const std::vector<std::string>& GetMovementKeys() { return _movementkeys; }
 		inline const std::vector<std::string>& GetActionKeys() { return _actionkeys; }
 		inline const std::vector<std::string>& GetMultisurfaceKeys() { return _multisurfacekeys; }
+		inline const std::vector<std::string>& GetActiveActions() { return _activeactions; }
+
+		inline Surface* GetSurface(std::string surface) {return _surfaces[surface];}
+		inline Movement* GetMovement(std::string movement) {return _movements[movement];}
+		inline ActionBase* GetAction(std::string action) {return _actions[action];}
+		inline MultiSurface* GetMultiSurface(std::string multisurface) {return _multisurfaces[multisurface];}
 
 		inline MultiSurface* GetMultisurface() { return _multisurface; }
+
 		void OnBeginUse() override;
 		void OnEndUse() override;
 		void OnUse() override;

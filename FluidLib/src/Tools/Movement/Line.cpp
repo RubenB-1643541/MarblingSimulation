@@ -98,6 +98,11 @@ namespace FluidLib {
         return {oldx, y};
     }
 
+    float Line::GetNormalRotation(float x, float y)
+    {
+        return atan2(_p2.GetY() - _p1.GetY(), _p2.GetX() - _p1.GetX());
+    }
+
     void Line::SetProjection(glm::mat4 proj)
     {
         _projection = proj;

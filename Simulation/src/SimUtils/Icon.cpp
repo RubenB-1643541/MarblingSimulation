@@ -18,6 +18,13 @@ Icon Load(const std::string& name) {
     return { image_width, image_height, texture };
 }
 
+Image LoadPng(const std::string& image)
+{
+    Image im;
+    im.data = stbi_load(image.c_str(), &im.width, &im.height, NULL, 4);
+    return im;
+}
+
 GLFWimage * LoadGLFWimage(const std::string& png)
 {
     GLFWimage icon[1];

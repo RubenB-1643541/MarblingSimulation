@@ -60,7 +60,7 @@ bool Exporter::Export(bool askfile)
 	return true;
 }
 
-void Exporter::SetFile(std::string file)
+void Exporter::SetFile(const std::string& file)
 {
 	_file = file;
 }

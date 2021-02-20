@@ -10,7 +10,7 @@ class Exporter
 {
 public:
 	bool Export(bool askfile = true);
-	void SetFile(std::string file);
+	void SetFile(const std::string& file);
 	void SetWaterTrans(bool trans) { _watertrans = trans; }
 	void SetInkTrans(bool trans) { _inktrans = trans; }
 private:

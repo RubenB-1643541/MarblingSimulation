@@ -19,6 +19,7 @@ public:
 	static std::string Open();
 	static std::string Save();
 	static std::string Export();
+	static std::string Import();
 private:
 
 

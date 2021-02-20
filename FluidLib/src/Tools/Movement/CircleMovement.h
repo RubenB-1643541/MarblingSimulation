@@ -35,6 +35,7 @@ namespace FluidLib {
 		float* GetYPtr() { return &_y; }
 
 		virtual FPoint Get(float x, float y) override;
+		virtual float GetNormalRotation(float x, float y);
 		void SetProjection(glm::mat4 proj) override;
 	private:
 		float _r = 50.0f;

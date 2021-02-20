@@ -10,3 +10,4 @@
 #include "PresetComponent.h"
 #include "MultiSurfaceComponent.h"
 #include "SaveStateComponent.h"
+#include "ToolPopupComponent.h"

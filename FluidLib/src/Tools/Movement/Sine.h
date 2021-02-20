@@ -30,7 +30,7 @@ namespace FluidLib {
 		@return FPoint: Stays on the sinus line
 		*/
 		virtual FPoint Get(float x, float y) override;
-		FPoint GetNormal(float x, float y) override;
+		virtual float GetNormalRotation(float x, float y) override;
 
 		float* GetVerttrans() { return &_verttrans; }
 		float* GetHortrans() { return &_hortrans; }

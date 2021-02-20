@@ -35,6 +35,7 @@ namespace FluidLib {
 		virtual void Mul(float f, IPoint& p) = 0;
 		virtual void Div(float f, IPoint& p) = 0;
 		virtual void SetPos(IPoint p) { _oldpos = _pos; _pos = p; }
+		virtual IPoint GetPos() { return _pos; }
 		virtual float* GetScale() = 0;
 		virtual const char* GetType() = 0;
 		void SetName(const std::string& name) { _name = name; }

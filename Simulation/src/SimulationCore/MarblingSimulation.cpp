@@ -118,8 +118,8 @@ void MarblingSimulation::CreateBasicTool()
 	basic->AddAction("AddVel", addvel);
 	basic->AddAction("Freeze", freeze);
 	basic->AddAction("UnFreeze", unfreeze);
-	//basic->AddAction("Freeze", freeze);
-	basic->SetActiveAction("AddInk");
+	basic->SetActiveAction("AddInk", true);
+
 	basic->AddMovement("Mouse", new FluidLib::MouseMovement());
 	basic->AddMovement("Line", new FluidLib::Line());
 	basic->AddMovement("Sine", new FluidLib::Sine());
@@ -191,11 +191,11 @@ void MarblingSimulation::CreateBasicTool()
 
 void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
 {
-	comp->AddButton(Button("res/icons/Basic.png", "Basic", TOOL_PART::TOOL));
+	comp->AddButton(Button("res/icons/Basic.png", "Basic", TOOL_PART::TOOL), true);
 	comp->AddButton(Button("res/icons/Select.png", "Select", TOOL_PART::TOOL));
 	comp->AddButton(Button("res/icons/Basic.png", "Dripping", TOOL_PART::TOOL));
 
-	comp->AddButton(Button("res/icons/Mouse.png", "Mouse", TOOL_PART::MOVEMENT));
+	comp->AddButton(Button("res/icons/Mouse.png", "Mouse", TOOL_PART::MOVEMENT), true);
 	comp->AddButton(Button("res/icons/Line.png", "Line", TOOL_PART::MOVEMENT));
 	comp->AddButton(Button("res/icons/Sine.png", "Sine", TOOL_PART::MOVEMENT));
 	comp->AddButton(Button("res/icons/BezierCurve.png", "BezierCurve", TOOL_PART::MOVEMENT));
@@ -203,7 +203,7 @@ void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
 	comp->AddButton(Button("res/icons/Point.png", "Point", TOOL_PART::MOVEMENT));
 
 	//comp->AddButton(Button("res/icons/Ink.png", "AddFreq", TOOL_PART::ACTION));
-	comp->AddButton(Button("res/icons/Ink.png", "AddInk", TOOL_PART::ACTION));
+	comp->AddButton(Button("res/icons/Ink.png", "AddInk", TOOL_PART::ACTION), true);
 	comp->AddButton(Button("res/icons/RemoveInk.png", "RemoveInk", TOOL_PART::ACTION));
 	comp->AddButton(Button("res/icons/SoftenInk.png", "SoftenInk", TOOL_PART::ACTION));
 	comp->AddButton(Button("res/icons/Force.png", "AddVel", TOOL_PART::ACTION));
@@ -213,7 +213,7 @@ void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
 	comp->AddButton(Button("res/icons/Square.png", "Square", TOOL_PART::SURFACE));
 	comp->AddButton(Button("res/icons/Rectangle.png", "Rectangle", TOOL_PART::SURFACE));
 	comp->AddButton(Button("res/icons/Triangle.png", "Triangle", TOOL_PART::SURFACE));
-	comp->AddButton(Button("res/icons/Circle.png", "Circle", TOOL_PART::SURFACE));
+	comp->AddButton(Button("res/icons/Circle.png", "Circle", TOOL_PART::SURFACE), true);
 	comp->AddButton(Button("res/icons/Point.png", "Point", TOOL_PART::SURFACE));
 	comp->AddButton(Button("res/icons/Polygon.png", "Polygon", TOOL_PART::SURFACE));
 }

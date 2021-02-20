@@ -60,6 +60,8 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\SimInterface\SaveStateComponent.h" />
     <ClInclude Include="src\SimUtils\SaveStateHandler.h" />
+    <ClInclude Include="src\SimInterface\ToolPopupComponent.h" />
+    <ClInclude Include="src\FileIO\Importer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SimInterface\CreateComponent.cpp">
@@ -104,6 +106,8 @@
     <ClCompile Include="src\SimInterface\ExportComponent.cpp" />
     <ClCompile Include="src\SimInterface\SaveStateComponent.cpp" />
     <ClCompile Include="src\SimUtils\SaveStateHandler.cpp" />
+    <ClCompile Include="src\SimInterface\ToolPopupComponent.cpp" />
+    <ClCompile Include="src\FileIO\Importer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Simulation.rc" />

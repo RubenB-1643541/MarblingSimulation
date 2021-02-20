@@ -4,6 +4,7 @@
 #include <string>
 #include "glm/gtx/transform.hpp"
 #include "Util/Point.h"
+#include <cmath>
 
 namespace FluidLib {
 
@@ -17,7 +18,7 @@ namespace FluidLib {
 		@return FPoint new position
 		*/
 		inline virtual FPoint Get(float x, float y) { return {x, y}; }
-		inline virtual FPoint GetNormal(float x, float y) { return { 0.0f,0.0f }; }
+		inline virtual float GetNormalRotation(float x, float y) { return 0.0f; }
 
 		inline virtual void StartEdit() {}
 		inline virtual void DrawPath() {}
