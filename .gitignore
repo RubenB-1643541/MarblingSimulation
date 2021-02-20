@@ -38,3 +38,7 @@
 /.vs
 /bin
 /bin-int
+
+
+#Savestates
+*.s
