@@ -3,6 +3,7 @@
 #include "../Grids/Grid.h"
 #include "Util/Point.h"
 #include <vector>
+#include <functional>
 
 namespace FluidLib {
 
@@ -20,7 +21,7 @@ namespace FluidLib {
 	class ActionBase
 	{
 	public:
-
+		using Check = std::function<bool(IPoint p)>;
 		virtual void Start() = 0;
 		virtual void Stop() = 0;
 		virtual void Execute(IPoint& p) = 0;
@@ -40,10 +41,14 @@ namespace FluidLib {
 		virtual const char* GetType() = 0;
 		void SetName(const std::string& name) { _name = name; }
 		std::string GetName() { return _name; }
+
+		void SetCheckFunction(Check func) { _checkfunction = func; }
+		void SetBasicCheckFunction() { _checkfunction = [](IPoint p) {return true; }; }
 	protected:
 		IPoint _pos = { 0,0 };
 		IPoint _oldpos = {-1,-1};
 		std::string _name = "Base";
+		Check _checkfunction;
 	private:
 
 	};
@@ -53,9 +58,9 @@ namespace FluidLib {
 	{
 	public:
 		inline Action() {}
-		inline Action(T value, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetValue(value); SetOperation(op); }
-		inline Action(Grid<T>* grid, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetGrid(grid); SetOperation(op); }
-		inline Action(T value, Grid<T>* grid, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetValue(value); SetGrid(grid); SetOperation(op); }
+		inline Action(T value, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetValue(value); SetOperation(op); SetBasicCheckFunction(); }
+		inline Action(Grid<T>* grid, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetGrid(grid); SetOperation(op); SetBasicCheckFunction(); }
+		inline Action(T value, Grid<T>* grid, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetValue(value); SetGrid(grid); SetOperation(op); SetBasicCheckFunction(); }
 		
 		inline void SetOperation(ACTION_OPERATION op) { _operation = op; }
 		inline void SetValue(T value) { _value = value; }
@@ -104,25 +109,30 @@ namespace FluidLib {
 	template<class T>
 	inline void Action<T>::Execute(IPoint& p)
 	{
+		IPoint temp = _pos + p;
+		_checkfunction(temp);
+		if (!(IN_GRID(temp)) || !_checkfunction(temp))
+			return;
 		switch (_operation)
 		{
 		case ACTION_OPERATION::SET:
-			Set(p);
+			Set(temp);
 			break;
 		case ACTION_OPERATION::ADD: 
-			Add(p);
+			Add(temp);
 			break;
 		case ACTION_OPERATION::SUB:
-			Sub(p);
+			Sub(temp);
 			break;
 		case ACTION_OPERATION::MUL:
-			Mul(p);
+			Mul(temp);
 			break;
 		case ACTION_OPERATION::DIV:
-			Div(p);
+			Div(temp);
 			break;
 		case ACTION_OPERATION::MOVE:
-			Move(p);
+			temp = _oldpos + p;
+			Move(temp);
 			break;
 		default:
 			break;
@@ -137,67 +147,67 @@ namespace FluidLib {
 	template<class T>
 	inline void Action<T>::Set(IPoint& p)
 	{
-		IPoint temp = _pos + p;
-		if(IN_GRID(temp))
-			_gridvals[POINT_TO_1D(temp)] = _value * _scale;
+		//IPoint temp = _pos + p;
+		//if(IN_GRID(temp))
+		_gridvals[POINT_TO_1D(p)] = _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Add(IPoint& p)
 	{
-		IPoint temp = _pos + p;
-		if (IN_GRID(temp))
-			_gridvals[POINT_TO_1D(temp)] += _value * _scale;
+		//IPoint temp = _pos + p;
+		//if (IN_GRID(temp))
+			_gridvals[POINT_TO_1D(p)] += _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Sub(IPoint& p)
 	{
-		IPoint temp = _pos + p;
-		if (IN_GRID(temp))
-			_gridvals[POINT_TO_1D(temp)] -= _value * _scale;
+		//IPoint temp = _pos + p;
+		//if (IN_GRID(temp))
+			_gridvals[POINT_TO_1D(p)] -= _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Mul(IPoint& p)
 	{
-		IPoint temp = _pos + p;
-		if (IN_GRID(temp))
-			_gridvals[POINT_TO_1D(temp)] *= _value * _scale;
+		//IPoint temp = _pos + p;
+		//if (IN_GRID(temp))
+			_gridvals[POINT_TO_1D(p)] *= _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Div(IPoint& p)
 	{
-		IPoint temp = _pos + p;
-		if (IN_GRID(temp))
-			_gridvals[POINT_TO_1D(temp)] /= _value * _scale;
+		//IPoint temp = _pos + p;
+		//if (IN_GRID(temp))
+			_gridvals[POINT_TO_1D(p)] /= _value * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Move(IPoint& p)
 	{
-		IPoint temp = _oldpos + p;
-		if (IN_GRID(temp)) {
+		//IPoint temp = _oldpos + p;
+		//if (IN_GRID(temp)) {
 			IPoint move = _pos - _oldpos;
-			_gridvals[POINT_TO_1D(temp)] += move * 20 * _scale;
-		}
+			_gridvals[POINT_TO_1D(p)] += move * 20 * _scale;
+		//}
 	}
 
 	template<class T>
 	inline void Action<T>::Mul(float f, IPoint& p)
 	{
-		IPoint temp = _pos + p;
-		if (IN_GRID(temp))
-			_gridvals[POINT_TO_1D(temp)] *= f * _scale;
+		//IPoint temp = _pos + p;
+		//if (IN_GRID(temp))
+			_gridvals[POINT_TO_1D(p)] *= f * _scale;
 	}
 
 	template<class T>
 	inline void Action<T>::Div(float f, IPoint& p)
 	{
-		IPoint temp = _pos + p;
-		if (IN_GRID(temp))
-			_gridvals[POINT_TO_1D(temp)] /= f * _scale;
+		//IPoint temp = _pos + p;
+		//if (IN_GRID(temp))
+			_gridvals[POINT_TO_1D(p)] /= f * _scale;
 	}
 
 	template<class T>

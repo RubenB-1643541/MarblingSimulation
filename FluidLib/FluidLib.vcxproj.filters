@@ -145,6 +145,7 @@
     <ClInclude Include="src\Tools\Surface\Multisurface\CircleMultiSurface.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\Grids\FlagGrid.h" />
+    <ClInclude Include="src\Tools\Action\FlagAction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">

@@ -48,7 +48,7 @@ private:
 	RenderEngine::ComputeShaderProgram _computeshader;
 	RenderEngine::ShaderProgram _shader;
 	RenderEngine::Shader _shaderdata = { "res/shaders/ink_vertexshader.glsl", "res/shaders/ink_fragmentshader.glsl", "" };
-	std::string _computeShader = "res/computeshaders/StamAdvection_Float.glsl";
+	std::string _computeShader = "res/computeshaders/StamAdvection_float.glsl";
 	//RenderEngine::Shader _shaderdata = { "res/shaders/computegrid_vertexshader.glsl", "res/shaders/computegrid_fragmentshader.glsl", "" };
 
 	bool _load = false;

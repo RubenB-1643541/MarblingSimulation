@@ -72,8 +72,14 @@ bool InGrid(vec2 vec);
 bool InGrid(uint pos);
 vec2 Collision(vec2 vec);
 
+//Copiers
+void CopyToSecond(uint i);
+void CopyToFirst(uint i);
+
 void main() {
 	uint i = gl_GlobalInvocationID.x;
+	CopyToSecond(i);
+	barrier();
 	//frequencies[i] = uint(flagvals[i].x);
 	bvec4 flags = bvec4(flagvals[i].x, flagvals[i].y, flagvals[i].z, flagvals[i].w);
 	ivec2 pos = IndexToPoint(i);
@@ -83,6 +89,7 @@ void main() {
 	}
 	barrier();
 	Diffuse(i);
+	CopyToFirst(i);
 }
 
 /*
@@ -115,56 +122,62 @@ void StamAdvection(uint i, ivec2 pos) {
 			InkStruct highest = {0,0};
 			//int val = int(perc.x * frequencies[i]);
 			if(val > 0 && inkvals2[i].freq >= val) {
-				totalval += val;
-				inkvals2[i].freq -= val;
-				//atomicAdd(inkvals2[i].freq, -val);
 				if(highest.freq < inkvals2[i].freq){
 					highest.freq = inkvals2[i].freq;
 					highest.id = inkvals2[i].id;
 				}
+				totalval += val;
+				//inkvals2[i].freq -= val;
+				//inkvals2[i].freq = 0;
+				atomicAdd(inkvals2[i].freq, -val);
+
 			}
 			i = PointToIndex(ivec2(sqpoints.z, sqpoints.y));
 			val = int(perc.y * 100);
 			//val = int(perc.y * frequencies[i]);
 			if(val > 0 && inkvals2[i].freq >= val) {
-				totalval += val;
-				inkvals2[i].freq -= val;
-				//atomicAdd(inkvals2[i].freq, -val);
 				if(highest.freq < inkvals2[i].freq){
 					highest.freq = inkvals2[i].freq;
 					highest.id = inkvals2[i].id;
 				}
+				totalval += val;
+				//inkvals2[i].freq -= val;
+				//inkvals2[i].freq = 0;
+				atomicAdd(inkvals2[i].freq, -val);
 			}
 			i = PointToIndex(ivec2(sqpoints.x, sqpoints.w));
 			val = int(perc.z * 100);
 			//val = int(perc.z * frequencies[i]);
 			if(val > 0 && inkvals2[i].freq >= val) {
-				totalval += val;
-				inkvals2[i].freq -= val;
-				//atomicAdd(inkvals2[i].freq, -val);
 				if(highest.freq < inkvals2[i].freq){
 					highest.freq = inkvals2[i].freq;
 					highest.id = inkvals2[i].id;
 				}
+				totalval += val;
+				//inkvals2[i].freq -= val;
+				//inkvals2[i].freq = 0;
+				atomicAdd(inkvals2[i].freq, -val);
 			}
 			i = PointToIndex(ivec2(sqpoints.z, sqpoints.w));
 			val = int(perc.w * 100);
 			//val = int(perc.w * frequencies[i]);
 			if(val > 0 && inkvals2[i].freq >= val) {
-				totalval += val;
-				inkvals2[i].freq -= val;
-				//atomicAdd(inkvals2[i].freq, -val);
 				if(highest.freq < inkvals2[i].freq){
 					highest.freq = inkvals2[i].freq;
 					highest.id = inkvals2[i].id;
 				}
+				totalval += val;
+				//inkvals2[i].freq -= val;
+				//inkvals2[i].freq = 0;
+				atomicAdd(inkvals2[i].freq, -val);
 			}
 			
 			i = PointToIndex(pos);
-			if(inkvals2[i].freq < highest.freq)
+			//if(inkvals2[i].freq < highest.freq)
+			if(inkvals2[i].freq < 10)
 				inkvals2[i].id = highest.id;
-			inkvals2[i].freq += totalval;
-			//atomicAdd(inkvals2[i].freq, totalval);
+			//inkvals2[i].freq += totalval;
+			atomicAdd(inkvals2[i].freq, totalval);
 
 		}
 		
@@ -193,14 +206,14 @@ void Pressure(uint i, ivec2 pos) { // fix probs negative forces
 }
 
 void Diffuse(uint i) {
-	if(velocities2[i].x > 10000)
-		velocities2[i].x = 10000;
-	else if(velocities2[i].x < -10000)
-		velocities2[i].x = -10000;
-	if(velocities2[i].y > 10000)
-		velocities2[i].y = 10000;
-	else if(velocities2[i].y < -10000)
-		velocities2[i].y = -10000;
+	//if(velocities2[i].x > 10000)
+	//	velocities2[i].x = 10000;
+	//else if(velocities2[i].x < -10000)
+	//	velocities2[i].x = -10000;
+	//if(velocities2[i].y > 10000)
+	//	velocities2[i].y = 10000;
+	//else if(velocities2[i].y < -10000)
+	//	velocities2[i].y = -10000;
 	velocities2[i] = ivec2(velocities2[i] * d);
 }
 
@@ -278,3 +291,14 @@ vec2 Collision(vec2 vec) {
 	return result;
 }
 
+void CopyToSecond(uint i) {
+	inkvals2[i].id = inkvals[i].id;
+	inkvals2[i].freq = inkvals[i].freq;
+	velocities2[i] = velocities[i];
+}
+
+void CopyToFirst(uint i) {
+	inkvals[i].id = inkvals2[i].id;
+	inkvals[i].freq = inkvals2[i].freq;
+	velocities[i] = velocities2[i];
+}

@@ -34,16 +34,19 @@ namespace FluidLib {
 	template<class T>
 	inline InkAction<T>::InkAction()
 	{
+		SetBasicCheckFunction();
 	}
 	template<class T>
 	inline InkAction<T>::InkAction(T value, ACTION_OPERATION op)
 	{
+		SetBasicCheckFunction();
 		SetValue(value);
 		SetOperation(op);
 	}
 	template<class T>
 	inline InkAction<T>::InkAction(ColorGrid<T>* grid, ACTION_OPERATION op)
 	{
+		SetBasicCheckFunction();
 		SetGrid(grid); 
 		SetOperation(op);
 		if (grid->GetColors().size() > 1) {
@@ -54,6 +57,7 @@ namespace FluidLib {
 	template<class T>
 	inline InkAction<T>::InkAction(T value, ColorGrid<T>* grid, ACTION_OPERATION op)
 	{
+		SetBasicCheckFunction();
 		SetValue(value); 
 		SetGrid(grid); 
 		SetOperation(op);

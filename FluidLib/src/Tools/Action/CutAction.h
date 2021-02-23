@@ -24,6 +24,7 @@ namespace FluidLib {
 	template<class T>
 	inline CutAction<T>::CutAction(Grid<T>* grid, T value)
 	{
+		SetBasicCheckFunction();
 		SetGrid(grid);
 		SetValue(value);
 	}

@@ -2,6 +2,7 @@
 
 #include "Simulation.h"
 #include "Grids/Grid.h"
+#include "Grids/FlagGrid.h"
 #include "GridStructures.h"
 #include "Tools/Basic Tools/BasicTool.h"
 #include "../SimInterface/ToolSelectComponent.h"

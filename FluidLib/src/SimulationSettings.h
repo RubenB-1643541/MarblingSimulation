@@ -9,6 +9,7 @@ namespace FluidLib {
 
 		float intesity = 0.5;
 		float freezeintensity = 0.5;
+		bool editfreeze = false;
 
 		bool surfaceedit = false;
 		bool movementedit = false;

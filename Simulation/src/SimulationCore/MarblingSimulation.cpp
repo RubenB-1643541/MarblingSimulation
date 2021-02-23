@@ -31,6 +31,7 @@ void MarblingSimulation::OnUpdate()
 				SaveStateHandler::CreateSaveState();
 		}
 	}
+	//static_cast<FluidLib::FlagGrid<Flags>*>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Flag"))->CopyFromGPU();
 }
 
 void MarblingSimulation::BeforeUpdate()
@@ -38,41 +39,41 @@ void MarblingSimulation::BeforeUpdate()
 	INFO("FrameTime: {0} - fps: {1}", (std::clock() - _prevtime) / (double)CLOCKS_PER_SEC, _settings.fps);
 	_prevtime = std::clock();
 	//Copy freq to freq2
-	GLuint src, des;
+	//GLuint src, des;
 	//src = _grids.GetGrid("Freq")->GetBufferData().id;
 	//des = _grids.GetGrid("Freq2")->GetBufferData().id;
 	//int size = _grids.GetGrid("Freq2")->GetBufferData().size * sizeof(IFrequency);
 	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
 
-	src = _grids.GetGrid("Vel")->GetBufferData().id;
-	des = _grids.GetGrid("Vel2")->GetBufferData().id;
-	int size = _grids.GetGrid("Vel2")->GetBufferData().size * sizeof(IVelocity);
-	glCopyNamedBufferSubData(src, des, NULL, NULL, size);
-
-	src = _grids.GetGrid("Ink")->GetBufferData().id;
-	des = _grids.GetGrid("Ink2")->GetBufferData().id;
-	size = _grids.GetGrid("Ink2")->GetBufferData().size * sizeof(IInk);
-	glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+	//src = _grids.GetGrid("Vel")->GetBufferData().id;
+	//des = _grids.GetGrid("Vel2")->GetBufferData().id;
+	//int size = _grids.GetGrid("Vel2")->GetBufferData().size * sizeof(IVelocity);
+	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+	//
+	//src = _grids.GetGrid("Ink")->GetBufferData().id;
+	//des = _grids.GetGrid("Ink2")->GetBufferData().id;
+	//size = _grids.GetGrid("Ink2")->GetBufferData().size * sizeof(IInk);
+	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
 }
 
 void MarblingSimulation::AfterUpdate()
 {
 	//Copy freq2 to freq
-	GLuint src, des;
+	//GLuint src, des;
 	//src = _grids.GetGrid("Freq2")->GetBufferData().id;
 	//des = _grids.GetGrid("Freq")->GetBufferData().id;
 	//int size = _grids.GetGrid("Freq")->GetBufferData().size * sizeof(IFrequency);
 	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
 
-	src = _grids.GetGrid("Vel2")->GetBufferData().id;
-	des = _grids.GetGrid("Vel")->GetBufferData().id;
-	int size = _grids.GetGrid("Vel")->GetBufferData().size * sizeof(IVelocity);
-	glCopyNamedBufferSubData(src, des, NULL, NULL, size);
-
-	src = _grids.GetGrid("Ink2")->GetBufferData().id;
-	des = _grids.GetGrid("Ink")->GetBufferData().id;
-	size = _grids.GetGrid("Ink")->GetBufferData().size * sizeof(IInk);
-	glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+	//src = _grids.GetGrid("Vel2")->GetBufferData().id;
+	//des = _grids.GetGrid("Vel")->GetBufferData().id;
+	//int size = _grids.GetGrid("Vel")->GetBufferData().size * sizeof(IVelocity);
+	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+	//
+	//src = _grids.GetGrid("Ink2")->GetBufferData().id;
+	//des = _grids.GetGrid("Ink")->GetBufferData().id;
+	//size = _grids.GetGrid("Ink")->GetBufferData().size * sizeof(IInk);
+	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
 	
 	//INFO("UpdateTime {0}", (std::clock() - _prevtime) / (double)CLOCKS_PER_SEC);
 }
@@ -95,16 +96,27 @@ void MarblingSimulation::CreateBasicTool()
 	FluidLib::DrippingTool* dripping = new FluidLib::DrippingTool();
 	//FluidLib::Action<IFrequency>* addfreq = new FluidLib::Action<IFrequency>(IFrequency(16), static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), FluidLib::ACTION_OPERATION::ADD);
 	//FluidLib::Action<IVelocity>* addvel = new FluidLib::Action<IVelocity>(IVelocity(100, 100), static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")), FluidLib::ACTION_OPERATION::MOVE);
-	
+	Flags* flags = static_cast<FluidLib::FlagGrid<Flags>*>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Flag"))->GetValues();
+	FluidLib::Settings* settings = GetSettings();
+	auto checkfunc = [flags, settings](FluidLib::IPoint p) {
+	//std::function<bool(FluidLib::IPoint p)> checkfunc = [flags](FluidLib::IPoint p) {
+		return settings->editfreeze || !flags[POINT_TO_1D(p)].freeze;
+	};
 	FluidLib::Action<IFrequency>* addfreq = new FluidLib::Action<IFrequency>(IFrequency(100), static_cast<FluidLib::Grid<IFrequency>*>(_grids.GetGrid("Freq")), FluidLib::ACTION_OPERATION::ADD);
 	FluidLib::InkAction<IInk>* addink = new FluidLib::InkAction<IInk>(IInk{ 100,1 }, static_cast<FluidLib::ColorGrid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::ADD);
+	
+	addink->SetCheckFunction(checkfunc);
 	//FluidLib::Action<IInk>* addink = new FluidLib::Action<IInk>(IInk{ 100,1, {0,0},{1,1,1},0 }, static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::ADD);
 	FluidLib::Action<IVelocity>* addvel = new FluidLib::Action<IVelocity>(IVelocity(10, 10), static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")), FluidLib::ACTION_OPERATION::MOVE);
 	FluidLib::Action<IInk>* softenink = new FluidLib::Action<IInk>(IInk{ 100,0 }, static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::SUB);
 	FluidLib::Action<IInk>* removeink = new FluidLib::Action<IInk>(IInk{ 0,0 }, static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::SET);
+	addvel->SetCheckFunction(checkfunc);
+	softenink->SetCheckFunction(checkfunc);
+	removeink->SetCheckFunction(checkfunc);
+	
 	//FluidLib::Action<IInk>* removeink = new FluidLib::Action<IInk>(IInk{ 0,0, {0,0},{0,0,0},0 }, static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::SET);
-	FluidLib::Action<Flags>* freeze = new FluidLib::Action<Flags>(Flags{ 1,0,0,0 }, static_cast<FluidLib::Grid<Flags>*>(_grids.GetGrid("Flag")), FluidLib::ACTION_OPERATION::ADD);
-	FluidLib::Action<Flags>* unfreeze = new FluidLib::Action<Flags>(Flags{ 1,0,0,0 }, static_cast<FluidLib::Grid<Flags>*>(_grids.GetGrid("Flag")), FluidLib::ACTION_OPERATION::SUB);
+	FluidLib::FlagAction<Flags>* freeze = new FluidLib::FlagAction<Flags>(Flags{ 1,0,0,0 }, static_cast<FluidLib::FlagGrid<Flags>*>(_grids.GetGrid("Flag")), FluidLib::ACTION_OPERATION::ADD);
+	FluidLib::FlagAction<Flags>* unfreeze = new FluidLib::FlagAction<Flags>(Flags{ 1,0,0,0 }, static_cast<FluidLib::FlagGrid<Flags>*>(_grids.GetGrid("Flag")), FluidLib::ACTION_OPERATION::SUB);
 
 	FluidLib::CopyAction<IInk>* copyfreq = new FluidLib::CopyAction<IInk>(static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")));
 	FluidLib::PasteAction<IInk>* pastefreq = new FluidLib::PasteAction<IInk>(static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::ADD);

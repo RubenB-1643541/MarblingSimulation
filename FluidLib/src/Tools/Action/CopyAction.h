@@ -25,6 +25,7 @@ namespace FluidLib {
 	template<class T>
 	inline CopyAction<T>::CopyAction(Grid<T>* grid)
 	{
+		SetBasicCheckFunction();
 		SetGrid(grid);
 	}
 

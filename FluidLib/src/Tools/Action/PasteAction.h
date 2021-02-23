@@ -33,6 +33,7 @@ namespace FluidLib {
 	template<class T>
 	inline PasteAction<T>::PasteAction(Grid<T>* grid, ACTION_OPERATION op)
 	{
+		SetBasicCheckFunction();
 		SetGrid(grid);
 		SetOperation(op);
 	}

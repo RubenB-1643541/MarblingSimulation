@@ -114,6 +114,7 @@
     <ClInclude Include="src\Tools\Action\Actions.h" />
     <ClInclude Include="src\Tools\Action\CopyAction.h" />
     <ClInclude Include="src\Tools\Action\CutAction.h" />
+    <ClInclude Include="src\Tools\Action\FlagAction.h" />
     <ClInclude Include="src\Tools\Action\InkAction.h" />
     <ClInclude Include="src\Tools\Action\PasteAction.h" />
     <ClInclude Include="src\Tools\Basic Tools\BasicTool.h" />
