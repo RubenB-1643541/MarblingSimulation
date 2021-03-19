@@ -190,7 +190,7 @@ namespace FluidLib {
 		//IPoint temp = _oldpos + p;
 		//if (IN_GRID(temp)) {
 			IPoint move = _pos - _oldpos;
-			_gridvals[POINT_TO_1D(p)] += move * 20 * _scale;
+			_gridvals[POINT_TO_1D(p)] += _value * move * _scale;
 		//}
 	}
 

@@ -10,10 +10,12 @@ struct IVelocity {
 	inline void operator+=(const FluidLib::IPoint& move) { dx += move.GetX(); dy += move.GetY(); }
 	inline void operator-=(const IVelocity& val) { dx -= val.dx; dy -= val.dy; }
 	inline void operator*=(const IVelocity& val) { dx *= val.dx; dy *= val.dy; }
+	inline void operator*=(const FluidLib::IPoint& move) { dx *= move.GetX(); dy *= move.GetY(); }
 	inline void operator/=(const IVelocity& val) { dx /= val.dx; dy /= val.dy; }
 	inline void operator*=(int val) { dx *= val; dy *= val; }
 	inline void operator/=(int val) { dx /= val; dy /= val; }
 	inline IVelocity operator*(float scale) { return { static_cast<int>(dx * scale), static_cast<int>(dy * scale) }; }
+	inline IVelocity operator*(const FluidLib::IPoint& move) { return { static_cast<int>(dx * move.GetX()), static_cast<int>(dy * move.GetY()) }; }
 	inline bool operator==(const IVelocity& val) { return dx == val.dx && dy == val.dy; }
 	inline bool operator==(int val) { return dx == val && dy == val; }
 	inline IVelocity(int dx, int dy) : dx(dx), dy(dy) {}
@@ -65,6 +67,7 @@ struct IFrequency {
 	inline void operator*=(int val) { freq *= val; }
 	inline void operator/=(int val) { freq /= val; }
 	inline IFrequency operator*(float scale) { return { static_cast<int>(freq * scale)}; }
+	inline IFrequency operator*(const FluidLib::IPoint& move) { return { static_cast<int>(freq * move.GetX() * move.GetY())}; }
 	inline bool operator==(const IFrequency& val) { return freq == val.freq; }
 	inline bool operator==(int val) { return freq == val; }
 	inline IFrequency() { freq = 0; }
@@ -126,6 +129,7 @@ struct IInk {
 	inline void operator*=(int val) { ink *= val; }
 	inline void operator/=(int val) { ink /= val; }
 	inline IInk operator*(float scale) { return { static_cast<int>(ink * scale), id }; }// , { 0,0 }, color, 0};}
+	inline IInk operator*(const FluidLib::IPoint& move) { return { static_cast<int>(ink * move.GetX() * move.GetY()), id }; }// , { 0,0 }, color, 0};}
 	inline bool operator==(const IInk& val) { return ink == val.ink && id == val.id; }
 	inline bool operator==(int val) { return ink == val; }
 	friend std::ostream& operator<<(std::ostream& out, const IInk& ink) {
@@ -175,6 +179,7 @@ struct Flags {
 	inline void operator*=(int val) {  }
 	inline void operator/=(int val) {  }
 	inline Flags operator*(float scale) { return { freeze, unamed1, unamed2, unamed3 }; }
+	inline Flags operator*(const FluidLib::IPoint& move) { return { freeze, unamed1, unamed2, unamed3 }; }
 	inline bool operator==(const IInk& val) { return true; }
 	inline bool operator==(int val) { return true; }
 	friend std::ostream& operator<<(std::ostream& out, const Flags& flags) {

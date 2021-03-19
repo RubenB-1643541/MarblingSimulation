@@ -20,15 +20,23 @@ namespace FluidLib {
 		IPoint operator+(const FPoint& p2);
 		IPoint operator-(const IPoint& p2);
 		IPoint operator-(const FPoint& p2);
+		IPoint operator*(const IPoint& p2);
+		IPoint operator/(const IPoint& p2);
 		IPoint operator*(int i);
 		IPoint operator/(int i);
 		void operator+=(const IPoint& p2);
 		void operator-=(const IPoint& p2);
+		void operator*=(const IPoint& p2);
+		void operator/=(const IPoint& p2);
 		void operator*=(int i);
 		void operator/=(int i);
+		void operator*=(float f);
+		void operator/=(float f);
 
 		friend IPoint operator*(float f, const IPoint& p);
 		friend IPoint operator/(float f, const IPoint& p);
+		friend IPoint operator*(const IPoint& p, const IPoint& p2);
+		friend IPoint operator/(const IPoint& p, const IPoint& p2);
 
 		inline int GetX() const { return _x; }
 		inline int GetY() const { return _y; }
@@ -59,15 +67,21 @@ namespace FluidLib {
 		FPoint operator+(const IPoint& p2);
 		FPoint operator-(const FPoint& p2);
 		FPoint operator-(const IPoint& p2);
+		FPoint operator*(const FPoint& p2);
+		FPoint operator/(const FPoint& p2);
 		FPoint operator*(float i);
 		FPoint operator/(float i);
 		void operator+=(const FPoint& p2);
 		void operator-=(const FPoint& p2);
+		void operator*=(const FPoint& p2);
+		void operator/=(const FPoint& p2);
 		void operator*=(float i);
 		void operator/=(float i);
 
 		friend FPoint operator*(float f, const FPoint& p);
 		friend FPoint operator/(float f, const FPoint& p);
+		friend FPoint operator*(const FPoint& p, const FPoint& p2);
+		friend FPoint operator/(const FPoint& p, const FPoint& p2);
 
 		inline float GetX() const { return _x; }
 		inline float GetY() const { return _y; }

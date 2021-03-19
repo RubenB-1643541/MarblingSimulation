@@ -117,7 +117,7 @@ void MarblingSimulation::CreateBasicTool()
 	
 	addink->SetCheckFunction(checkfunc);
 	//FluidLib::Action<IInk>* addink = new FluidLib::Action<IInk>(IInk{ 100,1, {0,0},{1,1,1},0 }, static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::ADD);
-	FluidLib::Action<IVelocity>* addvel = new FluidLib::Action<IVelocity>(IVelocity(10, 10), static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")), FluidLib::ACTION_OPERATION::MOVE);
+	FluidLib::Action<IVelocity>* addvel = new FluidLib::Action<IVelocity>(IVelocity(100, 100), static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")), FluidLib::ACTION_OPERATION::MOVE);
 	FluidLib::Action<IInk>* softenink = new FluidLib::Action<IInk>(IInk{ 100,0 }, static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::SUB);
 	FluidLib::Action<IInk>* removeink = new FluidLib::Action<IInk>(IInk{ 0,0 }, static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::SET);
 	addvel->SetCheckFunction(checkfunc);
