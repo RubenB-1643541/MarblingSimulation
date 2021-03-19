@@ -8,10 +8,7 @@
 
 namespace FluidLib {
 
-	/*
-	* 
-	*/
-	enum class MOVEMENT_MODE {BEGIN, SIZE, NONE};
+	enum class MOVEMENT_MODE {BEGIN, SIZE, NONE, PASTE};
 
 	class SelectTool : public ToolBase
 	{
@@ -40,14 +37,19 @@ namespace FluidLib {
 		bool Paste();
 		bool Cut();
 
-		const std::vector<std::string>& GetActions() { return _actionnames; }
+		inline const std::vector<std::string>& GetActions() { return _actionnames; }
 
+		inline bool GetExecuted() { return _executed; }
+		inline void SetExecuted(bool e) { _executed = e; }
+
+		inline void SetMovementMode(MOVEMENT_MODE mode) { _move = mode; }
 	private:
 		void SwitchMode();
 		Rectangle* _rect = nullptr;
 		MOVEMENT_MODE _move;
 		std::map<std::string, ActionBase*> _actions;
 		std::vector<std::string> _actionnames;
+		bool _executed = false;
 	};
 
 }

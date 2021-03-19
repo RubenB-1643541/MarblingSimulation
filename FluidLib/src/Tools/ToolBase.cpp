@@ -21,7 +21,7 @@ namespace FluidLib {
     void ToolBase::Update()
     {
         if (Simulation::Get()->GetKeys()->shift || FluidLib::Simulation::Get()->GetSettings()->movementedit) {
-            if (!_moveEdit)
+            if (!_moveEdit && _movement != nullptr)
                 _movement->StartEdit();
             _moveEdit = true;
             _surfaceEdit = false;

@@ -119,6 +119,7 @@
     <ClInclude Include="src\Tools\Action\PasteAction.h" />
     <ClInclude Include="src\Tools\Basic Tools\BasicTool.h" />
     <ClInclude Include="src\Tools\Basic Tools\DrippingTool.h" />
+    <ClInclude Include="src\Tools\Basic Tools\FanTool.h" />
     <ClInclude Include="src\Tools\Basic Tools\SelectTool.h" />
     <ClInclude Include="src\Tools\Movement.h" />
     <ClInclude Include="src\Tools\Movement\BezierCurve.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="src\Tools\Movement\Sine.h" />
     <ClInclude Include="src\Tools\Surface.h" />
     <ClInclude Include="src\Tools\Surface\Circle.h" />
+    <ClInclude Include="src\Tools\Surface\FanSurface.h" />
     <ClInclude Include="src\Tools\Surface\Multisurface\CircleMultiSurface.h" />
     <ClInclude Include="src\Tools\Surface\Multisurface\Comb.h" />
     <ClInclude Include="src\Tools\Surface\Multisurface\CrossSurface.h" />
@@ -149,6 +151,7 @@
     <ClInclude Include="src\Util\ControlPoint.h" />
     <ClInclude Include="src\Util\Point.h" />
     <ClInclude Include="src\Util\Rendering.h" />
+    <ClInclude Include="src\Util\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp" />
@@ -161,6 +164,7 @@
     <ClCompile Include="src\Simulation.cpp" />
     <ClCompile Include="src\Tools\Basic Tools\BasicTool.cpp" />
     <ClCompile Include="src\Tools\Basic Tools\DrippingTool.cpp" />
+    <ClCompile Include="src\Tools\Basic Tools\FanTool.cpp" />
     <ClCompile Include="src\Tools\Basic Tools\SelectTool.cpp" />
     <ClCompile Include="src\Tools\Movement\BezierCurve.cpp" />
     <ClCompile Include="src\Tools\Movement\CircleMovement.cpp" />
@@ -169,6 +173,7 @@
     <ClCompile Include="src\Tools\Movement\Sine.cpp" />
     <ClCompile Include="src\Tools\Surface.cpp" />
     <ClCompile Include="src\Tools\Surface\Circle.cpp" />
+    <ClCompile Include="src\Tools\Surface\FanSurface.cpp" />
     <ClCompile Include="src\Tools\Surface\Multisurface\CircleMultiSurface.cpp" />
     <ClCompile Include="src\Tools\Surface\Multisurface\Comb.cpp" />
     <ClCompile Include="src\Tools\Surface\Multisurface\CrossSurface.cpp" />
@@ -186,6 +191,7 @@
     <ClCompile Include="src\Util\ControlPoint.cpp" />
     <ClCompile Include="src\Util\Point.cpp" />
     <ClCompile Include="src\Util\Rendering.cpp" />
+    <ClCompile Include="src\Util\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FluidLib.rc" />

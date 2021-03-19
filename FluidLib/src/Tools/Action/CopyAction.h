@@ -33,7 +33,7 @@ namespace FluidLib {
 	inline void CopyAction<T>::Start()
 	{
 		_gridvals = _grid->GetBufferPointer();
-		Clipboard::Reset(*_width, *_height, sizeof(T));
+		Clipboard::Reset(abs(*_width), abs(*_height), sizeof(T));
 		//Setup copy data
 	}
 
@@ -50,8 +50,13 @@ namespace FluidLib {
 	{
 		IPoint temp = _pos + p;
 		T* data = static_cast<T*>(Clipboard::GetData());
-		if (IN_GRID(temp))
-			data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX() ] = _gridvals[POINT_TO_1D(temp)];
+		if (IN_GRID(temp)) {
+			if (p.GetY() < 0)
+				p.SetY(p.GetY() + Clipboard::GetDataStruct()->height);
+			if (p.GetX() < 0)
+				p.SetX(p.GetX() + Clipboard::GetDataStruct()->width);
+			data[p.GetY() * Clipboard::GetDataStruct()->width + p.GetX()] = _gridvals[POINT_TO_1D(temp)];
+		}
 	}
 
 	template<class T>

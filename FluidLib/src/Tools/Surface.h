@@ -5,6 +5,7 @@
 #include "Util/Point.h"
 #include "glm/gtx/transform.hpp"
 #include <cmath>
+#include <Util/Texture.h>
 
 namespace FluidLib {
 
@@ -28,7 +29,7 @@ namespace FluidLib {
 		//Loop through surface points
 		virtual inline std::vector<IPoint>& GetSurfacePoints() { return _points; }
 		inline virtual void SetProjection(glm::mat4 proj) { _projection = proj; }
-		std::string& GetType() { return _type; }
+		inline std::string& GetType() { return _type; }
 
 		inline FPoint& GetTrans() { return _trans; }
 		inline void SetTrans(const FPoint& trans) { _trans = trans; }
@@ -40,6 +41,10 @@ namespace FluidLib {
 		inline bool GetAutoRotate() { return _autorotate; }
 		inline void SetAutoRotate(bool rotate) { _autorotate = rotate; }
 		inline bool* GetAutoRotatePtr() { return &_autorotate; }
+
+		void SetTexture(Texture* tex);
+		inline Texture* GetTexture() { return _texture; }
+		inline void SetRenderTexture(bool render) { _renderTex = render; }
 	protected:
 		FPoint _trans = { 0.0f,0.0f };
 		glm::mat4 _projection = glm::mat4(1.0);
@@ -49,6 +54,9 @@ namespace FluidLib {
 		float _rotation = 0.0f;
 		float _rotold;
 		bool _autorotate = false;
+
+		Texture* _texture = nullptr;
+		bool _renderTex = false;
 	};
 
 }

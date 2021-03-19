@@ -353,7 +353,18 @@ void SimulationApplication::InitShortCuts()
 		FluidLib::ToolBase* tool = FluidLib::Simulation::Get()->GetTools()->GetActive();
 		if (tool->GetName() == "Select") {
 			FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(tool);
-			select->Paste();
+			FluidLib::Rectangle* rect = static_cast<FluidLib::Rectangle*>(select->GetSurface());
+			FluidLib::ColorGrid<IInk> * col = static_cast<FluidLib::ColorGrid<IInk>*>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Ink"));
+			Image im = ImageFromClipboard(col->GetColors(), FluidLib::Simulation::Get()->GetSettings()->intesity);
+			FluidLib::TextureData texdat = { im.width, im.height, 4, im.data };
+			FluidLib::Texture* texture = new FluidLib::Texture(texdat);
+			rect->SetTexture(texture);
+			rect->SetRenderTexture(true);
+			rect->SetStyle(FluidLib::STYLE::FILLED);
+			rect->SetWidth(im.width);
+			rect->SetHeight(im.height);
+			select->SetMovementMode(FluidLib::MOVEMENT_MODE::PASTE);
+			//select->Paste();
 		}
 	} });
 

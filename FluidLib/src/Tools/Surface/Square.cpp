@@ -17,6 +17,7 @@ namespace FluidLib {
             std::vector<float> points = { 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f };
             glBindBuffer(GL_ARRAY_BUFFER, _buffer);
             glBufferData(GL_ARRAY_BUFFER, sizeof(float) * points.size(), &points[0], GL_STATIC_DRAW);
+            
         }
         if (_shader == -1) {
             _shader = CompileShader(vertex, fragment);
@@ -54,6 +55,11 @@ namespace FluidLib {
         glm::mat4 translation = glm::translate(glm::vec3(_xpos + _trans.GetX(), _ypos + _trans.GetY(), 0));
         GLuint trans = glGetUniformLocation(_shader, "translation");
         glUniformMatrix4fv(trans, 1, GL_FALSE, &translation[0][0]);
+
+        GLuint rendertexture = glGetUniformLocation(_shader, "rendertexture");
+        glUniform1f(rendertexture, _renderTex);
+        if (_texture != nullptr)
+            _texture->Bind();
         if (_style == STYLE::FILLED)
             glDrawArrays(GL_POLYGON, 0, 6);
         else if (_style == STYLE::DASHED)

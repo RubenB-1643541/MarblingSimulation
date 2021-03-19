@@ -13,6 +13,9 @@ namespace FluidLib {
 	void SelectTool::Draw()
 	{
 		_surface->Draw();
+		if (_surfaceEdit) {
+			_surface->EditDraw();
+		}
 	}
 
 	void SelectTool::OnUpdate()
@@ -37,9 +40,18 @@ namespace FluidLib {
 	bool SelectTool::OnUseEvent(ToolUseEvent& event)
 	{
 		if (event.GetAction() == 0) {
+			
 			if (!_moveEdit && !_surfaceEdit) {
-				if (_move != MOVEMENT_MODE::SIZE)
+				if (_move == MOVEMENT_MODE::PASTE) {
+					Paste();
 					SwitchMode();
+				}
+			
+				else if (_move != MOVEMENT_MODE::SIZE)
+					SwitchMode();
+			}
+			else if (_surfaceEdit) {
+				_surface->OnEditClick(_x, _y);
 			}
 			return true;
 		}
@@ -51,21 +63,28 @@ namespace FluidLib {
 			if (_move == MOVEMENT_MODE::SIZE)
 				SwitchMode();
 		}
+		else if (_surfaceEdit) {
+			_surface->OnEditRelease(_x, _y);
+		}
 		return true;
 	}
 
 	bool SelectTool::OnMoveEvent(ToolMoveEvent& event)
 	{
-		if (_move == MOVEMENT_MODE::BEGIN) {
-			_rect->SetX(event.GetX());
-			_rect->SetY(event.GetY());
-		}
-		else if (_move == MOVEMENT_MODE::SIZE) {
-			_rect->SetWidth(event.GetX() - _rect->GetX());
-			_rect->SetHeight(event.GetY() - _rect->GetY());
+		_x = event.GetX();
+		_y = event.GetY();
+		if (_surfaceEdit) {
+			 _surface->OnEditMove(_x, _y);
 		}
 		else {
-
+			if (_move == MOVEMENT_MODE::BEGIN || _move == MOVEMENT_MODE::PASTE) {
+				_rect->SetX(event.GetX());
+				_rect->SetY(event.GetY());
+			}
+			else if (_move == MOVEMENT_MODE::SIZE) {
+				_rect->SetWidth(event.GetX() - _rect->GetX());
+				_rect->SetHeight(event.GetY() - _rect->GetY());
+			}
 		}
 
 		return false;
@@ -152,6 +171,7 @@ namespace FluidLib {
 				}
 			}
 			paste->Stop();
+			_executed = true;
 			return true;
 		}
 		else
@@ -169,6 +189,7 @@ namespace FluidLib {
 			for (IPoint& p : points)
 				copy->Execute(p);
 			copy->Stop();
+			_executed = true;
 			return true;
 		}
 		else
@@ -177,6 +198,15 @@ namespace FluidLib {
 
 	void SelectTool::SwitchMode()
 	{
+		if (_move == MOVEMENT_MODE::PASTE) {
+			_move = MOVEMENT_MODE::BEGIN;
+			_rect->SetWidth(0);
+			_rect->SetHeight(0);
+			_rect->SetTexture(nullptr);
+			_rect->SetRenderTexture(false);
+			_rect->SetStyle(FluidLib::STYLE::BORDER);
+			return;
+		}
 		if (_move == MOVEMENT_MODE::BEGIN) {
 			_move = MOVEMENT_MODE::SIZE;
 

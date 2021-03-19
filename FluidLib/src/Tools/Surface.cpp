@@ -7,3 +7,10 @@ void FluidLib::Surface::OnRotate(float r)
 
 	}
 }
+
+void FluidLib::Surface::SetTexture(Texture* tex) 
+{ 
+	delete _texture;
+	_texture = tex; 
+}
+

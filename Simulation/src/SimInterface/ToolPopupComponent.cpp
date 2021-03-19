@@ -15,8 +15,7 @@ void ToolPopupComponent::OnUpdate()
 
 void ToolPopupComponent::OnDraw()
 {
-    return;
-    if (_active == nullptr)
+    if (_active == nullptr || _active->GetName() != "Select")
         return;
 
     if (ImGui::GetIO().MouseClicked[1])
@@ -26,6 +25,7 @@ void ToolPopupComponent::OnDraw()
         //    g.OpenedPopupStack.pop_back();
         _tools->SetEnabled(false);
         ImGui::OpenPopup("ToolPopup");
+        _open = true;
     }
 
     if (ImGui::BeginPopup("ToolPopup")) {
@@ -35,7 +35,10 @@ void ToolPopupComponent::OnDraw()
         ImGui::EndPopup();
     }
     else {
-        _tools->SetEnabled(true);
+        if (_open) {
+            _tools->SetEnabled(true);
+            _open = false;
+        }
     }
 }
 

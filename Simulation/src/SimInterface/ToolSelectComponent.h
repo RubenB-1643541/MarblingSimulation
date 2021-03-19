@@ -3,11 +3,12 @@
 #include "Interface/InterfaceComponent.h"
 #include "Tools/ToolManager.h"
 #include "Tools/Basic Tools/BasicTool.h"
+#include "Tools/Basic Tools/SelectTool.h"
 #include <string>
 #include "GL/glew.h"
 
 
-enum class TOOL_PART {SURFACE, MOVEMENT, ACTION, TOOL};
+enum class TOOL_PART {SURFACE, MOVEMENT, ACTION, TOOL, SELECT_ACTION};
 
 struct Button {
 	std::string icon;
@@ -28,6 +29,7 @@ public:
 	void AddButton(Button button, bool selected = false);
 private:
 	void DrawBasic();
+	void DrawSelect();
 	void DrawSelection();
 	FluidLib::ToolManager* _tools = nullptr;
 	FluidLib::BasicTool* _basic = nullptr;
@@ -36,6 +38,7 @@ private:
 	std::vector<Button> _movements;
 	std::vector<Button> _actions;
 	std::vector<Button> _toolsbuttons;
+	std::vector<Button> _selectactions;
 	std::string _basicname;
 	ImVec2 _iconSize = ImVec2(30, 30);
 	

@@ -7,6 +7,8 @@ bool Importer::Import(bool askfile)
 		_file = FileDialog::Import();
 	if (_file == "")
 		return false;
+	if (_im.data != nullptr)
+		FreeImage(_im);
 	_im = LoadPng(_file);
 	return true;
 }

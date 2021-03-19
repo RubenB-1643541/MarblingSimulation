@@ -146,6 +146,9 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\Grids\FlagGrid.h" />
     <ClInclude Include="src\Tools\Action\FlagAction.h" />
+    <ClInclude Include="src\Util\Texture.h" />
+    <ClInclude Include="src\Tools\Basic Tools\FanTool.h" />
+    <ClInclude Include="src\Tools\Surface\FanSurface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">
@@ -229,6 +232,9 @@
     <ClCompile Include="src\Tools\Basic Tools\DrippingTool.cpp" />
     <ClCompile Include="src\Tools\Surface\Multisurface\CircleMultiSurface.cpp" />
     <ClCompile Include="src\Tools\Surface.cpp" />
+    <ClCompile Include="src\Util\Texture.cpp" />
+    <ClCompile Include="src\Tools\Basic Tools\FanTool.cpp" />
+    <ClCompile Include="src\Tools\Surface\FanSurface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FluidLib.rc" />

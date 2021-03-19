@@ -50,9 +50,9 @@ namespace FluidLib {
 		bool _using = false;
 		bool _moveEdit = false;
 		bool _surfaceEdit = false;
-	private:
 		float _x = 0;
 		float _y = 0;
+	private:
 		std::string _name = "Base";
 
 

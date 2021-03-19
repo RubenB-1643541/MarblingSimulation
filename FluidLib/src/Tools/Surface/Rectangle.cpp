@@ -54,6 +54,12 @@ namespace FluidLib {
         glm::mat4 translation = glm::translate(glm::vec3(_xpos + _trans.GetX(), _ypos + _trans.GetY(), 0));
         GLuint trans = glGetUniformLocation(_shader, "translation");
         glUniformMatrix4fv(trans, 1, GL_FALSE, &translation[0][0]);
+
+        GLuint rendertexture = glGetUniformLocation(_shader, "rendertexture");
+        glUniform1f(rendertexture, _renderTex);
+        if(_texture != nullptr)
+            _texture->Bind();
+
         if (_style == STYLE::FILLED)
             glDrawArrays(GL_POLYGON, 0, 6);
         else if (_style == STYLE::DASHED)
@@ -100,15 +106,19 @@ namespace FluidLib {
             _changed = false;
             _points.clear();
             if (_centered) {
-                for (int i = -abs(_width / 2); i < abs(_width / 2); ++i) {
-                    for (int j = -abs(_height / 2); j < abs(_height / 2); ++j) {
+                int xsign = _width >= 0 ? 1 : -1;
+                int ysign = _height >= 0 ? 1 : -1;
+                for (int i = xsign * -_width / 2; i < xsign * _width / 2; ++i) {
+                    for (int j = ysign * -_height / 2; j < ysign * _height / 2; ++j) {
                         _points.push_back(IPoint(i, j).Rotate(_rotation));
                     }
                 }
             }
             else {
-                for (int i = 0; i < abs(_width); ++i) {
-                    for (int j = 0; j < abs(_height); ++j) {
+                int xsign = _width >= 0 ? 1 : -1;
+                int ysign = _height >= 0 ? 1 : -1;
+                for (int i = 0; abs(i) < abs(_width); i += xsign) {
+                    for (int j = 0; abs(j) < abs(_height); j += ysign) {
                         _points.push_back(IPoint(i, j).Rotate(_rotation));
                     }
                 }
@@ -126,36 +136,74 @@ namespace FluidLib {
 
     void Rectangle::EditDraw()
     {
-        _pos.SetX(_xpos);
-        _pos.SetY(_ypos);
-        _size.SetX(_width/2);
-        _size.SetY(_height/2);
-        _size.Rotate(_rotation);
-        _size.VisualTranslate({ _xpos, _ypos });
-        _rotcon.SetY(_width * sin(_rotation));
-        _rotcon.SetX(_width * cos(_rotation));
-        _rotcon.VisualTranslate(FPoint(_xpos, _ypos));
-        _pos.Draw();
-        _size.Draw();
-        _rotcon.Draw();
+        if (_centered) {
+            _pos.SetX(_xpos);
+            _pos.SetY(_ypos);
+            _size.SetX(_width / 2);
+            _size.SetY(_height / 2);
+            _size.Rotate(_rotation);
+            _size.VisualTranslate({ _xpos, _ypos });
+            _rotcon.SetY(_width * sin(_rotation));
+            _rotcon.SetX(_width * cos(_rotation));
+            _rotcon.VisualTranslate(FPoint(_xpos, _ypos));
+            _pos.Draw();
+            _size.Draw();
+            _rotcon.Draw();
+        }
+        else {
+            _pos.SetX(_xpos + _width / 2);
+            _pos.SetY(_ypos + _height / 2);
+            _size.SetX(_width);
+            _size.SetY(_height);
+
+            _pos.Rotate(_rotation);
+            _size.Rotate(_rotation);
+            _size.VisualTranslate({ _xpos, _ypos });
+            _rotcon.SetY(_width * sin(_rotation));
+            _rotcon.SetX(_width * cos(_rotation));
+            _rotcon.VisualTranslate(FPoint(_xpos, _ypos));
+
+            _pos.Draw();
+            _size.Draw();
+            //_rotcon.Draw();
+        }
     }
 
     bool Rectangle::OnEditMove(float x, float y)
     {
-        _pos.OnMove(x, y);
-        if (_pos.Selected()) {
-            _xpos = _pos.GetX();
-            _ypos = _pos.GetY();
+        if (_centered) {
+            _pos.OnMove(x, y);
+            if (_pos.Selected()) {
+                _xpos = _pos.GetX();
+                _ypos = _pos.GetY();
+            }
+            _size.OnMove(x, y);
+            if (_size.Selected()) {
+                _size.Rotate(-_rotation);
+                _width = _size.GetX() * 2;
+                _height = _size.GetY() * 2;
+            }
+            _rotcon.OnMove(x, y);
+            if (_rotcon.Selected()) {
+                _rotation = atan2(y - _ypos, x - _xpos);
+            }
         }
-        _size.OnMove(x, y);
-        if (_size.Selected()) {
-            _size.Rotate(-_rotation);
-            _width = _size.GetX() * 2;
-            _height = _size.GetY() * 2;
-        }
-        _rotcon.OnMove(x, y);
-        if (_rotcon.Selected()) {
-            _rotation = atan2(y - _ypos, x - _xpos);
+        else {
+            _pos.OnMove(x, y);
+            if (_pos.Selected()) {
+                _xpos = _pos.GetX()-_width/2;
+                _ypos = _pos.GetY()-_height/2;
+            }
+            _size.OnMove(x, y);
+            if (_size.Selected()) {
+                _size.Rotate(-_rotation);
+                _width = _size.GetX();
+                _height = _size.GetY();
+            }
+            _rotcon.OnMove(x, y);
+            if (_rotcon.Selected()) {
+                _rotation = atan2(y - _ypos, x - _xpos);
+            }
         }
         return false;
     }

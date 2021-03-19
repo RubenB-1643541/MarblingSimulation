@@ -29,6 +29,9 @@ void ToolSelectComponent::OnDraw()
 		if (_active != nullptr && (_active->GetName() == "Basic" || _active->GetName() == "Dripping")) {
 			DrawBasic();
 		}
+		if (_active != nullptr && _active->GetName() == "Select") {
+			DrawSelect();
+		}
 		ImGui::TreePop();
 		ImGui::Separator();
 	}
@@ -65,6 +68,9 @@ void ToolSelectComponent::AddButton(Button button, bool selected)
 		_toolsbuttons.push_back(button);
 		if (selected)
 			_selectedtool = _toolsbuttons.size() - 1;
+	}
+	else if (button.part == TOOL_PART::SELECT_ACTION) {
+		_selectactions.push_back(button);
 	}
 }
 
@@ -182,6 +188,20 @@ void ToolSelectComponent::DrawBasic()
 		}
 	}
 	ImGui::EndChild();
+}
+
+void ToolSelectComponent::DrawSelect()
+{
+	ImGui::Text("Actions");
+	for (const Button& button : _selectactions) {
+		if (ImGui::ImageButton((void*)button.id, _iconSize, ImVec2(0, 0), ImVec2(1, 1), 3, ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1))) {
+			FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(_active);
+			select->ExecuteAction(button.name);
+		}
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip(button.name.c_str());
+	}
+
 }
 
 
