@@ -42,3 +42,7 @@
 
 #Savestates
 *.s
+
+#Pngs
+*.png
+*.sim

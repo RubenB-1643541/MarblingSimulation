@@ -42,7 +42,8 @@ void SimulationApplication::OnUpdate()
 		//RenderEngine::ShaderStorageBuffer* freq = _buffers.at("Freq");
 		//freq->Bind();
 		//IFrequency* freqs = (IFrequency*)freq->MapBufferRange();
-		//INFO(freqs[0].freq);
+		//INFO("Freq: {}", freqs[0].freq);
+		//INFO("Pos : {}", freqs[1].freq);
 		//freq->UnMapBuffer();
 
 		_sim.Update();
@@ -260,7 +261,7 @@ void SimulationApplication::CreateGrids()
 
 	FluidLib::GridManager* gridman = _sim.GetGrids();
 
-	FluidLib::Grid<IVelocity>* velgrid = new FluidLib::Grid<IVelocity>(_buffers.at("Vel")->GetId(), _sim.GetSize(), 1);
+	FluidLib::Grid<IVelocity>* velgrid = new FluidLib::Grid<IVelocity>(_buffers.at("Vel")->GetId(), _sim.GetSize(), 1, true);
 	velgrid->SetElementSize(2);
 	gridman->AddGrid("Vel", velgrid);
 
@@ -268,7 +269,7 @@ void SimulationApplication::CreateGrids()
 	velgrid->SetElementSize(2);
 	gridman->AddGrid("Vel2", velgrid2);
 
-	FluidLib::Grid<IFrequency>* freqgrid = new FluidLib::Grid<IFrequency>(_buffers.at("Freq")->GetId(), _sim.GetSize(), 3, true);
+	FluidLib::Grid<IFrequency>* freqgrid = new FluidLib::Grid<IFrequency>(_buffers.at("Freq")->GetId(), _sim.GetSize(), 3);
 	gridman->AddGrid("Freq", freqgrid);
 
 	FluidLib::Grid<IFrequency>* freqgrid2 = new FluidLib::Grid<IFrequency>(_buffers.at("Freq2")->GetId(), _sim.GetSize(), 4);
@@ -304,6 +305,8 @@ void SimulationApplication::CreateUniforms()
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, dval, "d"));
 	//shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT_PTR, intensity, "intensity"));
 
+	FluidLib::UniformVal renderforce; renderforce.floatptr = (float*) &_sim.GetSettings()->renderforce;
+
 	FluidLib::GridRenderer* renderer = _sim.GetRenderer();
 	renderer->SetShader(_shader.GetId());
 	FluidLib::ShaderController* shader = renderer->GetShader();
@@ -311,6 +314,7 @@ void SimulationApplication::CreateUniforms()
 	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
 	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, intensity, "intensity"));
 	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, freezeintensity, "freezeintensity"));
+	shader->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, renderforce, "renderforce"));
 }
 
 void SimulationApplication::InitShortCuts()

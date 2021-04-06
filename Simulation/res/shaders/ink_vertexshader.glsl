@@ -1,8 +1,8 @@
 #version 430 core
 
-layout(binding=3) buffer freq
+layout(binding=1) buffer vel
 {
-	int frequencies[];	//array of freqs
+	ivec2 velocities[];	//array of velocities * 1000 -> 1000 == 1
 };
 
 struct InkStruct 
@@ -43,10 +43,12 @@ out vec3 watercolor;
 out float inkid;
 out float intensityout;
 out float freezeintensityout;
+out vec2 force;
 
 
 void main() {
 	//ofreq = float(frequencies[gl_VertexID] * intensity);
+	force = vec2(velocities[gl_VertexID]);
 	intensityout = intensity;
 	freezeintensityout = freezeintensity;
 	inkfreq = inkvals[gl_VertexID].freq;

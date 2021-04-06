@@ -35,6 +35,7 @@ namespace FluidLib {
 		virtual void Move(IPoint& p) = 0;
 		virtual void Mul(float f, IPoint& p) = 0;
 		virtual void Div(float f, IPoint& p) = 0;
+		virtual void SetOperation(ACTION_OPERATION op) = 0;
 		virtual void SetPos(IPoint p) { _oldpos = _pos; _pos = p; }
 		virtual IPoint GetPos() { return _pos; }
 		virtual float* GetScale() = 0;
@@ -62,7 +63,7 @@ namespace FluidLib {
 		inline Action(Grid<T>* grid, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetGrid(grid); SetOperation(op); SetBasicCheckFunction(); }
 		inline Action(T value, Grid<T>* grid, ACTION_OPERATION op = ACTION_OPERATION::NONE) { SetValue(value); SetGrid(grid); SetOperation(op); SetBasicCheckFunction(); }
 		
-		inline void SetOperation(ACTION_OPERATION op) { _operation = op; }
+		inline void SetOperation(ACTION_OPERATION op) override { _operation = op; }
 		inline void SetValue(T value) { _value = value; }
 		inline T& GetValue() { return _value; }
 		const char* GetType() { return typeid(T).name(); }

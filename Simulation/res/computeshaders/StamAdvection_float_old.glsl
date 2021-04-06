@@ -86,7 +86,7 @@ void main() {
 	ivec2 pos = IndexToPoint(i);
 	if(!flags.x) {//Freeze
 		Advection(i, pos);
-		StamAdvection(i, pos);
+		//StamAdvection(i, pos);
 		Pressure(i, pos);
 	}
 	barrier();
@@ -99,38 +99,45 @@ void Advection(uint i, ivec2 pos) {
 	vec2 des = pos;
 	des.x += velval.x;
 	des.y += velval.y;
+	//Collision
+	if(des.x < 0)
+		des.x = -des.x;
+	else if(des.x > width)
+		des.x = width - (des.x - width);
+	if(des.y < 0)
+		des.y = -des.y;
+	else if(des.y > height)
+		des.y = height - (des.y - height);
+
 	if(InGrid(des)) {
-		ivec4 sqpoints = PointsSqaure(des);
-		vec4 perc = Percentages(sqpoints, des);
-		int val = inkvals[i].freq/10;
-		ivec2 ides = ivec2(des.x, des.y);
-		uint i2 = PointToIndex(ides);
-		if(inkvals[i].freq > val) {
-			
-			//if(inkvals[i2].id == 0 || (inkvals[i2].freq < inkvals[i].freq && inkvals[i].id != 0)) {
-			if(inkvals[i2].id == 0 || inkvals[i2].freq < inkvals[i].freq) {
-				inkvals2[i2].id = inkvals[i].id;
-				atomicAdd(inkvals2[i].freq, -val);
-				atomicAdd(inkvals2[i2].freq, val);
-			}
-			
-			//ivec2 ides = ivec2(des.x, des.y);
-			//uint i2 = PointToIndex(ivec2(sqpoints.x, sqpoints.y));
-			//int newval = int(val /4 );
-			//atomicAdd(inkvals2[i2].freq, newval);
-			//
-			//i2 = PointToIndex(ivec2(sqpoints.z, sqpoints.y));
-			//newval = int(val / 4);
-			//atomicAdd(inkvals2[i2].freq, newval);
-			//
-			//i2 = PointToIndex(ivec2(sqpoints.x, sqpoints.w));
-			//newval = int(val / 4);
-			//atomicAdd(inkvals2[i2].freq, newval);
-			//
-			//i2 = PointToIndex(ivec2(sqpoints.z, sqpoints.w));
-			//newval = int(val / 4);
-			//atomicAdd(inkvals2[i2].freq, newval);
-		}
+		float inval = float(inkvals[i].freq);
+		float fx = des.x - int(des.x);
+		float fy = des.y - int(des.y);
+		//Fractions:
+		vec4 fractions;
+		fractions.x = 10 * (1.0f-fy)*(1.0f-fx) * inval;	//ia
+		fractions.y = 10 * (1.0f-fy)*(fx) * inval;		//ib
+		fractions.z = 10 * (fy)*(1.0f-fx) * inval;		//ic
+		fractions.w = 10 * (fy) * (fx) * inval;			//id
+
+		atomicAdd(inkvals2[i].freq, -int(fractions.x + fractions.y + fractions.z + fractions.w));
+		//inkvals2[i].freq -= int(fractions.x + fractions.y + fractions.z + fractions.w);
+		uint i2 = PointToIndex(ivec2(des));
+		atomicAdd(inkvals2[i2].freq, int(fractions.x));
+		atomicAdd(inkvals2[i2+1].freq, int(fractions.y));
+		atomicAdd(inkvals2[i2+width].freq, int(fractions.z));
+		atomicAdd(inkvals2[i2+width+1].freq, int(fractions.w));
+
+
+		//if(inkvals[i].freq > val) {
+		//	
+		//	//if(inkvals[i2].id == 0 || (inkvals[i2].freq < inkvals[i].freq && inkvals[i].id != 0)) {
+		//	if(inkvals[i2].id == 0 || inkvals[i2].freq < inkvals[i].freq) {
+		//		inkvals2[i2].id = inkvals[i].id;
+		//		atomicAdd(inkvals2[i].freq, -val);
+		//		atomicAdd(inkvals2[i2].freq, val);
+		//	}
+		//}
 	}
 }
 /*
@@ -144,6 +151,8 @@ Then the receiver will get less than 100
 void StamAdvection(uint i, ivec2 pos) {
 			
 	vec2 velval = vec2(velocities[i].x/1000,velocities[i].y/1000);//TODO 1000?
+	if(velval.x == 0 && velval.y == 0)
+		return;
 	//velocities[i].x += int(ceil(velval.x));
 	vec2 source = pos;
 	//if(velval.x > 0.001 || velval.x < 0.001) //Prevent float ~= 0 being executed
@@ -151,13 +160,36 @@ void StamAdvection(uint i, ivec2 pos) {
 	source.x = float(pos.x) - velval.x;
 	//if(velval.y > 0.001 || velval.y < 0.001)
 	source.y = float(pos.y) - velval.y;
-	//dest = Collision(dest);
+
+	//Collision
+	if(source.x < 0)
+		source.x = -source.x;
+	else if(source.x > width)
+		source.x = width - (source.x - width);
+	if(source.y < 0)
+		source.y = -source.y;
+	else if(source.y > height)
+		source.y = height - (source.y - height);
+
  	if(InGrid(source)) {
+		//Get Fraction part
+		float fx = source.x - int(source.x);
+		float fy = source.y - int(source.y);
+		//Fractions:
+		vec4 fractions;
+		fractions.x = (1.0f-fy)*(1.0f-fx);	//ia
+		fractions.y = (1.0f-fy)*(fx);		//ib
+		fractions.z = (fy)*(1.0f-fx);		//ic
+		fractions.w = (fy) * (fx);			//id
+
 		//Find points closed to source and calculate percentage
-		ivec4 sqpoints = PointsSqaure(source);
-		vec4 perc = Percentages(sqpoints, source);
+		//ivec4 sqpoints = PointsSqaure(source);
+		vec4 perc = fractions;
+		//vec4 perc = Percentages(sqpoints, source);
 		int totalval = 0;
-		uint i = PointToIndex(ivec2(sqpoints.x, sqpoints.y));
+		uint sindex = PointToIndex(ivec2(source));
+		uint i = sindex;
+		//uint i = PointToIndex(ivec2(sqpoints.x, sqpoints.y));
 		frequencies[i] = uint(100 * perc.x);
 		//frequencies[i] = uint(perc.x + perc.y + perc.z + perc.w);
 		int val = int(perc.x * inkvals[i].freq);
@@ -176,7 +208,7 @@ void StamAdvection(uint i, ivec2 pos) {
 				
 
 		}
-		i = PointToIndex(ivec2(sqpoints.z, sqpoints.y));
+		i = sindex + 1;
 		val = int(perc.y  * inkvals[i].freq);
 		//val = int(perc.y * frequencies[i]);
 		if(val > 0 && inkvals2[i].freq >= val) {
@@ -189,7 +221,8 @@ void StamAdvection(uint i, ivec2 pos) {
 			////inkvals2[i].freq -= val;
 			////inkvals2[i].freq = 0;
 		}
-		i = PointToIndex(ivec2(sqpoints.x, sqpoints.w));
+		i = sindex + width;
+		//i = PointToIndex(ivec2(sqpoints.x, sqpoints.w));
 		val = int(perc.z  * inkvals[i].freq);
 		//val = int(perc.z * frequencies[i]);
 		if(val > 0 && inkvals2[i].freq >= val) {
@@ -202,7 +235,8 @@ void StamAdvection(uint i, ivec2 pos) {
 			////inkvals2[i].freq -= val;
 			////inkvals2[i].freq = 0;
 		}
-		i = PointToIndex(ivec2(sqpoints.z, sqpoints.w));
+		i = sindex + width + 1;
+		//i = PointToIndex(ivec2(sqpoints.z, sqpoints.w));
 		val = int(perc.w  * inkvals[i].freq);
 		//val = int(perc.w * frequencies[i]);
 		if(val > 0 && inkvals2[i].freq >= val) {
@@ -327,7 +361,7 @@ vec4 Percentages(ivec4 sqpoints, vec2 center) {
 
 	
 
-	return vec4(0.02,0.02,0.02,0.02);
+	return vec4(0.01,0.01,0.01,0.01);
 	//return percentages;
 }
 
@@ -355,7 +389,8 @@ vec2 Collision(vec2 vec) {
 
 void CopyToSecond(uint i) {
 	inkvals2[i].id = inkvals[i].id;
-	inkvals2[i].freq += inkvals[i].freq;
+	atomicAdd(inkvals2[i].freq, inkvals[i].freq);
+	//inkvals2[i].freq += inkvals[i].freq;
 	velocities2[i] = velocities[i];
 }
 

@@ -24,7 +24,8 @@ void MarblingSimulation::OnUpdate()
 	if (_tools.GetActive()->GetName() == "Select") {
 		FluidLib::SelectTool* s = static_cast<FluidLib::SelectTool*>(_tools.GetActive());
 		if (s->GetExecuted()) {
-			SaveStateHandler::CreateSaveState();
+			if (_settings.autosavestate)
+				SaveStateHandler::CreateSaveState();
 			s->SetExecuted(false);
 		}
 	}
@@ -163,6 +164,7 @@ void MarblingSimulation::CreateBasicTool()
 	basic->AddSurface("Circle", new FluidLib::Circle());
 	basic->AddSurface("Point", new FluidLib::PointSurface());
 	basic->AddSurface("Polygon", new FluidLib::Polygon());
+	basic->AddSurface("Fan", new FluidLib::FanSurface());
 	basic->SetActiveSurface("Circle");
 	basic->AddMultisurface("SingleSurface", new FluidLib::SingleSurface());
 	basic->AddMultisurface("CrossSurface", new FluidLib::CrossSurface());
@@ -190,33 +192,7 @@ void MarblingSimulation::CreateBasicTool()
 	_tools.AddTool("Select", sel);
 	//_tools.SetActive("Select");
 
-	dripping->AddAction("AddInk", addink);
-	dripping->AddAction("RemoveInk", removeink);
-	dripping->AddAction("SoftenInk", softenink);
-	dripping->AddAction("AddVel", addvel);
-	dripping->AddAction("Freeze", freeze);
-	dripping->AddAction("UnFreeze", unfreeze);
-	dripping->SetActiveAction("AddInk");
-
-	dripping->AddMovement("Mouse", new FluidLib::MouseMovement());
-	dripping->AddMovement("Line", new FluidLib::Line());
-	dripping->AddMovement("Sine", new FluidLib::Sine());
-	dripping->AddMovement("BezierCurve", new FluidLib::BezierCurve());
-	dripping->AddMovement("Circle", new FluidLib::CircleMovement());
-	dripping->AddMovement("Point", new FluidLib::PointMovement());
-	dripping->SetActiveMovement("Mouse");
-
-	dripping->AddSurface("Square", new FluidLib::Square());
-	dripping->AddSurface("Rectangle", new FluidLib::Rectangle());
-	dripping->AddSurface("Triangle", new FluidLib::Triangle());
-	dripping->AddSurface("Circle", new FluidLib::Circle());
-	dripping->AddSurface("Point", new FluidLib::PointSurface());
-	dripping->AddSurface("Polygon", new FluidLib::Polygon());
-	dripping->SetActiveSurface("Circle");
-	dripping->AddMultisurface("SingleSurface", new FluidLib::SingleSurface());
-	dripping->AddMultisurface("CrossSurface", new FluidLib::CrossSurface());
-	dripping->AddMultisurface("Comb", new FluidLib::Comb());
-	dripping->SetActiveMultisurface("SingleSurface");
+	dripping->SetAction(addink);
 	_tools.AddTool("Dripping", dripping);
 
 	FluidLib::FanTool* fan = new FluidLib::FanTool();
@@ -252,6 +228,7 @@ void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
 	comp->AddButton(Button("res/icons/Circle.png", "Circle", TOOL_PART::SURFACE), true);
 	comp->AddButton(Button("res/icons/Point.png", "Point", TOOL_PART::SURFACE));
 	comp->AddButton(Button("res/icons/Polygon.png", "Polygon", TOOL_PART::SURFACE));
+	comp->AddButton(Button("res/icons/Point.png", "Fan", TOOL_PART::SURFACE));
 
 	//comp->AddButton(Button("res/icons/Ink.png", "AddInk", TOOL_PART::SELECT_ACTION));
 	//comp->AddButton(Button("res/icons/RemoveInk.png", "RemoveInk", TOOL_PART::SELECT_ACTION));

@@ -43,6 +43,10 @@ namespace FluidLib {
 		inline void SetExecuted(bool e) { _executed = e; }
 
 		inline void SetMovementMode(MOVEMENT_MODE mode) { _move = mode; }
+
+		inline void SetSoftPaste(bool soft) { _softpaste = soft; }
+		inline bool GetSoftPaste() { return _softpaste; }
+		inline bool* GetSoftPastePtr() { return &_softpaste; }
 	private:
 		void SwitchMode();
 		Rectangle* _rect = nullptr;
@@ -50,6 +54,7 @@ namespace FluidLib {
 		std::map<std::string, ActionBase*> _actions;
 		std::vector<std::string> _actionnames;
 		bool _executed = false;
+		bool _softpaste = true;
 	};
 
 }

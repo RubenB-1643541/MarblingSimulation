@@ -22,9 +22,25 @@ void ToolParameters::OnDraw()
 	if (ImGui::TreeNode("Tool Parameters")) {
 		
 		if (_active != nullptr) {
-			SurfaceParams();
-			MovementParams();
-			ActionParams();
+			if (_active->GetName() == "Dripping") {
+				FluidLib::DrippingTool* drip = static_cast<FluidLib::DrippingTool*>(_active);
+				ImGui::SliderFloat("Width", drip->GetWidthPtr(), 10, 500);
+				ImGui::SliderFloat("Height", drip->GetHeightPtr(), 10, 500);
+				ImGui::SliderFloat2("Radius(min-max)", drip->GetMinRPtr(), 1, 100);
+				ImGui::Separator();
+				ImGui::Text("Arc");
+				ImGui::Checkbox("Arc", drip->GetArcPtr());
+				ImGui::SliderFloat2("Len(min-max)", drip->GetMinLenPtr(), 1, 500);
+				ImGui::SliderFloat2("Angle(min-max)", drip->GetMinAnglePtr(), -3.14, 3.14);
+
+				ActionParams();
+			}
+			
+			else {
+				SurfaceParams();
+				MovementParams();
+				ActionParams();
+			}
 		}
 		else {
 			ImGui::Text("No Active Tool"); 
@@ -60,10 +76,10 @@ void ToolParameters::SurfaceParams()
 			ImGui::SetTooltip("Rotate surface to normal of the movement patron");
 		ImGui::SliderFloat("Rotation", surface->GetRotationPtr(), 0.0f, 10.0f);
 
-		if (_active->GetName() == "Dripping") {
-			FluidLib::DrippingTool* drip = static_cast<FluidLib::DrippingTool*>(_active);
-			ImGui::SliderFloat("Percentage", drip->GetPercentagePtr(), 0.0, 1.0);
-		}
+		//if (_active->GetName() == "Dripping") {
+		//	FluidLib::DrippingTool* drip = static_cast<FluidLib::DrippingTool*>(_active);
+		//	ImGui::SliderFloat("Percentage", drip->GetPercentagePtr(), 0.0, 1.0);
+		//}
 		if (surface->GetType() == "Square") {
 			FluidLib::Square* sq = static_cast<FluidLib::Square*>(surface);
 			if (sq != nullptr) {
@@ -101,6 +117,13 @@ void ToolParameters::SurfaceParams()
 				if (ImGui::Button("Add Point")) {
 					p->AddPoint({ 0.0f,0.0f });
 				}
+			}
+		}
+		else if (surface->GetType() == "Fan") {
+			FluidLib::FanSurface* f = static_cast<FluidLib::FanSurface*>(surface);
+			if (f != nullptr) {
+				ImGui::SliderFloat("Angle", f->GetAnglePtr(), 0.1f, M_PI / 2);
+				ImGui::SliderFloat("Length", f->GetLenPtr(), 0.0f, 150);
 			}
 		}
 
@@ -205,6 +228,15 @@ void ToolParameters::ActionParams()
 				}
 			}
 		}
+
+		else if (_active->GetName() == "Dripping") {
+			FluidLib::ActionBase* action = _active->GetAction();
+			FluidLib::InkAction<IInk>* inkaction = static_cast<FluidLib::InkAction<IInk>*>(action);
+			if (inkaction != nullptr) {
+				ImGui::SliderFloat("Scale", action->GetScale(), 0.1f, 10.0f);
+				InkActionParams(inkaction);
+			}
+		}
 		ImGui::TreePop();
 	}
 }
@@ -262,14 +294,10 @@ void ToolParameters::InkActionParams(FluidLib::InkAction<IInk>* inkaction)
 void ToolParameters::SelectToolActions()
 {
 	FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(_active);
-	const std::vector<std::string>& acts = select->GetActions();
-	for (int i = 0; i < acts.size(); ++i) {
-		if (ImGui::Button(acts[i].c_str())) {
-			if(i != 0)
-				ImGui::SameLine();
-			select->ExecuteAction(acts[i]);
-		}
-	}
+
+	ImGui::Checkbox("Soft Paste", select->GetSoftPastePtr());
+	if (ImGui::IsItemHovered())
+		ImGui::SetTooltip("Softpaste wil prevent overwriting inkt with water ");
 	//if (ImGui::Button("Copy")) {
 	//	select->Copy();
 	//}

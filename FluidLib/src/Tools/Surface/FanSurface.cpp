@@ -7,6 +7,7 @@ namespace FluidLib {
 
     FanSurface::FanSurface()
     {
+        _type = "Fan";
         if (_buffer == -1) {
             glCreateBuffers(1, &_buffer);
             std::vector<float> points = { 
@@ -40,6 +41,12 @@ namespace FluidLib {
         glUniform3f(color, 1.0f, 1.0f, 1.0f);
         GLuint proj = glGetUniformLocation(_shader, "projection");
         glUniformMatrix4fv(proj, 1, GL_FALSE, &_projection[0][0]);
+        glm::mat4 rotation = glm::rotate(_rotation, glm::vec3(0, 0, 1));
+        GLuint rot = glGetUniformLocation(_shader, "rotation");
+        glUniformMatrix4fv(rot, 1, GL_FALSE, &rotation[0][0]);
+        glm::mat4 translation = glm::translate(glm::vec3(_xpos + _trans.GetX(), _ypos + _trans.GetY(), 0));
+        GLuint trans = glGetUniformLocation(_shader, "translation");
+        glUniformMatrix4fv(trans, 1, GL_FALSE, &translation[0][0]);
         //GLuint rot = glGetUniformLocation(_shader, "rotation");
         //glUniformMatrix4fv(rot, 1, GL_FALSE, &rotation[0][0]);
         //glm::mat4 translation = glm::translate(glm::vec3(_xpos + _trans.GetX(), _ypos + _trans.GetY(), 0));
@@ -54,8 +61,8 @@ namespace FluidLib {
         _angle += y/20;
         if (_angle > M_PI / 2)
             _angle = M_PI / 2;
-        if (_angle < 0)
-            _angle = 0;
+        if (_angle < 0.01)
+            _angle = 0.01;
     }
     
     void FanSurface::OnMove(float x, float y)
@@ -68,6 +75,40 @@ namespace FluidLib {
     {
         return 0.0f;
     }
+
+    void FanSurface::EditDraw()
+    {
+        _control.SetX(_len * sin(_angle));
+        _control.SetY(-_len * cos(_angle));
+        _control.Rotate(_rotation);
+        _control.VisualTranslate({ _xpos, _ypos });
+        _control.Draw();
+    }
+
+    void FanSurface::StartEdit()
+    {
+    }
+
+    bool FanSurface::OnEditMove(float x, float y)
+    {
+        _control.OnMove(x, y);
+        if (_control.Selected()) {
+            _angle = atan2(_control.GetX(), -_control.GetY());
+            _len = sqrt(pow(_control.GetX()-_xpos, 2) + pow(_control.GetY()-_ypos, 2));
+        }
+        return true;
+    }
+
+    bool FanSurface::OnEditClick(float x, float y)
+    {
+        return _control.OnClick(x, y);
+    }
+
+    bool FanSurface::OnEditRelease(float x, float y)
+    {
+        _control.OnRelease();
+        return false;
+    }
     
     std::vector<IPoint>& FanSurface::GetSurfacePoints()
     {
@@ -75,10 +116,16 @@ namespace FluidLib {
         int n = 15;
         for (float i = -_angle; i <= _angle; i += _angle/n) {
             for (float j = 0; j < _len; ++j) {
-                _points.push_back({ (int)(sin(i)*2*j), (int)(-j * cos(i)) });
+                _points.push_back({ (int)(sin(_rotation + i )*2*j), (int)(-j * cos(_rotation + i)) });
             }
         }
         return _points;
+    }
+
+    void FanSurface::SetProjection(glm::mat4 proj)
+    {
+        _projection = proj;
+        _control.SetProjection(proj);
     }
 
 }

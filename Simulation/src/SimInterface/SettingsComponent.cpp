@@ -13,6 +13,8 @@ void SettingsComponent::OnUpdate()
 {
 	if(_colorgrid == nullptr)
 		_colorgrid = static_cast<FluidLib::ColorGrid<IInk>*>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Ink"));
+	if(_flaggrid == nullptr)
+		_flaggrid = static_cast<FluidLib::FlagGrid<Flags>*>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Flag"));
 }
 
 void SettingsComponent::OnDraw()
@@ -39,10 +41,18 @@ void SettingsComponent::OnDraw()
 
 			ImGui::SliderInt("Updates/sec", &_settings->fps, 0.0, 120.0);
 			ImGui::SliderFloat("Ink Spreading", &_settings->spreading, 0.0f, 1.0f);
-			ImGui::SliderFloat("Diffuse", &_settings->diffuse, 0.0f, 1.0f);
+			ImGui::SliderFloat("Diffuse", &_settings->diffuse, 0.0f, 0.999f);
 			ImGui::Checkbox("Edit Frozen", &_settings->editfreeze);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("Use actions on frozen parts");
+			if (ImGui::Button("Freeze All")) {
+				if (_flaggrid != nullptr)
+					_flaggrid->SetAllValues({ 1,0,0,0 });
+			}
+			if (ImGui::Button("UnFreeze All")) {
+				if (_flaggrid != nullptr)
+					_flaggrid->SetAllValues({ 0,0,0,0 });
+			}
 		}
 		else {
 			ImGui::Text("No Settings");
@@ -75,6 +85,8 @@ void SettingsComponent::OnDraw()
 					_colorgrid->RefreshColors();
 					ImGui::EndPopup();
 				}
+				ImGui::Checkbox("RenderForce", (bool*)&_settings->renderforce);
+				ImGui::SliderFloat("RenderForce", &_settings->renderforce, 0.0f, 1.0f);
 			}
 		}
 		else {

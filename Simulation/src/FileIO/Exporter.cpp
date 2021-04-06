@@ -29,19 +29,19 @@ bool Exporter::Export(bool askfile)
 			float scale = 0;
 			if (freq > 1000)
 				scale = 1;
-			else if (freq > 300)
+			else
 				scale = freq / 1000;
-			else if (freq > 0)
-				scale = 0.3;
-			else if (freq == 0)
-				scale = 0.1;
+			//else if (freq > 0)
+			//	scale = 0.3;
+			//else if (freq == 0)
+			//	scale = 0.1;
 
 			if (colid == 0)
 				scale = 1;
 			//mix =  v1 * (1 - a) + v2 * a
-			pixels[index++] = int(255.99 * (watercolor.r * (1-intensity) + (col.r * scale) * intensity));
-			pixels[index++] = int(255.99 * (watercolor.g * (1-intensity) + (col.g * scale) * intensity));
-			pixels[index++] = int(255.99 * (watercolor.b * (1-intensity) + (col.b * scale) * intensity));
+			pixels[index++] = int(255.99 * (watercolor.r * (1-(scale * intensity)) + col.r * scale * intensity));
+			pixels[index++] = int(255.99 * (watercolor.g * (1-(scale * intensity)) + col.g * scale * intensity));
+			pixels[index++] = int(255.99 * (watercolor.b * (1-(scale * intensity)) + col.b * scale * intensity));
 			if (_watertrans) {
 				if (colid == 0)
 					pixels[index++] = 0;

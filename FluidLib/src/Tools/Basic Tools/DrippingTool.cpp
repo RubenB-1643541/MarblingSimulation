@@ -1,34 +1,115 @@
 #include "DrippingTool.h"
 
+
 namespace FluidLib {
 
 	DrippingTool::DrippingTool()
 	{
 		SetName("Dripping");
+		_circle = new Circle();
+		SetSurface(_circle);
+		_rect = new Rectangle();
+	}
+
+	void DrippingTool::Draw()
+	{
+		if (_surfaceEdit) {
+			_rect->Draw();
+			_rect->EditDraw();
+		}
+		else {
+			_rect->SetWidth(_width);
+			_rect->SetHeight(_height);
+			_rect->OnMove(_xpos, _ypos);
+		}
+	}
+
+	void DrippingTool::OnUpdate()
+	{
+	}
+
+	void DrippingTool::OnActivate()
+	{
+	}
+
+	void DrippingTool::OnDeactivate()
+	{
 	}
 
 	void DrippingTool::OnUse()
 	{
+		if(_arc)
+			SetCircleRandomArc();
+		else
+			SetCircleRandom();
 		std::vector<IPoint> points = _surface->GetSurfacePoints();
-		std::vector<FPoint> transpoints = { { 0.0f, 0.0f } };
-		if (_multisurface != nullptr)
-			transpoints = _multisurface->GetPoints();
-		
-		static std::random_device rd;
-		static std::mt19937 gen(rd());
-		std::uniform_int_distribution<> dis(0, std::distance(points.begin(), points.end()) - 1);
-		int limit = points.size() * _perc;
-		for (int i = 0; i < limit; ++i ) {
-			auto start = points.begin();
-			std::advance(start, dis(gen));
-			_action->Execute(*start);
-		}
 
-		//for (IPoint& p : points) {
-		//	for (FPoint& t : transpoints) {
-		//		_action->Execute(p + t);
-		//	}
-		//}
+		for (IPoint& p : points)
+			_action->Execute(p);
 	}
+
+	bool DrippingTool::OnUseEvent(ToolUseEvent& event)
+	{
+		if (_surfaceEdit) {
+			_using = false;
+			_rect->OnEditClick(_xpos, _ypos);
+		}
+		else
+			_using = true;
+		return true;
+	}
+
+	bool DrippingTool::OnEndUseEvent(ToolEndUseEvent& event)
+	{
+		if (_surfaceEdit) {
+			_rect->OnEditRelease(_xpos, _ypos);
+		}
+		_using = false;
+		return false;
+	}
+
+	bool DrippingTool::OnMoveEvent(ToolMoveEvent& event)
+	{
+		_xpos = event.GetX();
+		_ypos = event.GetY();
+		if (_surfaceEdit) {
+			_rect->OnEditMove(_xpos, _ypos);
+			_width = _rect->GetWidth();
+			_height = _rect->GetHeight();
+		}
+		return false;
+	}
+
+	bool DrippingTool::OnScrollEvent(ToolScrollEvent& event)
+	{
+		return false;
+	}
+
+	//https://forum.processing.org/one/topic/how-to-create-a-paint-splatter-effect.html
+	void DrippingTool::SetCircleRandom()
+	{
+		float ang = _minr + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX /(_maxr - _minr)));
+		//float ang = 0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / M_2_PI));
+		float splatX = _xpos - _width/2 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / _width));
+		float splatY = _ypos - _height/2 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / _height));
+		_circle->OnMove(splatX, splatY);
+		_action->SetPos({ (int)splatX, (int)splatY });
+		_circle->SetR(ang);
+	}
+
+	void DrippingTool::SetCircleRandomArc()
+	{
+		float ang = _minr + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (_maxr - _minr)));
+		//float ang = 0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / M_2_PI));
+		float ranlen = _minlen + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (_maxlen - _minlen)));
+		float ranang = _minangle + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (_maxangle - _minangle)));
+		float splatX = _xpos - cos(ranang + M_PI/2) * ranlen;
+		float splatY = _ypos - sin(ranang + M_PI / 2) * ranlen;
+		_circle->OnMove(splatX, splatY);
+		_action->SetPos({ (int)splatX, (int)splatY });
+		_circle->SetR(ang);
+	}
+
+	
 
 }

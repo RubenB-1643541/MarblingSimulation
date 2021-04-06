@@ -95,6 +95,8 @@ namespace FluidLib {
 		inline bool GetRender() { return _render; }
 
 		virtual void WriteToFile(std::ofstream& stream, bool valsonly = false) override;
+
+		virtual void SetAllValues(T val);
 	private:
 		
 		bool _render = false;
@@ -185,6 +187,16 @@ namespace FluidLib {
 		//	stream << data[i] << " ";
 		//}
 		ReleaseBufferLock();
+	}
+
+	template<class T>
+	inline void Grid<T>::SetAllValues(T val)
+	{
+		T* data = GetBufferPointer();
+		for (int i = 0; i < _data.size; ++i) {
+			data[i] = val;
+		}
+		ReleaseBufferPointer();
 	}
 
 }

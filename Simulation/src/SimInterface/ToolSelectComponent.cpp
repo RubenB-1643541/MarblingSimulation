@@ -26,7 +26,7 @@ void ToolSelectComponent::OnDraw()
 		ImGui::SetNextTreeNodeOpen(true);
 	if (ImGui::TreeNode("Tool Selection")) {
 		DrawSelection();
-		if (_active != nullptr && (_active->GetName() == "Basic" || _active->GetName() == "Dripping")) {
+		if (_active != nullptr && _active->GetName() == "Basic" ) {
 			DrawBasic();
 		}
 		if (_active != nullptr && _active->GetName() == "Select") {

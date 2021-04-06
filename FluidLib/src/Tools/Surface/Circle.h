@@ -26,6 +26,7 @@ namespace FluidLib {
 		//Loop through surface points
 		std::vector<IPoint>& GetSurfacePoints() override;
 		float* GetR() { return &_r; }
+		void SetR(float r) { _r = r; }
 		void SetProjection(glm::mat4 proj) override;
 	private:
 		float _r = 50.0f;

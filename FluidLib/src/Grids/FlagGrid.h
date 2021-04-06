@@ -16,6 +16,8 @@ namespace FluidLib {
 
 		void CopyFromGPU();
 		void CopyToGPU();
+
+		void SetAllValues(T val) override;
 	private:
 		T* _values;
 
@@ -64,6 +66,18 @@ namespace FluidLib {
 	inline void FlagGrid<T>::CopyToGPU()
 	{
 		glNamedBufferSubData(_data.id, 0, _data.size * sizeof(T), _values);
+	}
+
+	template<class T>
+	inline void FlagGrid<T>::SetAllValues(T val)
+	{
+		T* data = GetBufferPointer();
+		T* data2 = GetValues();
+		for (int i = 0; i < _data.size; ++i) {
+			data[i] = val;
+			data2[i] = val;
+		}
+		ReleaseBufferPointer();
 	}
 
 }

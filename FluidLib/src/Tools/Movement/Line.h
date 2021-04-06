@@ -6,6 +6,8 @@
 #include <vector>
 #include <Util/ControlPoint.h>
 #include <cmath>
+#include "corecrt_math_defines.h"
+#define _USE_MATH_DEFINES
 
 namespace FluidLib {
 

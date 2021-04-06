@@ -6,5 +6,6 @@
 #include "Triangle.h"
 #include "PointSurface.h"
 #include "Polygon.h"
+#include "FanSurface.h"
 #include "../Surface.h"
 #include "Multisurface/MultiSurfaces.h"

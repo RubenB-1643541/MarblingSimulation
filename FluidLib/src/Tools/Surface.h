@@ -34,9 +34,9 @@ namespace FluidLib {
 		inline FPoint& GetTrans() { return _trans; }
 		inline void SetTrans(const FPoint& trans) { _trans = trans; }
 
-		inline float GetRotation() { return _rotation; }
-		inline void SetRotation(float rot) { _rotation = rot; }
-		inline float* GetRotationPtr() { return &_rotation; }
+		inline virtual float GetRotation() { return _rotation; }
+		inline virtual void SetRotation(float rot) { _rotation = rot; }
+		inline virtual float* GetRotationPtr() { return &_rotation; }
 
 		inline bool GetAutoRotate() { return _autorotate; }
 		inline void SetAutoRotate(bool rotate) { _autorotate = rotate; }

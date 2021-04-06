@@ -5,6 +5,7 @@
 #include "../SimUtils/Icon.h"
 #include "Grids/ColorGrid.h"
 #include "../SimulationCore/GridStructures.h"
+#include "Grids/FlagGrid.h"
 
 class SettingsComponent : public RenderEngine::InterfaceComponent
 {
@@ -20,5 +21,6 @@ private:
 	Icon _playicon;
 	Icon _pauseicon;
 	FluidLib::ColorGrid<IInk>* _colorgrid = nullptr;
+	FluidLib::FlagGrid<Flags>* _flaggrid = nullptr;
 };
 

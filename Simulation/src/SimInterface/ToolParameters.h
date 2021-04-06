@@ -4,6 +4,7 @@
 #include "Tools/ToolBase.h"
 #include "Tools/Basic Tools/SelectTool.h"
 #include "Tools/Basic Tools/DrippingTool.h"
+#include "Tools/Basic Tools/BasicTool.h"
 #include "Tools/ToolManager.h"
 #include "Tools/Surface/Surfaces.h"
 #include "Tools/Action/Actions.h"

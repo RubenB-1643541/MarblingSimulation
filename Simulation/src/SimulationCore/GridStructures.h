@@ -114,17 +114,28 @@ struct IInk {
 	//glm::vec3 color;
 	//float padding2;
 	inline void operator+=(const IInk& val) { 
-		if (id == 0 || id == val.id) {
-			ink += val.ink;
-			id = val.id;
-			//color = val.color;
-		}
+		//if (id == 0 || id == val.id) {
+		//	ink += val.ink;
+		//	id = val.id;
+		//	//color = val.color;
+		//}
+		ink += val.ink;
+		id = val.id;
 	}
 	inline void operator+=(const FluidLib::IPoint& move) { ink += move.GetX(); ink += move.GetY(); }
 	inline void operator-=(const IInk& val) {
 		ink -= val.ink; if (ink <= 0) { ink = 0; id = 0; }
 	}
-	inline void operator*=(const IInk& val) { ink *= val.ink; }
+	/*
+	SOFT ADD
+	Does not override values
+	*/
+	inline void operator*=(const IInk& val) { 
+		if (val.id != 0) {
+			ink += val.ink;
+			id = val.id;
+		} 
+	}
 	inline void operator/=(const IInk& val) { ink /= val.ink; }
 	inline void operator*=(int val) { ink *= val; }
 	inline void operator/=(int val) { ink /= val; }

@@ -162,6 +162,11 @@ namespace FluidLib {
 	{
 		if (_actions.find("Paste") != _actions.end()) {
 			ActionBase* paste = _actions.at("Paste");
+			if (_softpaste)
+				paste->SetOperation(FluidLib::ACTION_OPERATION::MUL);
+			else
+				paste->SetOperation(FluidLib::ACTION_OPERATION::ADD);
+				
 			paste->Start();
 			size_t width = Clipboard::GetDataStruct()->width;
 			size_t height = Clipboard::GetDataStruct()->height;
