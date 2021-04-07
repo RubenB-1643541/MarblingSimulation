@@ -142,8 +142,9 @@ But points can not be < 0
 Then the receiver will get less than 100
 */
 void StamAdvection(uint i, ivec2 pos) {
-			
-	vec2 velval = vec2(velocities[i].x/1000,velocities[i].y/1000);//TODO 1000?
+	if(velocities[i].x == 0 && velocities[i].y == 0)
+		return;
+	vec2 velval = vec2(float(velocities[i].x)/1000,float(velocities[i].y)/1000);//TODO 1000?
 	//velocities[i].x += int(ceil(velval.x));
 	vec2 source = pos;
 	//if(velval.x > 0.001 || velval.x < 0.001) //Prevent float ~= 0 being executed
@@ -158,8 +159,8 @@ void StamAdvection(uint i, ivec2 pos) {
 		vec4 perc = Percentages(sqpoints, source);
 		int totalval = 0;
 		uint i = PointToIndex(ivec2(sqpoints.x, sqpoints.y));
-		frequencies[i] = uint(100 * perc.x);
-		//frequencies[i] = uint(perc.x + perc.y + perc.z + perc.w);
+		frequencies[0] = sqpoints.z;
+		frequencies[1] = int(source.x);
 		int val = int(perc.x * inkvals[i].freq);
 		//val = 100;
 		InkStruct highest = {0,0};
@@ -233,7 +234,7 @@ Special case for big forces
 Force > 500 (or more)
 */
 void Pressure(uint i, ivec2 pos) { // fix probs negative forces
-	if(pos.x - 1 > 0 ) {//Check out of bounds 
+	if(pos.x - 1 > 0 && pos.y - 1 > 0) {//Check out of bounds 
 	//if(pos.x - 1 > 0 && pos.y - 1 > 0) {//Check out of bounds 
 		ivec2 force = ivec2(inkvals[i].freq - inkvals[i-1].freq, inkvals[i].freq - inkvals[i+width].freq);
 		//if(force.x >= 1 || force.x <= -1)  {
@@ -301,8 +302,8 @@ ivec4 PointsSqaure(vec2 pos) {
 	ivec4 posistions = ivec4(0,0,0,0);
 	posistions.x = int(floor(pos.x));
 	posistions.y = int(floor(pos.y));
-	posistions.z = int(ceil(pos.x));
-	posistions.w = int(ceil(pos.y));
+	posistions.z = int(floor(pos.x)+1);
+	posistions.w = int(floor(pos.y)+1);
 	return posistions;
 }
 
@@ -354,24 +355,24 @@ vec2 Collision(vec2 vec) {
 }
 
 void CopyToSecond(uint i) {
-	inkvals2[i].id = inkvals[i].id;
-	inkvals2[i].freq += inkvals[i].freq;
+	//inkvals2[i].id = inkvals[i].id;
+	//inkvals2[i].freq += inkvals[i].freq;
 	velocities2[i] = velocities[i];
 }
 
 void CopyToFirst(uint i) {
-	inkvals[i].id = inkvals2[i].id;
-	inkvals[i].freq = inkvals2[i].freq;
-	if(inkvals[i].freq <= 0) {
-		inkvals[i].id = 0;
-		inkvals[i].freq = 0;
-		}
-	if(inkvals[i].freq < 0) {
-		//inkvals[i].freq = 0;
-		frequencies[0] = inkvals[i].freq;
-		frequencies[1] = i;
-	}
+	//inkvals[i].id = inkvals2[i].id;
+	//inkvals[i].freq = inkvals2[i].freq;
+	//if(inkvals[i].freq <= 0) {
+	//	inkvals[i].id = 0;
+	//	inkvals[i].freq = 0;
+	//	}
+	//if(inkvals[i].freq < 0) {
+	//	//inkvals[i].freq = 0;
+	//	frequencies[0] = inkvals[i].freq;
+	//	frequencies[1] = i;
+	//}
 	velocities[i] = velocities2[i];
-	inkvals2[i].id = 0;
-	inkvals2[i].freq = 0;
+	//inkvals2[i].id = 0;
+	//inkvals2[i].freq = 0;
 }

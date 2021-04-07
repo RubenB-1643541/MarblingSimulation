@@ -39,12 +39,12 @@ void SimulationApplication::OnUpdate()
 	
 
 	if (_simrunning) {
-		//RenderEngine::ShaderStorageBuffer* freq = _buffers.at("Freq");
-		//freq->Bind();
-		//IFrequency* freqs = (IFrequency*)freq->MapBufferRange();
-		//INFO("Freq: {}", freqs[0].freq);
-		//INFO("Pos : {}", freqs[1].freq);
-		//freq->UnMapBuffer();
+		RenderEngine::ShaderStorageBuffer* freq = _buffers.at("Freq");
+		freq->Bind();
+		IFrequency* freqs = (IFrequency*)freq->MapBufferRange();
+		INFO("Pos1: {}", freqs[0].freq);
+		INFO("Pos2: {}", freqs[1].freq);
+		freq->UnMapBuffer();
 
 		_sim.Update();
 		_sim.Draw();
