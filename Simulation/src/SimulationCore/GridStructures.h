@@ -38,12 +38,14 @@ struct FVelocity {
 	inline void operator+=(const FluidLib::IPoint& move) { dx += move.GetX(); dy += move.GetY(); }
 	inline void operator-=(const FVelocity& val) { dx -= val.dx; dy -= val.dy; }
 	inline void operator*=(const FVelocity& val) { dx *= val.dx; dy *= val.dy; }
+	inline void operator*=(const FluidLib::IPoint& move) { dx *= move.GetX(); dy *= move.GetY(); }
 	inline void operator/=(const FVelocity& val) { dx /= val.dx; dy /= val.dy; }
-	inline void operator*=(float val) { dx *= val; dy *= val; }
-	inline void operator/=(float val) { dx /= val; dy /= val; }
-	inline FVelocity operator*(float scale) { return { dx * scale, dy * scale }; }
+	inline void operator*=(int val) { dx *= val; dy *= val; }
+	inline void operator/=(int val) { dx /= val; dy /= val; }
+	inline FVelocity operator*(float scale) { return { static_cast<float>(dx * scale), static_cast<float>(dy * scale) }; }
+	inline FVelocity operator*(const FluidLib::IPoint& move) { return { static_cast<float>(dx * move.GetX()), static_cast<float>(dy * move.GetY()) }; }
 	inline bool operator==(const FVelocity& val) { return dx == val.dx && dy == val.dy; }
-	inline bool operator==(float val) { return dx == val && dy == val; }
+	inline bool operator==(int val) { return dx == val && dy == val; }
 	inline FVelocity(float dx, float dy) : dx(dx), dy(dy) {}
 	inline FVelocity(float d) : dx(d), dy(d) {}
 	inline FVelocity() : dx(0), dy(0) {}
@@ -111,14 +113,7 @@ struct IInk {
 	int ink;
 	int id;
 	int padding[2];
-	//glm::vec3 color;
-	//float padding2;
 	inline void operator+=(const IInk& val) { 
-		//if (id == 0 || id == val.id) {
-		//	ink += val.ink;
-		//	id = val.id;
-		//	//color = val.color;
-		//}
 		ink += val.ink;
 		id = val.id;
 	}
@@ -156,23 +151,38 @@ struct IInk {
 struct FInk {
 	float ink;
 	int id;
-	glm::vec3 color;
-	inline void operator+=(const FInk& val) { ink += val.ink; }
+	int padding[2];
+	inline void operator+=(const FInk& val) {
+		ink += val.ink;
+		id = val.id;
+	}
 	inline void operator+=(const FluidLib::IPoint& move) { ink += move.GetX(); ink += move.GetY(); }
-	inline void operator-=(const FInk& val) { ink -= val.ink; }
-	inline void operator*=(const FInk& val) { ink *= val.ink; }
+	inline void operator-=(const FInk& val) {
+		ink -= val.ink; if (ink <= 0) { ink = 0; id = 0; }
+	}
+	/*
+	SOFT ADD
+	Does not override values
+	*/
+	inline void operator*=(const FInk& val) {
+		if (val.id != 0) {
+			ink += val.ink;
+			id = val.id;
+		}
+	}
 	inline void operator/=(const FInk& val) { ink /= val.ink; }
-	inline void operator*=(float val) { ink *= val; }
-	inline void operator/=(float val) { ink /= val; }
-	inline FInk operator*(float scale) { return { ink * scale }; }
+	inline void operator*=(int val) { ink *= val; }
+	inline void operator/=(int val) { ink /= val; }
+	inline FInk operator*(float scale) { return { static_cast<float>(ink * scale), id }; }// , { 0,0 }, color, 0};}
+	inline FInk operator*(const FluidLib::IPoint& move) { return { static_cast<float>(ink * move.GetX() * move.GetY()), id }; }// , { 0,0 }, color, 0};}
 	inline bool operator==(const FInk& val) { return ink == val.ink && id == val.id; }
-	inline bool operator==(float val) { return ink == val; }
+	inline bool operator==(int val) { return ink == val; }
 	friend std::ostream& operator<<(std::ostream& out, const FInk& ink) {
-		out << ink.ink << " " << ink.id << " " << ink.color.x << " " << ink.color.y << " " << ink.color.z;
+		out << ink.ink << " " << ink.id;// << " " << ink.color.x << " " << ink.color.y << " " << ink.color.z;
 		return out;
 	}
 	friend std::istream& operator>>(std::istream& in, FInk& ink) {
-		in >> ink.ink >> ink.id >> ink.color.x >> ink.color.y >> ink.color.z;
+		in >> ink.ink >> ink.id;// >> ink.color.x >> ink.color.y >> ink.color.z;
 		return in;
 	}
 };

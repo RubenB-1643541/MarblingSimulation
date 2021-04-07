@@ -2,12 +2,12 @@
 
 layout(binding=1) buffer vel
 {
-	ivec2 velocities[];	//array of velocities * 1000 -> 1000 == 1
+	vec2 velocities[];	//array of velocities * 1000 -> 1000 == 1
 };
 
 struct InkStruct 
 {
-	int freq;
+	float freq;
 	int id;
 	ivec2 padding;
 };

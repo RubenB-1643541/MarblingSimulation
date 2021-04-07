@@ -26,11 +26,9 @@ void main() {
 		bvec4 flags = bvec4(oflags.x, oflags.y, oflags.z, oflags.w);
 		vec3 result = vec3(0,0,0);
 		float intensscale = 1.0f;
-		if (inkfreq > 1000)
-			result = inkcolor;
-		else
-			result = inkcolor * (inkfreq / 1000);
-			intensscale = (inkfreq / 1000);
+
+		result = inkcolor * inkfreq;
+		intensscale = inkfreq ;
 	
 		if(inkid == 0) {
 			result = inkcolor;
@@ -43,6 +41,6 @@ void main() {
 		gl_FragColor = vec4(result, 1.0);
 	}
 	else {
-		gl_FragColor = vec4(force.x/1000 + 0.5, force.y/1000 + 0.5,0,1.0);
+		gl_FragColor = vec4(force.x + 0.5, force.y + 0.5,0,1.0);
 	}
 }

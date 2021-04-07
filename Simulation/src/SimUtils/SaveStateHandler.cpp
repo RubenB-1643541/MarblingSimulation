@@ -17,6 +17,7 @@ void SaveStateHandler::Init()
 		_mkdir(_loc);
 	}
 	int h = 0;
+	
 	for (const auto& entry : std::filesystem::directory_iterator(_loc)) {
 		std::string file = entry.path().generic_string();
 		std::string state = file;

@@ -39,12 +39,12 @@ void SimulationApplication::OnUpdate()
 	
 
 	if (_simrunning) {
-		//RenderEngine::ShaderStorageBuffer* freq = _buffers.at("Freq");
-		//freq->Bind();
-		//IFrequency* freqs = (IFrequency*)freq->MapBufferRange();
-		//INFO("Freq: {}", freqs[0].freq);
-		//INFO("Pos : {}", freqs[1].freq);
-		//freq->UnMapBuffer();
+		RenderEngine::ShaderStorageBuffer* freq = _buffers.at("Freq");
+		freq->Bind();
+		IFrequency* freqs = (IFrequency*)freq->MapBufferRange();
+		INFO("Freq: {}", freqs[0].freq);
+		INFO("Pos : {}", freqs[1].freq);
+		freq->UnMapBuffer();
 
 		_sim.Update();
 		_sim.Draw();
@@ -189,8 +189,8 @@ void SimulationApplication::CreateGrids()
 	_buffers.clear();
 	RenderEngine::ShaderStorageBuffer* velbuf = new RenderEngine::ShaderStorageBuffer();
 	velbuf->Bind();
-	velbuf->BufferData(_sim.GetSize() * sizeof(IVelocity));
-	IVelocity* vels = (IVelocity*)velbuf->MapBufferRange();
+	velbuf->BufferData(_sim.GetSize() * sizeof(FVelocity));
+	FVelocity* vels = (FVelocity*)velbuf->MapBufferRange();
 	for (int i = 0; i < _sim.GetSize(); ++i) {
 		vels[i] = { 0, 0 };
 	}
@@ -199,8 +199,8 @@ void SimulationApplication::CreateGrids()
 
 	RenderEngine::ShaderStorageBuffer* velbuf2 = new RenderEngine::ShaderStorageBuffer();
 	velbuf2->Bind();
-	velbuf2->BufferData(_sim.GetSize() * sizeof(IVelocity));
-	IVelocity* vels2 = (IVelocity*)velbuf2->MapBufferRange();
+	velbuf2->BufferData(_sim.GetSize() * sizeof(FVelocity));
+	FVelocity* vels2 = (FVelocity*)velbuf2->MapBufferRange();
 	for (int i = 0; i < _sim.GetSize(); ++i) {
 		vels2[i] = { 0, 0 };
 	}
@@ -229,8 +229,8 @@ void SimulationApplication::CreateGrids()
 
 	RenderEngine::ShaderStorageBuffer* inkbuf = new RenderEngine::ShaderStorageBuffer();
 	inkbuf->Bind();
-	inkbuf->BufferData(_sim.GetSize() * sizeof(IInk));
-	IInk* inks = (IInk*)inkbuf->MapBufferRange();
+	inkbuf->BufferData(_sim.GetSize() * sizeof(FInk));
+	FInk* inks = (FInk*)inkbuf->MapBufferRange();
 	for (int i = 0; i < _sim.GetSize(); ++i) {
 		inks[i] = { 0, 0 };
 		//inks[i] = { 0, 0, {0,0}, {0,0,0},0 };
@@ -240,8 +240,8 @@ void SimulationApplication::CreateGrids()
 
 	RenderEngine::ShaderStorageBuffer* inkbuf2 = new RenderEngine::ShaderStorageBuffer();
 	inkbuf2->Bind();
-	inkbuf2->BufferData(_sim.GetSize() * sizeof(IInk));
-	IInk* inks2 = (IInk*)inkbuf2->MapBufferRange();
+	inkbuf2->BufferData(_sim.GetSize() * sizeof(FInk));
+	FInk* inks2 = (FInk*)inkbuf2->MapBufferRange();
 	for (int i = 0; i < _sim.GetSize(); ++i) {
 		inks2[i] = { 0, 0 };
 		//inks2[i] = { 0, 0, {0,0}, {0,0,0},0 };
@@ -261,11 +261,11 @@ void SimulationApplication::CreateGrids()
 
 	FluidLib::GridManager* gridman = _sim.GetGrids();
 
-	FluidLib::Grid<IVelocity>* velgrid = new FluidLib::Grid<IVelocity>(_buffers.at("Vel")->GetId(), _sim.GetSize(), 1, true);
+	FluidLib::Grid<FVelocity>* velgrid = new FluidLib::Grid<FVelocity>(_buffers.at("Vel")->GetId(), _sim.GetSize(), 1, true);
 	velgrid->SetElementSize(2);
 	gridman->AddGrid("Vel", velgrid);
 
-	FluidLib::Grid<IVelocity>* velgrid2 = new FluidLib::Grid<IVelocity>(_buffers.at("Vel2")->GetId(), _sim.GetSize(), 2);
+	FluidLib::Grid<FVelocity>* velgrid2 = new FluidLib::Grid<FVelocity>(_buffers.at("Vel2")->GetId(), _sim.GetSize(), 2);
 	velgrid->SetElementSize(2);
 	gridman->AddGrid("Vel2", velgrid2);
 
@@ -275,11 +275,11 @@ void SimulationApplication::CreateGrids()
 	FluidLib::Grid<IFrequency>* freqgrid2 = new FluidLib::Grid<IFrequency>(_buffers.at("Freq2")->GetId(), _sim.GetSize(), 4);
 	gridman->AddGrid("Freq2", freqgrid2);
 
-	FluidLib::Grid<IInk>* inkgrid = new FluidLib::ColorGrid<IInk>(_buffers.at("Ink")->GetId(), _sim.GetSize(), 5, 8, true);
+	FluidLib::Grid<FInk>* inkgrid = new FluidLib::ColorGrid<FInk>(_buffers.at("Ink")->GetId(), _sim.GetSize(), 5, 8, true);
 	inkgrid->SetElementSize(2);
 	gridman->AddGrid("Ink", inkgrid);
 
-	FluidLib::Grid<IInk>* inkgrid2 = new FluidLib::Grid<IInk>(_buffers.at("Ink2")->GetId(), _sim.GetSize(), 6, true);
+	FluidLib::Grid<FInk>* inkgrid2 = new FluidLib::Grid<FInk>(_buffers.at("Ink2")->GetId(), _sim.GetSize(), 6, true);
 	inkgrid2->SetElementSize(2);
 	gridman->AddGrid("Ink2", inkgrid2);
 
