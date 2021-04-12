@@ -40,7 +40,7 @@ void SettingsComponent::OnDraw()
 			
 
 			ImGui::SliderInt("Updates/sec", &_settings->fps, 0.0, 120.0);
-			ImGui::SliderFloat("Ink Spreading", &_settings->spreading, 0.0f, 1.0f);
+			ImGui::SliderFloat("Ink Spreading", &_settings->spreading, 0.0f, 0.1f);
 			ImGui::SliderFloat("Diffuse", &_settings->diffuse, 0.0f, 0.999f);
 			ImGui::Checkbox("Edit Frozen", &_settings->editfreeze);
 			if (ImGui::IsItemHovered())

@@ -106,6 +106,7 @@ namespace FluidLib {
 		_sizex = sizex; _sizey = sizey; 
 		_renderer.SetSimSize(sizex, sizey);
 		_tools.SetSimSize(sizex, sizey);
+		//_computeshader.SetGroupSizes(sizex/WORK_GROUP_SIZE,  sizey/WORK_GROUP_SIZE);
 		_computeshader.SetGroupSizes((sizex * sizey)/ WORK_GROUP_SIZE, 1, 1);
 		
 	}

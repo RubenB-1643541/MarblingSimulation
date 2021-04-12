@@ -128,7 +128,7 @@ namespace FluidLib {
         if (_changed) {
             _rold = _r;
             _points.clear();
-            for (int i = 0; i < _r; ++i) {
+            for (int i = 0; i < _r; ++i) {  
                 for (int j = 0; j < sqrt(pow(_r, 2) - pow(i, 2)); ++j) {
                     _points.push_back(IPoint(i + 1, j + 1));
                     _points.push_back(IPoint(-i, j + 1));

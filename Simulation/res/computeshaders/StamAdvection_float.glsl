@@ -51,7 +51,9 @@ layout( location=3 ) uniform float a; //Factor for ink spreading
 layout( location=4 ) uniform float d; //Factor for diffusion
 
 
-layout(local_size_x = 100, local_size_y = 1, local_size_z = 1) in; //Variable?
+layout(local_size_x = 100, local_size_y = 1) in; //Variable?
+//layout(local_size_x = 10, local_size_y = 10) in; //Variable?
+
 
  //Forward declarations
 void Advection(uint i, ivec2 pos);
@@ -78,7 +80,10 @@ void CopyToSecond(uint i);
 void CopyToFirst(uint i);
 
 void main() {
-	uint i = gl_GlobalInvocationID.x;
+	ivec2 p = ivec2(gl_GlobalInvocationID.x, gl_GlobalInvocationID.y);
+	uint i = PointToIndex(p);
+	//uint i = gl_GlobalInvocationID.x;
+	frequencies[0] = i;
 	CopyToSecond(i);
 	barrier();
 	//frequencies[i] = uint(flagvals[i].x);
@@ -167,6 +172,7 @@ void StamAdvection(uint i, ivec2 pos) {
 		//int val = int(perc.x * frequencies[i]);
 		if(val > 0 && inkvals2[i].freq >= val) {
 			atomicAdd(inkvals2[i].freq, -val);
+			//atomicAdd(inkvals[i].freq, -val);
 			if(highest.freq < inkvals[i].freq){
 				highest.freq = inkvals[i].freq;
 				highest.id = inkvals[i].id;
@@ -182,6 +188,7 @@ void StamAdvection(uint i, ivec2 pos) {
 		//val = int(perc.y * frequencies[i]);
 		if(val > 0 && inkvals2[i].freq >= val) {
 			atomicAdd(inkvals2[i].freq, -val);
+			//atomicAdd(inkvals[i].freq, -val);
 			if(highest.freq < inkvals2[i].freq){
 				highest.freq = inkvals2[i].freq;
 				highest.id = inkvals2[i].id;
@@ -195,6 +202,7 @@ void StamAdvection(uint i, ivec2 pos) {
 		//val = int(perc.z * frequencies[i]);
 		if(val > 0 && inkvals2[i].freq >= val) {
 			atomicAdd(inkvals2[i].freq, -val);
+			//atomicAdd(inkvals[i].freq, -val);
 			if(highest.freq < inkvals2[i].freq){
 				highest.freq = inkvals2[i].freq;
 				highest.id = inkvals2[i].id;
@@ -208,6 +216,7 @@ void StamAdvection(uint i, ivec2 pos) {
 		//val = int(perc.w * frequencies[i]);
 		if(val > 0 && inkvals2[i].freq >= val) {
 			atomicAdd(inkvals2[i].freq, -val);
+			//atomicAdd(inkvals[i].freq, -val);
 			if(highest.freq < inkvals[i].freq){
 				highest.freq = inkvals[i].freq;
 				highest.id = inkvals[i].id;
@@ -309,27 +318,16 @@ ivec4 PointsSqaure(vec2 pos) {
 
 vec4 Percentages(ivec4 sqpoints, vec2 center) {
 	vec4 percentages;
-	vec2 new = abs(vec2(sqpoints.x - center.x, sqpoints.y - center.y));
-	percentages.x = sqrt(new.x * new.x + new.y * new.y);
-	percentages.x *= 10;
-	//percentages.x = new.x * new.y;
+	float fx = center.x - int(center.x);
+	float fy = center.y - int(center.y);
 
-	new = abs(vec2(sqpoints.z, sqpoints.y) - center);
-	percentages.y = sqrt(new.x * new.x + new.y * new.y);
-	percentages.y *= 10;
+	percentages.x = (1.0f-fy)*(1.0f-fx);
+	percentages.y = (1.0f-fy)*(fx);
+	percentages.z = (fy)*(1.0f-fx);
+	percentages.w = (fy)*(fx);
 
-	new = abs(vec2(sqpoints.x, sqpoints.w) - center);
-	percentages.z = sqrt(new.x * new.x + new.y * new.y);
-	percentages.z *= 10;
-
-	new = abs(vec2(sqpoints.z, sqpoints.w) - center);
-	percentages.w = sqrt(new.x * new.x + new.y * new.y);
-	percentages.w *= 10;
-
-	
-
-	return vec4(0.02,0.02,0.02,0.02);
-	//return percentages;
+	//return vec4(0.02,0.02,0.02,0.02);
+	return percentages;
 }
 
 bool InGrid(vec2 vec) {
@@ -355,24 +353,29 @@ vec2 Collision(vec2 vec) {
 }
 
 void CopyToSecond(uint i) {
+	atomicExchange(inkvals2[i].id, inkvals[i].id);
 	//inkvals2[i].id = inkvals[i].id;
+	atomicAdd(inkvals2[i].freq, inkvals[i].freq);
 	//inkvals2[i].freq += inkvals[i].freq;
+	//atomicExchange(velocities2[i], velocities[i]);
 	velocities2[i] = velocities[i];
 }
 
 void CopyToFirst(uint i) {
+	atomicExchange(inkvals[i].id, inkvals2[i].id);
 	//inkvals[i].id = inkvals2[i].id;
+	atomicExchange(inkvals[i].freq, inkvals2[i].freq);
 	//inkvals[i].freq = inkvals2[i].freq;
-	//if(inkvals[i].freq <= 0) {
-	//	inkvals[i].id = 0;
-	//	inkvals[i].freq = 0;
-	//	}
-	//if(inkvals[i].freq < 0) {
-	//	//inkvals[i].freq = 0;
-	//	frequencies[0] = inkvals[i].freq;
-	//	frequencies[1] = i;
-	//}
+	if(inkvals[i].freq <= 0) {
+		inkvals[i].id = 0;
+		inkvals[i].freq = 0;
+		}
+	if(inkvals[i].freq < 0) {
+		//inkvals[i].freq = 0;
+		frequencies[0] = inkvals[i].freq;
+		frequencies[1] = i;
+	}
 	velocities[i] = velocities2[i];
-	//inkvals2[i].id = 0;
-	//inkvals2[i].freq = 0;
+	inkvals2[i].id = 0;
+	inkvals2[i].freq = 0;
 }
