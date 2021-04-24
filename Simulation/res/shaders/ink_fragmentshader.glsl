@@ -26,7 +26,7 @@ void main() {
 		bvec4 flags = bvec4(oflags.x, oflags.y, oflags.z, oflags.w);
 		vec3 result = vec3(0,0,0);
 		float intensscale = 1.0f;
-		if (inkfreq > 1000)
+		if (inkfreq > 1000 || inkfreq < 0)
 			result = inkcolor;
 		else
 			result = inkcolor * (inkfreq / 1000);

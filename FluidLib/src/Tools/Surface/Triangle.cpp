@@ -195,4 +195,19 @@ namespace FluidLib {
 		_rotcon.SetProjection(proj);
 	}
 
+	TriangleSurfParameters Triangle::GetParam()
+	{
+		TriangleSurfParameters p;
+		p.Width = _width;
+		p.Height = _height;
+		return p;
+	}
+
+	void Triangle::LoadParam(Parameters* p)
+	{
+		TriangleSurfParameters* tp = static_cast<TriangleSurfParameters*>(p);
+		_width = tp->Width;
+		_height = tp->Height;
+	}
+
 }

@@ -63,7 +63,7 @@ void SimulationApplication::CreateInterface()
 	_interface.AddComponent("Menu", top);
 	_interface.GetComponent("Right")->AddComponent(new ToolParameters(_sim.GetTools()));
 	ToolSelectComponent* toolselect = new ToolSelectComponent(_sim.GetTools(), "Basic");
-	PresetComponent* preset = new PresetComponent(_sim.GetTools(), "Basic");
+	PresetComponent* preset = new PresetComponent(_sim.GetTools(), "Basic", toolselect);
 	_interface.GetComponent("Left")->AddComponent(new SettingsComponent());
 	_interface.GetComponent("Left")->AddComponent(toolselect);
 	_interface.GetComponent("Left")->AddComponent(preset);
@@ -357,20 +357,24 @@ void SimulationApplication::InitShortCuts()
 		FluidLib::ToolBase* tool = FluidLib::Simulation::Get()->GetTools()->GetActive();
 		if (tool->GetName() == "Select") {
 			FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(tool);
-			FluidLib::Rectangle* rect = static_cast<FluidLib::Rectangle*>(select->GetSurface());
 			FluidLib::ColorGrid<IInk> * col = static_cast<FluidLib::ColorGrid<IInk>*>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Ink"));
 			Image im = ImageFromClipboard(col->GetColors(), FluidLib::Simulation::Get()->GetSettings()->intesity);
 			FluidLib::TextureData texdat = { im.width, im.height, 4, im.data };
-			FluidLib::Texture* texture = new FluidLib::Texture(texdat);
-			rect->SetTexture(texture);
-			rect->SetRenderTexture(true);
-			rect->SetStyle(FluidLib::STYLE::FILLED);
-			rect->SetWidth(im.width);
-			rect->SetHeight(im.height);
-			select->SetMovementMode(FluidLib::MOVEMENT_MODE::PASTE);
-			//select->Paste();
+			select->Paste(texdat);
 		}
 	} });
+
+	_shortcuts.AddShortCut({ KEY_V , true, true,[]() {//Ctrl Shift V hardpaste with select tool
+	INFO("HARDPASTE");
+	FluidLib::ToolBase* tool = FluidLib::Simulation::Get()->GetTools()->GetActive();
+	if (tool->GetName() == "Select") {
+		FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(tool);
+		FluidLib::ColorGrid<IInk>* col = static_cast<FluidLib::ColorGrid<IInk>*>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Ink"));
+		Image im = ImageFromClipboard(col->GetColors(), FluidLib::Simulation::Get()->GetSettings()->intesity);
+		FluidLib::TextureData texdat = { im.width, im.height, 4, im.data };
+		select->HardPaste(texdat);
+	}
+} });
 
 
 	_shortcuts.AddShortCut({ KEY_X , true, false,[]() {//Ctrl X cut with select tool

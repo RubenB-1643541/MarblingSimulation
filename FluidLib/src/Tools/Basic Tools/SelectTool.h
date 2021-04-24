@@ -8,7 +8,7 @@
 
 namespace FluidLib {
 
-	enum class MOVEMENT_MODE {BEGIN, SIZE, NONE, PASTE};
+	enum class MOVEMENT_MODE {BEGIN, SIZE, NONE, PASTE, HARDPASTE};
 
 	class SelectTool : public ToolBase
 	{
@@ -28,14 +28,18 @@ namespace FluidLib {
 
 		void SetCopyAction(ActionBase* copyaction);
 		void SetPasteAction(ActionBase* pasteaction);
+		void SetHardPasteAction(ActionBase* Hardpasteaction);
 		void SetCutAction(ActionBase* cutaction);
 
 		void AddAction(const std::string& actionname, ActionBase* action);
 		bool ExecuteAction(const std::string& action);
 
 		bool Copy();
-		bool Paste();
+		bool Paste(TextureData texture);
+		bool HardPaste(TextureData texture);
 		bool Cut();
+		bool ExecutePaste();
+		bool ExecuteHardPaste();
 
 		inline const std::vector<std::string>& GetActions() { return _actionnames; }
 
@@ -44,9 +48,6 @@ namespace FluidLib {
 
 		inline void SetMovementMode(MOVEMENT_MODE mode) { _move = mode; }
 
-		inline void SetSoftPaste(bool soft) { _softpaste = soft; }
-		inline bool GetSoftPaste() { return _softpaste; }
-		inline bool* GetSoftPastePtr() { return &_softpaste; }
 	private:
 		void SwitchMode();
 		Rectangle* _rect = nullptr;
@@ -54,7 +55,6 @@ namespace FluidLib {
 		std::map<std::string, ActionBase*> _actions;
 		std::vector<std::string> _actionnames;
 		bool _executed = false;
-		bool _softpaste = true;
 	};
 
 }

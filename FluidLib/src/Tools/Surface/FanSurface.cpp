@@ -80,6 +80,9 @@ namespace FluidLib {
     {
         _control.SetX(_len * sin(_angle));
         _control.SetY(-_len * cos(_angle));
+
+        //_control.SetX(_len/10);
+        //_control.SetY(-_len/2 );
         _control.Rotate(_rotation);
         _control.VisualTranslate({ _xpos, _ypos });
         _control.Draw();
@@ -94,7 +97,7 @@ namespace FluidLib {
         _control.OnMove(x, y);
         if (_control.Selected()) {
             _angle = atan2(_control.GetX(), -_control.GetY());
-            _len = sqrt(pow(_control.GetX()-_xpos, 2) + pow(_control.GetY()-_ypos, 2));
+            _len = sqrt(pow(_control.GetTransX()-_xpos, 2) + pow(_control.GetTransY()-_ypos, 2));
         }
         return true;
     }
@@ -126,6 +129,21 @@ namespace FluidLib {
     {
         _projection = proj;
         _control.SetProjection(proj);
+    }
+
+    FanSurfParameters FanSurface::GetParam()
+    {
+        FanSurfParameters p;
+        p.Angle = _angle;
+        p.Len = _len;
+        return p;
+    }
+
+    void FanSurface::LoadParam(Parameters* p)
+    {
+        FanSurfParameters* fp = static_cast<FanSurfParameters*>(p);
+        _angle = fp->Angle;
+        _len = fp->Len;
     }
 
 }

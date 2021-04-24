@@ -130,4 +130,23 @@ namespace FluidLib {
 		_size.SetProjection(proj);
 	}
 
+	SineMoveParameters Sine::GetParam()
+	{
+		SineMoveParameters p;
+		p.Htrans = _hortrans;
+		p.Vtrans = _verttrans;
+		p.Amp = _amplitude;
+		p.Per = _period;
+		return p;
+	}
+
+	void Sine::LoadParam(Parameters* p)
+	{
+		SineMoveParameters* sp = static_cast<SineMoveParameters*>(p);
+		_verttrans = sp->Vtrans;
+		_hortrans = sp->Htrans;
+		_amplitude = sp->Amp;
+		_period = sp->Per;
+	}
+
 }

@@ -43,10 +43,13 @@ namespace FluidLib {
 			
 			if (!_moveEdit && !_surfaceEdit) {
 				if (_move == MOVEMENT_MODE::PASTE) {
-					Paste();
+					ExecutePaste();
 					SwitchMode();
 				}
-			
+				else if (_move == MOVEMENT_MODE::HARDPASTE) {
+					ExecuteHardPaste();
+					SwitchMode();
+				}
 				else if (_move != MOVEMENT_MODE::SIZE)
 					SwitchMode();
 			}
@@ -77,7 +80,7 @@ namespace FluidLib {
 			 _surface->OnEditMove(_x, _y);
 		}
 		else {
-			if (_move == MOVEMENT_MODE::BEGIN || _move == MOVEMENT_MODE::PASTE) {
+			if (_move == MOVEMENT_MODE::BEGIN || _move == MOVEMENT_MODE::PASTE || _move == MOVEMENT_MODE::HARDPASTE)  {
 				_rect->SetX(event.GetX());
 				_rect->SetY(event.GetY());
 			}
@@ -105,6 +108,13 @@ namespace FluidLib {
 	void SelectTool::SetPasteAction(ActionBase* pasteaction)
 	{
 		AddAction("Paste", pasteaction);
+		//_actions["Paste"] = pasteaction;
+		//pasteaction->SetName("Paste");
+	}
+
+	void SelectTool::SetHardPasteAction(ActionBase* hardpasteaction)
+	{
+		AddAction("HardPaste", hardpasteaction);
 		//_actions["Paste"] = pasteaction;
 		//pasteaction->SetName("Paste");
 	}
@@ -158,29 +168,30 @@ namespace FluidLib {
 		
 	}
 
-	bool SelectTool::Paste()
+	bool SelectTool::Paste(TextureData data)
 	{
-		if (_actions.find("Paste") != _actions.end()) {
-			ActionBase* paste = _actions.at("Paste");
-			if (_softpaste)
-				paste->SetOperation(FluidLib::ACTION_OPERATION::MUL);
-			else
-				paste->SetOperation(FluidLib::ACTION_OPERATION::ADD);
-				
-			paste->Start();
-			size_t width = Clipboard::GetDataStruct()->width;
-			size_t height = Clipboard::GetDataStruct()->height;
-			for (int i = 0; i < width; ++i) {
-				for (int j = 0; j < height; ++j) {
-					paste->Execute(IPoint(i, j));
-				}
-			}
-			paste->Stop();
-			_executed = true;
-			return true;
-		}
-		else
-			return false;
+		Rectangle* rect = static_cast<FluidLib::Rectangle*>(GetSurface());
+		FluidLib::Texture* texture = new FluidLib::Texture(data);
+		rect->SetTexture(texture);
+		rect->SetRenderTexture(true);
+		rect->SetStyle(STYLE::FILLED);
+		rect->SetWidth(data.width);
+		rect->SetHeight(data.height);
+		SetMovementMode(MOVEMENT_MODE::PASTE);
+		return true;
+	}
+
+	bool SelectTool::HardPaste(TextureData data)
+	{
+		Rectangle* rect = static_cast<FluidLib::Rectangle*>(GetSurface());
+		FluidLib::Texture* texture = new FluidLib::Texture(data);
+		rect->SetTexture(texture);
+		rect->SetRenderTexture(true);
+		rect->SetStyle(STYLE::FILLED);
+		rect->SetWidth(data.width);
+		rect->SetHeight(data.height);
+		SetMovementMode(MOVEMENT_MODE::HARDPASTE);
+		return true;
 	}
 
 	bool SelectTool::Cut()
@@ -201,9 +212,60 @@ namespace FluidLib {
 			return false;
 	}
 
+	bool SelectTool::ExecutePaste()
+	{
+		if (_actions.find("Paste") != _actions.end()) {
+			ActionBase* paste = _actions.at("Paste");
+
+			paste->Start();
+			size_t width = Clipboard::GetDataStruct()->width;
+			size_t height = Clipboard::GetDataStruct()->height;
+			for (int i = 0; i < width; ++i) {
+				for (int j = 0; j < height; ++j) {
+					paste->Execute(IPoint(i, j));
+				}
+			}
+			paste->Stop();
+			_executed = true;
+			return true;
+		}
+		else
+			return false;
+	}
+
+	bool SelectTool::ExecuteHardPaste()
+	{
+		if (_actions.find("HardPaste") != _actions.end()) {
+			ActionBase* paste = _actions.at("HardPaste");
+
+			paste->Start();
+			size_t width = Clipboard::GetDataStruct()->width;
+			size_t height = Clipboard::GetDataStruct()->height;
+			for (int i = 0; i < width; ++i) {
+				for (int j = 0; j < height; ++j) {
+					paste->Execute(IPoint(i, j));
+				}
+			}
+			paste->Stop();
+			_executed = true;
+			return true;
+		}
+		else
+			return false;
+	}
+
 	void SelectTool::SwitchMode()
 	{
 		if (_move == MOVEMENT_MODE::PASTE) {
+			_move = MOVEMENT_MODE::BEGIN;
+			_rect->SetWidth(0);
+			_rect->SetHeight(0);
+			_rect->SetTexture(nullptr);
+			_rect->SetRenderTexture(false);
+			_rect->SetStyle(FluidLib::STYLE::BORDER);
+			return;
+		}
+		if (_move == MOVEMENT_MODE::HARDPASTE) {
 			_move = MOVEMENT_MODE::BEGIN;
 			_rect->SetWidth(0);
 			_rect->SetHeight(0);

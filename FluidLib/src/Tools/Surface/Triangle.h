@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Parameters.h"
 #include "Tools/Surface.h"
 #include "GL/glew.h"
 #include "Util/ControlPoint.h"
@@ -17,6 +18,7 @@ namespace FluidLib {
 		//Loop through surface points
 		std::vector<IPoint>& GetSurfacePoints() override;
 		inline void SetStyle(STYLE style) { _style = style; }
+		inline void SetCentered(bool cent) { _centered = cent; }
 
 		float GetWidth() {return _width;}
 		float GetHeight() {return _height;}
@@ -32,6 +34,9 @@ namespace FluidLib {
 		virtual bool OnEditRelease(float x, float y) override;
 
 		void SetProjection(glm::mat4 proj) override;
+
+		TriangleSurfParameters GetParam();
+		void LoadParam(Parameters* p) override;
 	private:
 		float _xpos = 0;
 		float _ypos = 0;

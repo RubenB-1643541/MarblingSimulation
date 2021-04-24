@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Parameters.h"
 #include "../Movement.h"
 #include "Util/Point.h"
 #include "GL/glew.h"
@@ -37,6 +38,9 @@ namespace FluidLib {
 		virtual FPoint Get(float x, float y) override;
 		virtual float GetNormalRotation(float x, float y);
 		void SetProjection(glm::mat4 proj) override;
+
+		CircleMoveParameters GetParam();
+		void LoadParam(Parameters* p) override;
 	private:
 		float _r = 50.0f;
 		float _rold = 50.0f;

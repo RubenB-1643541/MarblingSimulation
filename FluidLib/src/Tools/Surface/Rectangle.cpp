@@ -233,4 +233,19 @@ namespace FluidLib {
         _rotcon.SetProjection(proj);
     }
 
+    RectangleSurfParameters Rectangle::GetParam()
+    {
+        RectangleSurfParameters p;
+        p.Width = _width;
+        p.Height = _height;
+        return p;
+    }
+
+    void Rectangle::LoadParam(Parameters* p)
+    {
+        RectangleSurfParameters* rp = static_cast<RectangleSurfParameters*>(p);
+        _width = rp->Width;
+        _height = rp->Height;
+    }
+
 }

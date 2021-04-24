@@ -131,6 +131,7 @@ void MarblingSimulation::CreateBasicTool()
 
 	FluidLib::CopyAction<IInk>* copyfreq = new FluidLib::CopyAction<IInk>(static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")));
 	FluidLib::PasteAction<IInk>* pastefreq = new FluidLib::PasteAction<IInk>(static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::ADD);
+	FluidLib::PasteAction<IInk>* hardpastefreq = new FluidLib::PasteAction<IInk>(static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), FluidLib::ACTION_OPERATION::SET);
 	FluidLib::CutAction<IInk>* cutfreq = new FluidLib::CutAction<IInk>(static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), IInk{ 0,0 });
 	//FluidLib::CutAction<IInk>* cutfreq = new FluidLib::CutAction<IInk>(static_cast<FluidLib::Grid<IInk>*>(_grids.GetGrid("Ink")), IInk{ 0,0, {0,0},{0,0,0},0 });
 
@@ -180,6 +181,7 @@ void MarblingSimulation::CreateBasicTool()
 	sel->SetCopyAction(copyfreq);
 	sel->SetCutAction(cutfreq);
 	sel->SetPasteAction(pastefreq);
+	sel->SetHardPasteAction(hardpastefreq);
 	sel->AddAction("Freeze", freeze);
 	sel->AddAction("Unfreeze", unfreeze);
 	FluidLib::Rectangle* rect = static_cast<FluidLib::Rectangle*>(sel->GetSurface());
@@ -188,6 +190,7 @@ void MarblingSimulation::CreateBasicTool()
 	//rect->SetStyle(FluidLib::STYLE::FILLED);
 	copyfreq->SetDim(rect->GetWidthPtr(), rect->GetHeightPtr());
 	pastefreq->SetPos(rect->GetXPtr(), rect->GetYPtr());
+	hardpastefreq->SetPos(rect->GetXPtr(), rect->GetYPtr());
 	cutfreq->SetDim(rect->GetWidthPtr(), rect->GetHeightPtr());
 	_tools.AddTool("Select", sel);
 	//_tools.SetActive("Select");
@@ -204,8 +207,8 @@ void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
 {
 	comp->AddButton(Button("res/icons/Basic.png", "Basic", TOOL_PART::TOOL), true);
 	comp->AddButton(Button("res/icons/Select.png", "Select", TOOL_PART::TOOL));
-	comp->AddButton(Button("res/icons/Basic.png", "Dripping", TOOL_PART::TOOL));
-	comp->AddButton(Button("res/icons/Basic.png", "Fan", TOOL_PART::TOOL));
+	comp->AddButton(Button("res/icons/Dripping.png", "Dripping", TOOL_PART::TOOL));
+	comp->AddButton(Button("res/icons/Feather.png", "Fan", TOOL_PART::TOOL));
 
 	comp->AddButton(Button("res/icons/Mouse.png", "Mouse", TOOL_PART::MOVEMENT), true);
 	comp->AddButton(Button("res/icons/Line.png", "Line", TOOL_PART::MOVEMENT));
@@ -228,14 +231,15 @@ void MarblingSimulation::InitBasicToolComponent(ToolSelectComponent* comp)
 	comp->AddButton(Button("res/icons/Circle.png", "Circle", TOOL_PART::SURFACE), true);
 	comp->AddButton(Button("res/icons/Point.png", "Point", TOOL_PART::SURFACE));
 	comp->AddButton(Button("res/icons/Polygon.png", "Polygon", TOOL_PART::SURFACE));
-	comp->AddButton(Button("res/icons/Point.png", "Fan", TOOL_PART::SURFACE));
+	comp->AddButton(Button("res/icons/Feather.png", "Fan", TOOL_PART::SURFACE));
 
 	//comp->AddButton(Button("res/icons/Ink.png", "AddInk", TOOL_PART::SELECT_ACTION));
 	//comp->AddButton(Button("res/icons/RemoveInk.png", "RemoveInk", TOOL_PART::SELECT_ACTION));
 	comp->AddButton(Button("res/icons/Freeze.png", "Freeze", TOOL_PART::SELECT_ACTION));
 	comp->AddButton(Button("res/icons/UnFreeze.png", "Unfreeze", TOOL_PART::SELECT_ACTION));
-	comp->AddButton(Button("res/icons/Freeze.png", "Copy", TOOL_PART::SELECT_ACTION));
-	comp->AddButton(Button("res/icons/UnFreeze.png", "Paste", TOOL_PART::SELECT_ACTION));
-	comp->AddButton(Button("res/icons/UnFreeze.png", "Cut", TOOL_PART::SELECT_ACTION));
+	comp->AddButton(Button("res/icons/Copy.png", "Copy", TOOL_PART::SELECT_ACTION));
+	comp->AddButton(Button("res/icons/Paste.png", "Paste", TOOL_PART::SELECT_ACTION));
+	comp->AddButton(Button("res/icons/Paste.png", "HardPaste", TOOL_PART::SELECT_ACTION));
+	comp->AddButton(Button("res/icons/Cut.png", "Cut", TOOL_PART::SELECT_ACTION));
 	
 }

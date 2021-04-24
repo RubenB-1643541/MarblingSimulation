@@ -89,4 +89,17 @@ namespace FluidLib {
 		_pos.SetProjection(proj);
 	}
 
+	PointMoveParameters PointMovement::GetParam()
+	{
+		PointMoveParameters p;
+		p.p = _pos;
+		return p;
+	}
+
+	void PointMovement::LoadParam(Parameters* p)
+	{
+		PointMoveParameters* pp = static_cast<PointMoveParameters*>(p);
+		_pos = pp->p;
+	}
+
 }

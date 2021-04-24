@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Parameters.h"
 #include "Tools/Surface.h"
 #include "GL/glew.h"
 #include <Util/ControlPoint.h>
@@ -54,6 +55,8 @@ namespace FluidLib {
 		int PointCount() const { return _controlpoints.size(); }
 
 		void SetProjection(glm::mat4 proj) override;
+		PolygonSurfParameters GetParam();
+		void LoadParam(Parameters* p) override;
 	private:
 		void Refresh();
 		void ScanLineAlg();

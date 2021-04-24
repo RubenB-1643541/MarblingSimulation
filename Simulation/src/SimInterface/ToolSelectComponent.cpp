@@ -1,6 +1,7 @@
 #include "ToolSelectComponent.h"
 #include "../SimUtils/Icon.h"
 #include "Simulation.h"
+#include "Grids/ColorGrid.h"
 
 ToolSelectComponent::ToolSelectComponent(FluidLib::ToolManager* tools, const std::string& basic)
 {
@@ -71,6 +72,50 @@ void ToolSelectComponent::AddButton(Button button, bool selected)
 	}
 	else if (button.part == TOOL_PART::SELECT_ACTION) {
 		_selectactions.push_back(button);
+	}
+}
+
+void ToolSelectComponent::UpdateSelection(const std::string& surface, const std::string& movement, const std::string& action)
+{
+	for (int i = 0; i < _surfaces.size(); ++i) {
+		if (_surfaces[i].name == surface)
+			_selectedsurface = i;
+	}
+	for (int i = 0; i < _movements.size(); ++i) {
+		if (_movements[i].name == movement)
+			_selectedmovement = i;
+	}
+	FluidLib::BasicTool* basic = static_cast<FluidLib::BasicTool*>(_active);
+	for (int i = 0; i < _actions.size(); ++i) {
+		if (_actions[i].name == action) {
+			for (int k = 0; k < _selectedactions.size(); ++k) {
+				if (std::to_string(0) == _selectedactions[k]) {
+					_selectedactions[k] = "";
+				}
+			}
+			_selectedactions[i] = std::to_string(0);
+			basic->SetActiveAction(action, 0);
+		}
+	}
+
+}
+
+const std::string& ToolSelectComponent::GetSelectedSurface()
+{
+	return _surfaces[_selectedsurface].name;
+}
+
+const std::string& ToolSelectComponent::GetSelectedMovement()
+{
+	return _movements[_selectedmovement].name;
+}
+
+const std::string& ToolSelectComponent::GetSelectedAction()
+{
+	for (int i = 0; i < _selectedactions.size(); ++i) {
+		if (_selectedactions[i] == "0") {
+			return _actions[i].name;
+		}
 	}
 }
 
@@ -196,7 +241,26 @@ void ToolSelectComponent::DrawSelect()
 	for (const Button& button : _selectactions) {
 		if (ImGui::ImageButton((void*)button.id, _iconSize, ImVec2(0, 0), ImVec2(1, 1), 3, ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1))) {
 			FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(_active);
-			select->ExecuteAction(button.name);
+			if (button.name == "Copy")
+				select->Copy();
+			else if (button.name == "Cut")
+				select->Cut();
+			else if (button.name == "Paste") {
+				FluidLib::SelectTool* s = static_cast<FluidLib::SelectTool*>(_active);
+				FluidLib::ColorGrid<IInk>* col = static_cast<FluidLib::ColorGrid<IInk>*>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Ink"));
+				Image im = ImageFromClipboard(col->GetColors(), FluidLib::Simulation::Get()->GetSettings()->intesity);
+				FluidLib::TextureData texdat = { im.width, im.height, 4, im.data };
+				select->Paste(texdat);
+			}
+			else if (button.name == "HardPaste") {
+				FluidLib::SelectTool* s = static_cast<FluidLib::SelectTool*>(_active);
+				FluidLib::ColorGrid<IInk>* col = static_cast<FluidLib::ColorGrid<IInk>*>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Ink"));
+				Image im = ImageFromClipboard(col->GetColors(), FluidLib::Simulation::Get()->GetSettings()->intesity);
+				FluidLib::TextureData texdat = { im.width, im.height, 4, im.data };
+				s->HardPaste(texdat);
+			}
+			else
+				select->ExecuteAction(button.name);
 		}
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip(button.name.c_str());

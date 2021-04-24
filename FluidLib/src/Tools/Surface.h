@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Parameters.h"
 #include <vector>
 #include <string>
 #include "Util/Point.h"
@@ -45,6 +46,8 @@ namespace FluidLib {
 		void SetTexture(Texture* tex);
 		inline Texture* GetTexture() { return _texture; }
 		inline void SetRenderTexture(bool render) { _renderTex = render; }
+
+		inline virtual void LoadParam(Parameters* p) = 0;
 	protected:
 		FPoint _trans = { 0.0f,0.0f };
 		glm::mat4 _projection = glm::mat4(1.0);

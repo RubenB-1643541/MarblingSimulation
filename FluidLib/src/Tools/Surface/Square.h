@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Parameters.h"
 #include "Tools/Surface.h"
 #include "GL/glew.h"
 #include <Util/ControlPoint.h>
@@ -26,6 +27,9 @@ namespace FluidLib {
 		virtual bool OnEditRelease(float x, float y) override;
 
 		void SetProjection(glm::mat4 proj) override;
+
+		SquareSurfParameters GetParam();
+		void LoadParam(Parameters* p) override;
 	private:
 		float _xpos = 0;
 		float _ypos = 0;

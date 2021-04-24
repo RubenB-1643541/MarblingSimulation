@@ -3,6 +3,7 @@
 #include "../ToolBase.h"
 #include "../Surface/Circle.h"
 #include "../Surface/Rectangle.h"
+#include "../Surface/Triangle.h"
 #include <random>
 #include <cmath>
 #include <corecrt_math_defines.h>
@@ -25,7 +26,7 @@ namespace FluidLib {
 		bool OnEndUseEvent(ToolEndUseEvent& event) override;
 		bool OnMoveEvent(ToolMoveEvent& event) override;
 		bool OnScrollEvent(ToolScrollEvent& event) override;
-		inline virtual void SetProjection(glm::mat4 proj) override { _proj = proj; _surface->SetProjection(proj); _rect->SetProjection(proj); }
+		inline virtual void SetProjection(glm::mat4 proj) override { _proj = proj; _surface->SetProjection(proj); _rect->SetProjection(proj); _tri->SetProjection(proj); }
 
 		inline float GetWidth() { return _width; }
 		inline void SetWidth(float width) { _width = width; }
@@ -60,7 +61,7 @@ namespace FluidLib {
 		inline float* GetMaxAnglePtr() { return &_maxangle; }
 
 		inline bool GetArc() {return _arc;}
-		inline bool SetArc(bool arc) { _arc = arc; }
+		inline void SetArc(bool arc) { _arc = arc; }
 		inline bool* GetArcPtr() {return &_arc;}
 	private:
 		void SetCircleRandom();
@@ -80,6 +81,7 @@ namespace FluidLib {
 		float _maxangle = 0.5;
 		Circle* _circle = nullptr;
 		Rectangle* _rect = nullptr;
+		Triangle* _tri = nullptr;
 	};
 
 }

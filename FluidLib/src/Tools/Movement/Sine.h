@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Parameters.h"
 #include "../Movement.h"
 #include "Util/Point.h"
 #include "Util/ControlPoint.h"
@@ -38,6 +39,9 @@ namespace FluidLib {
 		float* GetPeriod() { return &_period; }
 
 		void SetProjection(glm::mat4 proj) override;
+
+		SineMoveParameters GetParam();
+		void LoadParam(Parameters* p) override;
 	private:
 		float _verttrans = 250.0f;
 		float _hortrans = 0.0f;

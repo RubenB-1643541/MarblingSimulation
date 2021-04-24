@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Parameters.h"
 #include "../Movement.h"
 #include "Util/Point.h"
 #include "GL/glew.h"
@@ -37,6 +38,8 @@ namespace FluidLib {
 
 		void SetProjection(glm::mat4 proj) override;
 		
+		LineMoveParameters GetParam();
+		void LoadParam(Parameters* p) override;
 	private:
 		ControlPoint _p1;
 		ControlPoint _p2;

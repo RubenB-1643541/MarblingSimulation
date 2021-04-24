@@ -24,14 +24,29 @@ void ToolParameters::OnDraw()
 		if (_active != nullptr) {
 			if (_active->GetName() == "Dripping") {
 				FluidLib::DrippingTool* drip = static_cast<FluidLib::DrippingTool*>(_active);
-				ImGui::SliderFloat("Width", drip->GetWidthPtr(), 10, 500);
-				ImGui::SliderFloat("Height", drip->GetHeightPtr(), 10, 500);
-				ImGui::SliderFloat2("Radius(min-max)", drip->GetMinRPtr(), 1, 100);
-				ImGui::Separator();
-				ImGui::Text("Arc");
-				ImGui::Checkbox("Arc", drip->GetArcPtr());
-				ImGui::SliderFloat2("Len(min-max)", drip->GetMinLenPtr(), 1, 500);
-				ImGui::SliderFloat2("Angle(min-max)", drip->GetMinAnglePtr(), -3.14, 3.14);
+				
+				bool arc = drip->GetArc();
+				if (ImGui::RadioButton("Surface", !arc)) {
+					arc = false;
+					drip->SetArc(false);
+				}
+				if (ImGui::RadioButton("Arc", arc)) {
+					arc = true;
+					drip->SetArc(true);
+				}
+
+				if (arc) {
+					ImGui::Text("Arc");
+					//ImGui::Checkbox("Arc", drip->GetArcPtr());
+					ImGui::SliderFloat2("Len(min-max)", drip->GetMinLenPtr(), 1, 500);
+					ImGui::SliderFloat2("Angle(min-max)", drip->GetMinAnglePtr(), -3.14, 3.14);
+				}
+				else {
+					ImGui::Text("Surface");
+					ImGui::SliderFloat("Width", drip->GetWidthPtr(), 10, 500);
+					ImGui::SliderFloat("Height", drip->GetHeightPtr(), 10, 500);
+					ImGui::SliderFloat2("Radius(min-max)", drip->GetMinRPtr(), 1, 100);
+				}
 
 				ActionParams();
 			}
@@ -113,6 +128,13 @@ void ToolParameters::SurfaceParams()
 				for (int i = 0; i < p->PointCount(); ++i) {
 					std::string name = s + std::to_string(i);
 					ImGui::SliderFloat2(name.c_str(), p->GetPoint(i).GetXPtr(), -FluidLib::Simulation::Get()->GetSizeX(), FluidLib::Simulation::Get()->GetSizeX());
+					ImGui::SameLine();
+					std::string text = "Remove ";
+					text.append(std::to_string(i));
+					if (ImGui::Button(text.c_str())) {
+						p->RemovePoint(i);
+					}
+					
 				}
 				if (ImGui::Button("Add Point")) {
 					p->AddPoint({ 0.0f,0.0f });
@@ -262,7 +284,7 @@ void ToolParameters::InkActionParams(FluidLib::InkAction<IInk>* inkaction)
 	}
 	if (ImGui::TreeNode("Color Palette")) {
 		//for (glm::vec3& col : inkaction->GetColors()) {
-			std::vector<glm::vec4> colors = inkaction->GetColors();
+		std::vector<glm::vec4> colors = inkaction->GetColors();
 		for(int i = 1; i < colors.size(); ++i) {
 			std::string name = colstr + std::to_string(i);
 			glm::vec3 col = colors[i];
@@ -293,11 +315,11 @@ void ToolParameters::InkActionParams(FluidLib::InkAction<IInk>* inkaction)
 
 void ToolParameters::SelectToolActions()
 {
-	FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(_active);
+	//FluidLib::SelectTool* select = static_cast<FluidLib::SelectTool*>(_active);
 
-	ImGui::Checkbox("Soft Paste", select->GetSoftPastePtr());
-	if (ImGui::IsItemHovered())
-		ImGui::SetTooltip("Softpaste wil prevent overwriting inkt with water ");
+	//ImGui::Checkbox("Soft Paste", select->GetSoftPastePtr());
+	//if (ImGui::IsItemHovered())
+	//	ImGui::SetTooltip("Softpaste wil prevent overwriting inkt with water ");
 	//if (ImGui::Button("Copy")) {
 	//	select->Copy();
 	//}

@@ -1,10 +1,12 @@
 #include "PresetComponent.h"
 #include "Simulation.h"
+#include <Tools/Surface/Circle.h>
 
-PresetComponent::PresetComponent(FluidLib::ToolManager* tools, const std::string& basic)
+PresetComponent::PresetComponent(FluidLib::ToolManager* tools, const std::string& basic, ToolSelectComponent* tool)
 {
 	_tools = tools;
 	_basicname = basic;
+	_toolsselect = tool;
 
 	_window_flags |= ImGuiWindowFlags_NoTitleBar;
 	_window_flags |= ImGuiWindowFlags_NoCollapse;
@@ -30,10 +32,21 @@ void PresetComponent::OnDraw()
 	if (_first)
 		ImGui::SetNextTreeNodeOpen(true);
 	if (_active != nullptr && _active->GetName() == "Basic") {
+		static bool first = true;
+		if (first) {
+			ImGui::SetNextTreeNodeOpen(true);
+			first = false;
+		}
 		if (ImGui::TreeNode("Presets")) {
 			if (ImGui::Button("Add Preset")) {
 				FluidLib::Simulation::Get()->GetTools()->SetEnabled(false);
 				_create = true;
+				if (_toolsselect != nullptr) {
+					//Returns std::string reference, so it should be fine
+					_selectedsurface = _toolsselect->GetSelectedSurface().c_str();
+					_selectedmovement = _toolsselect->GetSelectedMovement().c_str();
+					_selectedaction = _toolsselect->GetSelectedAction().c_str();
+				}
 			}
 			ImGui::BeginChild("PresetList", ImVec2(0, 300), true);
 			for (auto preset : _presets) {
@@ -41,6 +54,11 @@ void PresetComponent::OnDraw()
 					_basic->SetActiveSurface(preset.second.surface);
 					_basic->SetActiveMovement(preset.second.movement);
 					_basic->SetActiveAction(preset.second.action);
+					if (_toolsselect != nullptr) {
+						_toolsselect->UpdateSelection(preset.second.surface, preset.second.movement, preset.second.action);
+					}
+					_basic->GetSurface()->LoadParam(preset.second.surfparams);
+					_basic->GetMovement()->LoadParam(preset.second.moveparams);
 				}
 				if (ImGui::IsItemHovered()) {
 					std::string tip = preset.second.surface;
@@ -154,10 +172,12 @@ void PresetComponent::EndDraw()
 
 void PresetComponent::AddPreset(Preset& preset)
 {
+
 	auto result = _presets.insert(std::make_pair(preset.name, preset));
 	if (result.second) {
 		WriteToFile(preset);
 	}
+	Load();
 }
 
 void PresetComponent::RemovePreset(Preset& preset)
@@ -180,11 +200,77 @@ void PresetComponent::CreatePreset()
 
 void PresetComponent::Load()
 {
+	_presets.clear();
 	std::ifstream stream;
 	stream.open(presetsfile, std::ios::in);
 	while (!stream.eof()) {
 		Preset preset;
-		stream >> preset.name >> preset.surface >> preset.movement >> preset.action;
+		stream >> preset.name >> preset.surface;
+		if (preset.surface == "Circle") {
+			FluidLib::CircleSurfParameters* p = new FluidLib::CircleSurfParameters();
+			stream >> *p;
+			preset.surfparams = p;
+		}
+		else if (preset.surface == "FanSurface") {
+			FluidLib::FanSurfParameters * p = new FluidLib::FanSurfParameters();
+			stream >> *p;
+			preset.surfparams = p;
+		}
+		else if (preset.surface == "PointSurface") {
+			//stream << static_cast<FluidLib::PointSurface*>(_basic->GetSurface("PointSurface"))->GetParam() << " ";
+			preset.surfparams = nullptr;
+		}
+		else if (preset.surface == "Polygon") {
+			FluidLib::PolygonSurfParameters* p = new FluidLib::PolygonSurfParameters();
+			stream >> *p;
+			preset.surfparams = p;
+		}
+		else if (preset.surface == "Rectangle") {
+			FluidLib::RectangleSurfParameters * p = new FluidLib::RectangleSurfParameters();
+			stream >> *p;
+			preset.surfparams = p;
+		}
+		else if (preset.surface == "Square") {
+			FluidLib::SquareSurfParameters * p = new FluidLib::SquareSurfParameters();
+			stream >> *p;
+			preset.surfparams = p;
+		}
+		else if (preset.surface == "Triangle") {
+			FluidLib::TriangleSurfParameters * p = new FluidLib::TriangleSurfParameters();
+			stream >> *p;
+			preset.surfparams = p;
+		}
+		stream >> preset.movement;
+		if (preset.movement == "BezierCurve") {
+			FluidLib::BezierCurveMoveParameters * p = new FluidLib::BezierCurveMoveParameters();
+			stream >> *p;
+			preset.moveparams = p;
+		}
+		else if (preset.movement == "Circle") {
+			FluidLib::CircleMoveParameters * p = new FluidLib::CircleMoveParameters();
+			stream >> *p;
+			preset.moveparams = p;
+		}
+		else if (preset.movement == "Line") {
+			FluidLib::LineMoveParameters * p = new FluidLib::LineMoveParameters();
+			stream >> *p;
+			preset.moveparams = p;
+		}
+		else if (preset.movement == "Mouse") {
+			//stream << static_cast<FluidLib::MouseMovement*>(_basic->GetMovement("Mouse"))->GetParam() << " ";
+			preset.moveparams = nullptr;
+		}
+		else if (preset.movement == "Point") {
+			FluidLib::PointMoveParameters * p = new FluidLib::PointMoveParameters();
+			stream >> *p;
+			preset.moveparams = p;
+		}
+		else if (preset.movement == "Sine") {
+			FluidLib::SineMoveParameters * p = new FluidLib::SineMoveParameters();
+			stream >> *p;
+			preset.moveparams = p;
+		}
+		stream >> preset.action;
 		if (preset.name != "") {
 			_presets.insert(std::make_pair(preset.name, preset));
 		}
@@ -196,7 +282,50 @@ void PresetComponent::WriteToFile(Preset& preset)
 { 
 	std::ofstream stream;
 	stream.open(presetsfile, std::ios::out | std::ios::app);
-	stream << preset.name << " " << preset.surface << " " << preset.movement << " " << preset.action << std::endl;
+	
+	stream << preset.name << " ";
+	stream << preset.surface << " ";
+	if (preset.surface == "Circle") {
+		stream << static_cast<FluidLib::Circle*>(_basic->GetSurface("Circle"))->GetParam() << " ";
+	}
+	else if (preset.surface == "FanSurface") {
+		stream << static_cast<FluidLib::FanSurface*>(_basic->GetSurface("FanSurface"))->GetParam() << " ";
+	}
+	else if (preset.surface == "PointSurface") {
+		//stream << static_cast<FluidLib::PointSurface*>(_basic->GetSurface("PointSurface"))->GetParam() << " ";
+	}
+	else if (preset.surface == "Polygon") {
+		stream << static_cast<FluidLib::Polygon*>(_basic->GetSurface("Polygon"))->GetParam() << " ";
+	}
+	else if (preset.surface == "Rectangle") {
+		stream << static_cast<FluidLib::Rectangle*>(_basic->GetSurface("Rectangle"))->GetParam() << " ";
+	}
+	else if (preset.surface == "Square") {
+		stream << static_cast<FluidLib::Square*>(_basic->GetSurface("Square"))->GetParam() << " ";
+	}
+	else if (preset.surface == "Triangle") {
+		stream << static_cast<FluidLib::Triangle*>(_basic->GetSurface("Triangle"))->GetParam() << " ";
+	}
+	stream << preset.movement << " ";
+	if (preset.movement == "BezierCurve") {
+		stream << static_cast<FluidLib::BezierCurve*>(_basic->GetMovement("BezierCurve"))->GetParam() << " ";
+	}
+	else if (preset.movement == "Circle") {
+		stream << static_cast<FluidLib::CircleMovement*>(_basic->GetMovement("Circle"))->GetParam() << " ";
+	}
+	else if (preset.movement == "Line") {
+		stream << static_cast<FluidLib::Line*>(_basic->GetMovement("Line"))->GetParam() << " ";
+	}
+	else if (preset.movement == "Mouse") {
+		//stream << static_cast<FluidLib::MouseMovement*>(_basic->GetMovement("Mouse"))->GetParam() << " ";
+	}
+	else if (preset.movement == "Point") {
+		stream << static_cast<FluidLib::PointMovement*>(_basic->GetMovement("Point"))->GetParam() << " ";
+	}
+	else if (preset.movement == "Sine") {
+		stream << static_cast<FluidLib::Sine*>(_basic->GetMovement("Sine"))->GetParam() << " ";
+	}
+	stream << preset.action << std::endl;
 	stream.close();
 }
 
@@ -214,7 +343,7 @@ void PresetComponent::RemoveFromFile(Preset& preset)
 	while (std::getline(in, line)) {
 		std::stringstream ss(line);
 		ss >> name >> surface >> movement >> action;
-		if (name == preset.name && surface == preset.surface && movement == preset.movement && action == preset.action) {}
+		if (name == preset.name) {}//&& surface == preset.surface && movement == preset.movement && action == preset.action) {}
 		else {
 			out << line << std::endl;
 		}

@@ -184,4 +184,17 @@ namespace FluidLib {
         _rotcon.SetProjection(proj);
     }
 
+    SquareSurfParameters Square::GetParam()
+    {
+        SquareSurfParameters p;
+        p.Len = _len;
+        return p;
+    }
+
+    void Square::LoadParam(Parameters* p)
+    {
+        SquareSurfParameters* sp = static_cast<SquareSurfParameters*>(p);
+        _len = sp->Len;
+    }
+
 }

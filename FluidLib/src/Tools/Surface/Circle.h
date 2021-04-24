@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Parameters.h"
 #include "Tools/Surface.h"
 #include "GL/glew.h"
 #include <cmath>
@@ -28,6 +29,9 @@ namespace FluidLib {
 		float* GetR() { return &_r; }
 		void SetR(float r) { _r = r; }
 		void SetProjection(glm::mat4 proj) override;
+
+		CircleSurfParameters GetParam();
+		void LoadParam(Parameters* p) override;
 	private:
 		float _r = 50.0f;
 		float _rold = 50.0f;

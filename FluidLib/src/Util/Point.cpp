@@ -129,6 +129,11 @@ namespace FluidLib {
 		return *this;
 	}
 
+	float IPoint::Distance(const IPoint& p2) const
+	{
+		return sqrt(pow((p2.GetX() - _x), 2) + pow((p2.GetY() - _y), 2));
+	}
+
 	FPoint::FPoint() : _x(0.0f), _y(0.0f)
 	{
 	}
@@ -230,6 +235,11 @@ namespace FluidLib {
 		_x = xnew;
 		_y = ynew;
 		return *this;
+	}
+
+	float FPoint::Distance(const FPoint& p2) const
+	{
+		return sqrt(pow((p2.GetX() - _x), 2) + pow((p2.GetY() - _y), 2));
 	}
 
 	IPoint operator*(float f, const IPoint& p)

@@ -110,4 +110,19 @@ namespace FluidLib {
         _p2.SetProjection(proj);
     }
 
+    LineMoveParameters Line::GetParam()
+    {
+        LineMoveParameters p;
+        p.p1 = _p1;
+        p.p2 = _p2;
+        return p;
+    }
+
+    void Line::LoadParam(Parameters* p)
+    {
+        LineMoveParameters* lp = static_cast<LineMoveParameters*>(p);
+        _p1 = lp->p1;
+        _p2 = lp->p2;
+    }
+
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <fstream>
 
 namespace FluidLib {
 
@@ -47,7 +48,16 @@ namespace FluidLib {
 		inline int* GetYPtr() { return &_y; }
 
 		IPoint& Rotate(float r);
-	
+		float Distance(const IPoint& p2) const;
+
+		friend std::ofstream& operator<<(std::ofstream& o, const IPoint& p) {
+			o << p._x << " " << p._y;
+			return o;
+		}
+		friend std::ifstream& operator>>(std::ifstream& i, IPoint& p) {
+			i >> p._x >> p._y;
+			return i;
+		}
 	private:
 		int _x, _y;
 		friend FPoint;
@@ -92,6 +102,16 @@ namespace FluidLib {
 		inline float* GetYPtr() { return &_y; }
 		
 		FPoint& Rotate(float r);
+		float Distance(const FPoint& p2) const;
+
+		friend std::ofstream& operator<<(std::ofstream& o, const FPoint& p) {
+			o << p._x << " " << p._y;
+			return o;
+		}
+		friend std::ifstream& operator>>(std::ifstream& i, FPoint& p) {
+			i >> p._x >> p._y;
+			return i;
+		}
 	private:
 		float _x, _y;
 		friend IPoint;

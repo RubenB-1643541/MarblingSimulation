@@ -9,18 +9,30 @@ namespace FluidLib {
 		_circle = new Circle();
 		SetSurface(_circle);
 		_rect = new Rectangle();
+		_tri = new Triangle();
+		_tri->SetCentered(false);
+		
 	}
 
 	void DrippingTool::Draw()
 	{
 		if (_surfaceEdit) {
-			_rect->Draw();
-			_rect->EditDraw();
+			if (_arc) {
+				_tri->Draw();
+				_tri->EditDraw();
+			}
+			else {
+				_rect->Draw();
+				_rect->EditDraw();
+			}
 		}
 		else {
 			_rect->SetWidth(_width);
 			_rect->SetHeight(_height);
 			_rect->OnMove(_xpos, _ypos);
+			_tri->OnMove(_xpos, _ypos);
+			_tri->SetHeight(_maxlen);
+			_tri->SetWidth(sin(_maxangle) * _maxlen);
 		}
 	}
 
@@ -76,6 +88,8 @@ namespace FluidLib {
 			_rect->OnEditMove(_xpos, _ypos);
 			_width = _rect->GetWidth();
 			_height = _rect->GetHeight();
+
+			
 		}
 		return false;
 	}

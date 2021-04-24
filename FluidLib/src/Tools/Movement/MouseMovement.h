@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Parameters.h"
 #include "../Movement.h"
 #include <cmath>
 #include "corecrt_math_defines.h"
@@ -39,6 +40,13 @@ namespace FluidLib {
 			_prevx = x;
 			_prevy = y;
 			return _rotation;
+		}
+
+		inline MouseMoveParameters GetParam() {
+			return MouseMoveParameters();
+		}
+		void LoadParam(Parameters* p) override {
+
 		}
 	private:
 		float _rotation = 0;

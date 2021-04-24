@@ -65,4 +65,13 @@ namespace FluidLib {
 		return _points;
 	}
 
+	PointSurfParameters PointSurface::GetParam()
+	{
+		return PointSurfParameters();
+	}
+
+	void PointSurface::LoadParam(Parameters* p)
+	{
+	}
+
 }

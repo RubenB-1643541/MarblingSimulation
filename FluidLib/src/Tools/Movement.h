@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Parameters.h"
 #include <utility>
 #include <string>
 #include "glm/gtx/transform.hpp"
@@ -29,6 +30,8 @@ namespace FluidLib {
 		inline virtual bool OnEditMove(float x, float y) { return false; }
 		inline virtual void SetProjection(glm::mat4 proj) { _projection = proj; }
 		std::string& GetType() { return _type; }
+
+		virtual void LoadParam(Parameters* p) = 0;
 	protected:
 		glm::mat4 _projection = glm::mat4(1.0);
 		std::string _type = "None";

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Parameters.h"
 #include "../Movement.h"
 #include "Util/ControlPoint.h"
 #include "GL/glew.h"
@@ -30,9 +31,13 @@ namespace FluidLib {
 
 		inline ControlPoint* GetPoints() { return _controlpoints; }
 		void SetProjection(glm::mat4 proj) override;
+		void CalculatePoints();
+
+		BezierCurveMoveParameters GetParam();
+		void LoadParam(Parameters* p) override;
 	private:
 		ControlPoint _controlpoints[4];
-
+		std::vector<FPoint> _points;
 		float _precision = 0.01f;
 		static GLuint _buffer;
 		static GLuint _shader;

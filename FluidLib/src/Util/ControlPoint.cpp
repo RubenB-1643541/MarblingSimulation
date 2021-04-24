@@ -72,6 +72,16 @@ namespace FluidLib {
 		_trans = p;
 	}
 
+	float ControlPoint::GetTransX()
+	{
+		return GetX() + _trans.GetX();
+	}
+
+	float ControlPoint::GetTransY()
+	{
+		return GetY() + _trans.GetY();
+	}
+
 	void ControlPoint::Init()
 	{
 		glEnable(GL_PROGRAM_POINT_SIZE);

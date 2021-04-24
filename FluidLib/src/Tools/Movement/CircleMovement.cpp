@@ -119,4 +119,21 @@ namespace FluidLib {
 		_size.SetProjection(proj);
 	}
 
+	CircleMoveParameters CircleMovement::GetParam()
+	{
+		CircleMoveParameters p;
+		p.R = _r;
+		p.X = _x;
+		p.Y = _y;
+		return p;
+	}
+
+	void CircleMovement::LoadParam(Parameters* p)
+	{
+		CircleMoveParameters* cp = static_cast<CircleMoveParameters*>(p);
+		_x = cp->X;
+		_y = cp->Y;
+		_r = cp->R;
+	}
+
 }

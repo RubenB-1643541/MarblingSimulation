@@ -27,6 +27,10 @@ public:
 	void OnDraw() override;
 	void EndDraw() override;
 	void AddButton(Button button, bool selected = false);
+	void UpdateSelection(const std::string& surface, const std::string& movement, const std::string& action);
+	const std::string& GetSelectedSurface();
+	const std::string& GetSelectedMovement();
+	const std::string& GetSelectedAction();
 private:
 	void DrawBasic();
 	void DrawSelect();

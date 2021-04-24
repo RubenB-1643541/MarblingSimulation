@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Parameters.h"
 #include "../Movement.h"
 #include "Util/ControlPoint.h"
 #include <vector>
@@ -24,6 +25,9 @@ namespace FluidLib {
 
 		virtual FPoint Get(float x, float y) override;
 		void SetProjection(glm::mat4 proj) override;
+
+		PointMoveParameters GetParam();
+		void LoadParam(Parameters* p) override;
 	private:
 		ControlPoint _pos;
 

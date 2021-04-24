@@ -51,7 +51,10 @@ void main() {
 	force = vec2(velocities[gl_VertexID]);
 	intensityout = intensity;
 	freezeintensityout = freezeintensity;
-	inkfreq = inkvals[gl_VertexID].freq;
+	if(inkvals[gl_VertexID].freq > 1000)
+		inkfreq = 1000;
+	else
+		inkfreq = inkvals[gl_VertexID].freq;
 	//inkfreq = inkvals[gl_VertexID].freq;
 	//inkcolor = vec3(1,0,0);
 	//inkcolor = colorvals[0];

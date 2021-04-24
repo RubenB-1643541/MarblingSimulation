@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Parameters.h"
 #include "../Surface.h"
 #include "GL/glew.h"
 
@@ -16,6 +17,9 @@ namespace FluidLib {
 		float GetSurfaceArea() const override;
 		//Loop through surface points
 		std::vector<IPoint>& GetSurfacePoints() override;
+
+		PointSurfParameters GetParam();
+		void LoadParam(Parameters* p) override;
 	private:
 		float _xpos = 0.0f;
 		float _ypos = 0.0f;

@@ -33,7 +33,9 @@ namespace FluidLib {
 		inline const std::vector<std::string>& GetActiveActions() { return _activeactions; }
 
 		inline Surface* GetSurface(std::string surface) {return _surfaces[surface];}
+		inline Surface* GetSurface() {return ToolBase::GetSurface();}
 		inline Movement* GetMovement(std::string movement) {return _movements[movement];}
+		inline Movement* GetMovement() {return ToolBase::GetMovement();}
 		inline ActionBase* GetAction(std::string action) {return _actions[action];}
 		inline MultiSurface* GetMultiSurface(std::string multisurface) {return _multisurfaces[multisurface];}
 

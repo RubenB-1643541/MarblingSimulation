@@ -148,4 +148,17 @@ namespace FluidLib {
         _size.SetProjection(proj);
     }
 
+    CircleSurfParameters Circle::GetParam()
+    {
+        CircleSurfParameters p;
+        p.R = _r;
+        return p ;
+    }
+
+    void Circle::LoadParam(Parameters* p)
+    {
+        CircleSurfParameters* cp = static_cast<CircleSurfParameters*>(p);
+        _r = cp->R;
+    }
+
 }

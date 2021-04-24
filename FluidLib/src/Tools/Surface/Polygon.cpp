@@ -152,8 +152,31 @@ namespace FluidLib {
 			_controlpoints[i].SetProjection(proj);
 	}
 
+	PolygonSurfParameters Polygon::GetParam()
+	{
+		PolygonSurfParameters p;
+		p.N = _controlpoints.size();
+		for (int i = 0; i < p.N; ++i) {
+			p.Points.push_back(_controlpoints[i]);
+		}
+		return p;
+	}
+
+	void Polygon::LoadParam(Parameters* p)
+	{
+		PolygonSurfParameters* pp = static_cast<PolygonSurfParameters*>(p);
+		_controlpoints.clear();
+		for (int i = 0; i < pp->N; ++i) {
+			_controlpoints.push_back(pp->Points[i]);
+		}
+		Refresh();
+		//TODO LOAD PARAM
+	}
+
 	void Polygon::Refresh()
 	{
+		if (_controlpoints.size() == 0)
+			return;
 		glBindBuffer(GL_ARRAY_BUFFER, _buffer);
 		//std::cout << sizeof(ControlPoint) << std::endl;
 		glBufferData(GL_ARRAY_BUFFER, sizeof(ControlPoint) * _controlpoints.size(), &_controlpoints[0], GL_DYNAMIC_DRAW);

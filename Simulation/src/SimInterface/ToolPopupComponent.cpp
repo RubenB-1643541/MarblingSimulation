@@ -1,4 +1,7 @@
 #include "ToolPopupComponent.h"
+#include "Grids/ColorGrid.h"
+#include "../SimulationCore/GridStructures.h"
+#include "../SimUtils/Icon.h"
 
 ToolPopupComponent::ToolPopupComponent(FluidLib::ToolManager* tools) : _tools(tools)
 {
@@ -48,15 +51,25 @@ void ToolPopupComponent::EndDraw()
 
 void ToolPopupComponent::DrawSelectPopup()
 {
-    if (ImGui::Selectable("Copy  (ctrl+c)", false)) {
+    if (ImGui::Selectable("Copy       (ctrl+c)", false)) {
         FluidLib::SelectTool* s = static_cast<FluidLib::SelectTool*>(_active);
         s->Copy();
     }
-    if (ImGui::Selectable("Paste (ctrl+v)", false)) {
+    if (ImGui::Selectable("Paste      (ctrl+v)", false)) {
         FluidLib::SelectTool* s = static_cast<FluidLib::SelectTool*>(_active);
-        s->Paste();
+        FluidLib::ColorGrid<IInk>* col = static_cast<FluidLib::ColorGrid<IInk>*>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Ink"));
+        Image im = ImageFromClipboard(col->GetColors(), FluidLib::Simulation::Get()->GetSettings()->intesity);
+        FluidLib::TextureData texdat = { im.width, im.height, 4, im.data };
+        s->Paste(texdat);
     }
-    if (ImGui::Selectable("Cut   (ctrl+x)", false)) {
+    if (ImGui::Selectable("Hard Paste (ctrl+shift+v)", false)) {
+        FluidLib::SelectTool* s = static_cast<FluidLib::SelectTool*>(_active);
+        FluidLib::ColorGrid<IInk>* col = static_cast<FluidLib::ColorGrid<IInk>*>(FluidLib::Simulation::Get()->GetGrids()->GetGrid("Ink"));
+        Image im = ImageFromClipboard(col->GetColors(), FluidLib::Simulation::Get()->GetSettings()->intesity);
+        FluidLib::TextureData texdat = { im.width, im.height, 4, im.data };
+        s->HardPaste(texdat);
+    }
+    if (ImGui::Selectable("Cut        (ctrl+x)", false)) {
         FluidLib::SelectTool* s = static_cast<FluidLib::SelectTool*>(_active);
         s->Cut();
     }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Parameters.h"
 #include "../Surface.h"
 #include "GL/glew.h"
 #include "Util/ControlPoint.h"
@@ -36,6 +37,9 @@ namespace FluidLib {
 
 		inline virtual void SetRotation(float rot) { _rotation = rot; }
 		void SetProjection(glm::mat4 proj) override;
+
+		FanSurfParameters GetParam();
+		void LoadParam(Parameters* p) override;
 	private:
 		float _xpos = 0;
 		float _ypos = 0;

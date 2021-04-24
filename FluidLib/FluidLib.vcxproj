@@ -129,6 +129,7 @@
     <ClInclude Include="src\Tools\Movement\Movements.h" />
     <ClInclude Include="src\Tools\Movement\PointMovement.h" />
     <ClInclude Include="src\Tools\Movement\Sine.h" />
+    <ClInclude Include="src\Tools\Parameters.h" />
     <ClInclude Include="src\Tools\Surface.h" />
     <ClInclude Include="src\Tools\Surface\Circle.h" />
     <ClInclude Include="src\Tools\Surface\FanSurface.h" />

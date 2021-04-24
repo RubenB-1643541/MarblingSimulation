@@ -103,8 +103,24 @@ namespace FluidLib {
 
     FPoint BezierCurve::Get(float x, float y)//TODO FIX y from x
     {
-        float t = x / FluidLib::Simulation::Get()->GetSizeX();
-        return pow((1 - t), 3) * _controlpoints[0] + 3 * pow((1 - t), 2) * t * _controlpoints[1] + 3 * (1 - t) * pow(t, 2) * _controlpoints[2] + pow(t, 3) * _controlpoints[3];
+        //float t = x / FluidLib::Simulation::Get()->GetSizeX();
+        //return pow((1 - t), 3) * _controlpoints[0] + 3 * pow((1 - t), 2) * t * _controlpoints[1] + 3 * (1 - t) * pow(t, 2) * _controlpoints[2] + pow(t, 3) * _controlpoints[3];
+        CalculatePoints();
+        FPoint pos(x, y);
+        float mindis = -1;
+        FPoint minpos;
+        for (FPoint p : _points) {
+            float dis = pos.Distance(p);
+            if (mindis == -1) {
+                mindis = dis;
+                minpos = p;
+            }
+            else if (dis < mindis) {
+                mindis = dis;
+                minpos = p;
+            }
+        }
+        return minpos;
     }
 
     float BezierCurve::GetNormalRotation(float x, float y)
@@ -121,6 +137,34 @@ namespace FluidLib {
         _projection = proj; 
         for (int i = 0; i < 4; ++i)
             _controlpoints[i].SetProjection(proj);
+    }
+
+    void BezierCurve::CalculatePoints()
+    {
+        _points.clear();
+        for (float t = 0.0f; t < 1.0f; t += 0.005) {
+            FPoint res = pow((1 - t), 3) * _controlpoints[0] + 3 * pow((1 - t), 2) * t * _controlpoints[1] + 3 * (1 - t) * pow(t, 2) * _controlpoints[2] + pow(t, 3) * _controlpoints[3];
+            _points.push_back(res);
+        }
+    }
+
+    BezierCurveMoveParameters BezierCurve::GetParam()
+    {
+        BezierCurveMoveParameters p;
+        p.p1 = _controlpoints[0];
+        p.p2 = _controlpoints[1];
+        p.p3 = _controlpoints[2];
+        p.p4 = _controlpoints[3];
+        return p;
+    }
+
+    void BezierCurve::LoadParam(Parameters* p)
+    {
+        BezierCurveMoveParameters* bp = static_cast<BezierCurveMoveParameters*>(p);
+        _controlpoints[0] = bp->p1;
+        _controlpoints[1] = bp->p2;
+        _controlpoints[2] = bp->p3;
+        _controlpoints[3] = bp->p4;
     }
 
 }
