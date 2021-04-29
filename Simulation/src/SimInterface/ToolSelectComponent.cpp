@@ -142,7 +142,7 @@ void ToolSelectComponent::DrawSelection()
 void ToolSelectComponent::DrawBasic()
 {
 	//Surfaces
-	ImGui::BeginChild("ToolSelectChild", ImVec2(250, 250));
+	ImGui::BeginChild("ToolSelectChild", ImVec2(250, 300));
 	ImGui::Columns(3);
 	ImGui::Text("Surfaces");
 	int i = 0;

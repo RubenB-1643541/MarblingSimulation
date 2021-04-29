@@ -3,6 +3,7 @@
 #include "Tools/Surface/Surfaces.h"
 #include "Tools/Action/Actions.h"
 #include "../SimUtils/SaveStateHandler.h"
+#include "../SimTools/FanTool.h"
 
 MarblingSimulation::MarblingSimulation()
 {
@@ -198,8 +199,8 @@ void MarblingSimulation::CreateBasicTool()
 	dripping->SetAction(addink);
 	_tools.AddTool("Dripping", dripping);
 
-	FluidLib::FanTool* fan = new FluidLib::FanTool();
-	fan->SetAction(addvel);
+	FanTool* fan = new FanTool(static_cast<FluidLib::Grid<IVelocity>*>(_grids.GetGrid("Vel")));
+	//fan->SetAction(addvel);
 	_tools.AddTool("Fan", fan);
 }
 

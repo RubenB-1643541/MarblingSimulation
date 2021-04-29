@@ -119,7 +119,6 @@
     <ClInclude Include="src\Tools\Action\PasteAction.h" />
     <ClInclude Include="src\Tools\Basic Tools\BasicTool.h" />
     <ClInclude Include="src\Tools\Basic Tools\DrippingTool.h" />
-    <ClInclude Include="src\Tools\Basic Tools\FanTool.h" />
     <ClInclude Include="src\Tools\Basic Tools\SelectTool.h" />
     <ClInclude Include="src\Tools\Movement.h" />
     <ClInclude Include="src\Tools\Movement\BezierCurve.h" />
@@ -165,7 +164,6 @@
     <ClCompile Include="src\Simulation.cpp" />
     <ClCompile Include="src\Tools\Basic Tools\BasicTool.cpp" />
     <ClCompile Include="src\Tools\Basic Tools\DrippingTool.cpp" />
-    <ClCompile Include="src\Tools\Basic Tools\FanTool.cpp" />
     <ClCompile Include="src\Tools\Basic Tools\SelectTool.cpp" />
     <ClCompile Include="src\Tools\Movement\BezierCurve.cpp" />
     <ClCompile Include="src\Tools\Movement\CircleMovement.cpp" />

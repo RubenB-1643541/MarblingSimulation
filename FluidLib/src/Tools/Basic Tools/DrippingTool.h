@@ -7,6 +7,7 @@
 #include <random>
 #include <cmath>
 #include <corecrt_math_defines.h>
+#include "Tools/Surface/FanSurface.h"
 #define _USE_MATH_DEFINES
 
 namespace FluidLib {
@@ -26,7 +27,7 @@ namespace FluidLib {
 		bool OnEndUseEvent(ToolEndUseEvent& event) override;
 		bool OnMoveEvent(ToolMoveEvent& event) override;
 		bool OnScrollEvent(ToolScrollEvent& event) override;
-		inline virtual void SetProjection(glm::mat4 proj) override { _proj = proj; _surface->SetProjection(proj); _rect->SetProjection(proj); _tri->SetProjection(proj); }
+		inline virtual void SetProjection(glm::mat4 proj) override { _proj = proj; _surface->SetProjection(proj); _rect->SetProjection(proj); _tri->SetProjection(proj); _fan->SetProjection(proj); }
 
 		inline float GetWidth() { return _width; }
 		inline void SetWidth(float width) { _width = width; }
@@ -82,6 +83,8 @@ namespace FluidLib {
 		Circle* _circle = nullptr;
 		Rectangle* _rect = nullptr;
 		Triangle* _tri = nullptr;
+		FanSurface* _fan = nullptr;
+
 	};
 
 }

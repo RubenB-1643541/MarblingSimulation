@@ -114,13 +114,18 @@ namespace FluidLib {
 	}
 
 	float Sine::GetNormalRotation(float x, float y)
-	{
-		float tx = 1 / pow(sqrt(1 + (cos(x))), 2);
-		float ty = cos(x) / pow(sqrt(1 + (cos(x))), 2);
+	{	
+		//float tx = 1 / pow(sqrt(1 + (cos(x))), 2);
+		//float ty = cos(x) / pow(sqrt(1 + (cos(x))), 2);
 		//return atan(((x - _hortrans) / _period) * _amplitude + _verttrans);
 		//return atan2(sinf((x - _hortrans) / _period) * _amplitude + _verttrans, x);
-		return -tanf((x-_hortrans)/_period*_amplitude);
+		//return -tanf((x-_hortrans)/_period*_amplitude);
 		//return -atan2(tx, ty);
+		FPoint p{ 1, cos(x) };
+		p /= sqrt(1 + pow(cos(x), 2));
+		FPoint res{ p.GetY(), -p.GetX() };
+		//std::cout << p.GetX() << " " << p.GetY() << std::endl;
+		return atan2f(res.GetY(), res.GetX());
 	}
 
 	void Sine::SetProjection(glm::mat4 proj)

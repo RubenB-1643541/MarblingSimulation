@@ -116,8 +116,7 @@ namespace FluidLib {
     std::vector<IPoint>& FanSurface::GetSurfacePoints()
     {
         _points.clear();
-        int n = 15;
-        for (float i = -_angle; i <= _angle; i += _angle/n) {
+        for (float i = -_angle; i <= _angle; i += _angle/_n) {
             for (float j = 0; j < _len; ++j) {
                 _points.push_back({ (int)(sin(_rotation + i )*2*j), (int)(-j * cos(_rotation + i)) });
             }

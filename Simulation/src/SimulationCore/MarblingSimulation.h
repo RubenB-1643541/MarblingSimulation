@@ -8,7 +8,6 @@
 #include "../SimInterface/ToolSelectComponent.h"
 #include "Tools/Basic Tools/SelectTool.h"
 #include "Tools/Basic Tools/DrippingTool.h"
-#include "Tools/Basic Tools/FanTool.h"
 #include "../SimUtils/Icon.h"
 
 class MarblingSimulation : public FluidLib::Simulation

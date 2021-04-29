@@ -6,6 +6,7 @@
 #include "Util/ControlPoint.h"
 #include "GL/glew.h"
 #include <vector>
+#include <iostream>
 #include "corecrt_math_defines.h"
 #define _USE_MATH_DEFINES
 

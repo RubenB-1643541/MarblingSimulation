@@ -42,9 +42,7 @@ void SettingsComponent::OnDraw()
 			ImGui::SliderInt("Updates/sec", &_settings->fps, 0.0, 120.0);
 			ImGui::SliderFloat("Ink Spreading", &_settings->spreading, 0.0f, 1.0f);
 			ImGui::SliderFloat("Diffuse", &_settings->diffuse, 0.0f, 0.999f);
-			ImGui::Checkbox("Edit Frozen", &_settings->editfreeze);
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Use actions on frozen parts");
+
 			if (ImGui::Button("Freeze All")) {
 				if (_flaggrid != nullptr)
 					_flaggrid->SetAllValues({ 1,0,0,0 });
@@ -53,6 +51,9 @@ void SettingsComponent::OnDraw()
 				if (_flaggrid != nullptr)
 					_flaggrid->SetAllValues({ 0,0,0,0 });
 			}
+			ImGui::Checkbox("Edit Frozen", &_settings->editfreeze);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Use actions on frozen parts");
 		}
 		else {
 			ImGui::Text("No Settings");

@@ -110,6 +110,7 @@
     <ClInclude Include="src\SimInterface\ToolPopupComponent.h" />
     <ClInclude Include="src\SimInterface\ToolSelectComponent.h" />
     <ClInclude Include="src\SimInterface\TopBar.h" />
+    <ClInclude Include="src\SimTools\FanTool.h" />
     <ClInclude Include="src\SimUtils\Icon.h" />
     <ClInclude Include="src\SimUtils\SaveStateHandler.h" />
     <ClInclude Include="src\SimUtils\ShortCutHandler.h" />
@@ -134,6 +135,7 @@
     <ClCompile Include="src\SimInterface\ToolPopupComponent.cpp" />
     <ClCompile Include="src\SimInterface\ToolSelectComponent.cpp" />
     <ClCompile Include="src\SimInterface\TopBar.cpp" />
+    <ClCompile Include="src\SimTools\FanTool.cpp" />
     <ClCompile Include="src\SimUtils\Icon.cpp" />
     <ClCompile Include="src\SimUtils\SaveStateHandler.cpp" />
     <ClCompile Include="src\SimUtils\ShortCutHandler.cpp" />

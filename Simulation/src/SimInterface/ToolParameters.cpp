@@ -144,6 +144,7 @@ void ToolParameters::SurfaceParams()
 		else if (surface->GetType() == "Fan") {
 			FluidLib::FanSurface* f = static_cast<FluidLib::FanSurface*>(surface);
 			if (f != nullptr) {
+				ImGui::SliderInt("Density", f->GetDensityPtr(), 1, 100);
 				ImGui::SliderFloat("Angle", f->GetAnglePtr(), 0.1f, M_PI / 2);
 				ImGui::SliderFloat("Length", f->GetLenPtr(), 0.0f, 150);
 			}

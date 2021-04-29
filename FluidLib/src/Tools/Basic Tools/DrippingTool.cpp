@@ -10,7 +10,8 @@ namespace FluidLib {
 		SetSurface(_circle);
 		_rect = new Rectangle();
 		_tri = new Triangle();
-		_tri->SetCentered(false);
+		_fan = new FanSurface();
+		//_tri->SetCentered(false);
 		
 	}
 
@@ -18,8 +19,10 @@ namespace FluidLib {
 	{
 		if (_surfaceEdit) {
 			if (_arc) {
-				_tri->Draw();
-				_tri->EditDraw();
+				//_tri->Draw();
+				//_tri->EditDraw();
+				_fan->Draw();
+				_fan->EditDraw();
 			}
 			else {
 				_rect->Draw();
@@ -33,6 +36,9 @@ namespace FluidLib {
 			_tri->OnMove(_xpos, _ypos);
 			_tri->SetHeight(_maxlen);
 			_tri->SetWidth(sin(_maxangle) * _maxlen);
+			_fan->OnMove(_xpos, _ypos);
+			_fan->SetLen(_maxlen);
+			_fan->SetAngle(_maxangle);
 		}
 	}
 
@@ -64,7 +70,10 @@ namespace FluidLib {
 	{
 		if (_surfaceEdit) {
 			_using = false;
-			_rect->OnEditClick(_xpos, _ypos);
+			if (_arc)
+				_fan->OnEditClick(_xpos, _ypos);
+			else
+				_rect->OnEditClick(_xpos, _ypos);
 		}
 		else
 			_using = true;
@@ -74,7 +83,10 @@ namespace FluidLib {
 	bool DrippingTool::OnEndUseEvent(ToolEndUseEvent& event)
 	{
 		if (_surfaceEdit) {
-			_rect->OnEditRelease(_xpos, _ypos);
+			if (_arc)
+				_fan->OnEditRelease(_xpos, _ypos);
+			else
+				_rect->OnEditRelease(_xpos, _ypos);
 		}
 		_using = false;
 		return false;
@@ -85,9 +97,16 @@ namespace FluidLib {
 		_xpos = event.GetX();
 		_ypos = event.GetY();
 		if (_surfaceEdit) {
-			_rect->OnEditMove(_xpos, _ypos);
-			_width = _rect->GetWidth();
-			_height = _rect->GetHeight();
+			if (_arc) {
+				_fan->OnEditMove(_xpos, _ypos);
+				_maxangle = _fan->GetAngle();
+				_maxlen = _fan->GetLen();
+			}
+			else {
+				_rect->OnEditMove(_xpos, _ypos);
+				_width = _rect->GetWidth();
+				_height = _rect->GetHeight();
+			}
 
 			
 		}

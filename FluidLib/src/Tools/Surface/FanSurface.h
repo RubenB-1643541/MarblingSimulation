@@ -35,16 +35,23 @@ namespace FluidLib {
 		inline void SetLen(float len) { _len = len; }
 		inline float* GetLenPtr() { return &_len; }
 
+		inline int GetDensity() { return _n; }
+		inline void SetDensity(int dens) { _n = dens; }
+		inline int* GetDensityPtr() { return &_n; }
+
 		inline virtual void SetRotation(float rot) { _rotation = rot; }
 		void SetProjection(glm::mat4 proj) override;
 
 		FanSurfParameters GetParam();
 		void LoadParam(Parameters* p) override;
+
+
 	private:
 		float _xpos = 0;
 		float _ypos = 0;
 		float _angle = 0.5;
 		float _len = 50;
+		int _n = 15;
 
 		ControlPoint _control;
 
