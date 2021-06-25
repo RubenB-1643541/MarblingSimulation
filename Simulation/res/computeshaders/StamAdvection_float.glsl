@@ -49,6 +49,7 @@ layout( location=1 ) uniform int width;
 layout( location=2 ) uniform int height; 
 layout( location=3 ) uniform float a; //Factor for ink spreading
 layout( location=4 ) uniform float d; //Factor for diffusion
+layout( location=5 ) uniform int fast;
 
 
 layout(local_size_x = 100, local_size_y = 1, local_size_z = 1) in; //Variable?
@@ -72,6 +73,7 @@ vec4 Percentages(ivec4 sqpoints, vec2 center);
 bool InGrid(vec2 vec); 
 bool InGrid(uint pos);
 vec2 Collision(vec2 vec);
+void Blur(uint i);
 
 //Copiers
 void CopyToSecond(uint i);
@@ -79,7 +81,8 @@ void CopyToFirst(uint i);
 
 void main() {
 	uint i = gl_GlobalInvocationID.x;
-	CopyToSecond(i);
+	//if(fast == 1)
+	//	CopyToSecond(i);
 	barrier();
 	//frequencies[i] = uint(flagvals[i].x);
 	bvec4 flags = bvec4(flagvals[i].x, flagvals[i].y, flagvals[i].z, flagvals[i].w);
@@ -91,7 +94,9 @@ void main() {
 	}
 	barrier();
 	Diffuse(i);
-	CopyToFirst(i);
+	//Blur(i);
+	//if(fast == 1)
+	//	CopyToFirst(i);
 }
 
 void Advection(uint i, ivec2 pos) {
@@ -113,6 +118,7 @@ void Advection(uint i, ivec2 pos) {
 				atomicAdd(inkvals2[i].freq, -val);
 				atomicAdd(inkvals2[i2].freq, val);
 			}
+
 			
 			//ivec2 ides = ivec2(des.x, des.y);
 			//uint i2 = PointToIndex(ivec2(sqpoints.x, sqpoints.y));
@@ -163,14 +169,18 @@ void StamAdvection(uint i, ivec2 pos) {
 		int val = int(perc.x * inkvals[i].freq);
 		//val = 100;
 		InkStruct highest = {0,0};
+		InkStruct current = inkvals[PointToIndex(pos)];
 		//int val = int(perc.x * frequencies[i]);
 		if(val > 0 && inkvals2[i].freq >= val) {
-			atomicAdd(inkvals2[i].freq, -val);
-			if(highest.freq < inkvals[i].freq){
-				highest.freq = inkvals[i].freq;
-				highest.id = inkvals[i].id;
-			}
-			totalval += val;
+	
+			//if(current.id == 0 || current.id == inkvals[i].id) {
+				atomicAdd(inkvals2[i].freq, -val);
+				if(highest.freq < inkvals[i].freq){
+					highest.freq = inkvals[i].freq;
+					highest.id = inkvals[i].id;
+				}
+				totalval += val;
+			//}
 			//inkvals2[i].freq -= val;
 			//inkvals2[i].freq = 0;
 				
@@ -180,12 +190,14 @@ void StamAdvection(uint i, ivec2 pos) {
 		val = int(perc.y  * inkvals[i].freq);
 		//val = int(perc.y * frequencies[i]);
 		if(val > 0 && inkvals2[i].freq >= val) {
-			atomicAdd(inkvals2[i].freq, -val);
-			if(highest.freq < inkvals2[i].freq){
-				highest.freq = inkvals2[i].freq;
-				highest.id = inkvals2[i].id;
-			}
-			totalval += val;
+			//if(current.id == 0 || current.id == inkvals[i].id) {
+				atomicAdd(inkvals2[i].freq, -val);
+				if(highest.freq < inkvals2[i].freq){
+					highest.freq = inkvals2[i].freq;
+					highest.id = inkvals2[i].id;
+				}
+				totalval += val;
+			//}
 			////inkvals2[i].freq -= val;
 			////inkvals2[i].freq = 0;
 		}
@@ -193,12 +205,14 @@ void StamAdvection(uint i, ivec2 pos) {
 		val = int(perc.z  * inkvals[i].freq);
 		//val = int(perc.z * frequencies[i]);
 		if(val > 0 && inkvals2[i].freq >= val) {
-			atomicAdd(inkvals2[i].freq, -val);
-			if(highest.freq < inkvals2[i].freq){
-				highest.freq = inkvals2[i].freq;
-				highest.id = inkvals2[i].id;
-			}
-			totalval += val;
+			//if(current.id == 0 || current.id == inkvals[i].id) {
+				atomicAdd(inkvals2[i].freq, -val);
+				if(highest.freq < inkvals2[i].freq){
+					highest.freq = inkvals2[i].freq;
+					highest.id = inkvals2[i].id;
+				}
+				totalval += val;
+			//}
 			////inkvals2[i].freq -= val;
 			////inkvals2[i].freq = 0;
 		}
@@ -206,12 +220,15 @@ void StamAdvection(uint i, ivec2 pos) {
 		val = int(perc.w  * inkvals[i].freq);
 		//val = int(perc.w * frequencies[i]);
 		if(val > 0 && inkvals2[i].freq >= val) {
-			atomicAdd(inkvals2[i].freq, -val);
-			if(highest.freq < inkvals[i].freq){
-				highest.freq = inkvals[i].freq;
-				highest.id = inkvals[i].id;
-			}
-			totalval += val;
+			//if(current.id == 0 || current.id == inkvals[i].id) {
+				atomicAdd(inkvals2[i].freq, -val);
+				if(highest.freq < inkvals[i].freq){
+					highest.freq = inkvals[i].freq;
+					highest.id = inkvals[i].id;
+				}
+
+				totalval += val;
+			//}
 			////inkvals2[i].freq -= val;
 			////inkvals2[i].freq = 0;
 		}
@@ -236,11 +253,14 @@ void Pressure(uint i, ivec2 pos) { // fix probs negative forces
 	if(pos.x - 1 > 0 ) {//Check out of bounds 
 	//if(pos.x - 1 > 0 && pos.y - 1 > 0) {//Check out of bounds 
 		ivec2 force = ivec2(inkvals[i].freq - inkvals[i-1].freq, inkvals[i].freq - inkvals[i+width].freq);
+		
 		//if(force.x >= 1 || force.x <= -1)  {
 		if(force.x > 1000)
 			force.x = 1000;
 		if(force.x < -1000)
 			force.x = -1000;
+		//if(inkvals[i].id != inkvals[i-1].id)
+		//	force.x *= 2;
 		velocities2[i].x += int(-force.x*a);
 		velocities2[i-1].x += int(-force.x*a);
 			//atomicAdd(velocities2[i].x, int(-force.x*a));
@@ -251,12 +271,37 @@ void Pressure(uint i, ivec2 pos) { // fix probs negative forces
 			force.y = 1000;
 		if(force.y < -1000)
 			force.y = -1000;
+		//if(inkvals[i].id != inkvals[i+width].id)
+		//	force.y *= 2;
 		velocities2[i].y += int(force.y * a);
 		velocities2[i+width].y += int(force.y * a);
 			//atomicAdd(velocities2[i].y, int(force.y * a));
 			//atomicAdd(velocities2[i+width].y, int(force.y * a));
 		//}
 	}
+}
+
+void Blur(uint i) {
+	uint sum = inkvals2[i].freq;
+	uint n = 1;
+	if(inkvals2[i+1].id != 0) {
+		sum += inkvals2[i+1].freq;
+		n += 1;
+	}
+	if(inkvals2[i-1].id != 0) {
+		sum += inkvals2[i-1].freq;
+		n += 1;
+	}
+	if(inkvals2[i+width].id != 0) {
+		sum += inkvals2[i+width].freq;
+		n += 1;
+	}
+	if(inkvals2[i-width].id != 0) {
+		sum += inkvals2[i-width].freq;
+		n += 1;
+	}
+	uint mean = sum / n;
+	inkvals2[i].freq = int(mean);
 }
 
 void Diffuse(uint i) {
@@ -354,9 +399,13 @@ vec2 Collision(vec2 vec) {
 }
 
 void CopyToSecond(uint i) {
-	inkvals2[i].id = inkvals[i].id;
-	inkvals2[i].freq += inkvals[i].freq;
-	velocities2[i] = velocities[i];
+	//inkvals2[i].id = inkvals[i].id;
+	atomicExchange(inkvals2[i].id, inkvals[i].id);
+	atomicAdd(inkvals2[i].freq, inkvals[i].freq);
+	//inkvals2[i].freq += inkvals[i].freq;
+	atomicExchange(velocities2[i].x, velocities[i].x);
+	atomicExchange(velocities2[i].y, velocities[i].y);
+	//velocities2[i] = velocities[i];
 }
 
 void CopyToFirst(uint i) {
@@ -365,13 +414,17 @@ void CopyToFirst(uint i) {
 	if(inkvals[i].freq <= 0) {
 		inkvals[i].id = 0;
 		inkvals[i].freq = 0;
-		}
+	}
 	if(inkvals[i].freq < 0) {
 		//inkvals[i].freq = 0;
 		frequencies[0] = inkvals[i].freq;
 		frequencies[1] = i;
 	}
-	velocities[i] = velocities2[i];
+	atomicExchange(velocities[i].x, velocities2[i].x);
+	atomicExchange(velocities[i].y, velocities2[i].y);
+	//velocities[i] = velocities2[i];
 	inkvals2[i].id = 0;
-	inkvals2[i].freq = 0;
+	//atomicExchange(inkvals2[i].freq, 0);
+	atomicAdd(inkvals2[i].freq, -inkvals[i].freq); 
+	//inkvals2[i].freq = 0;
 }

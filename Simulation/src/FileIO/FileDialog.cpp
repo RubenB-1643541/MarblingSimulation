@@ -129,6 +129,8 @@ std::string FileDialog::Save()
         using convert_type = std::codecvt_utf8<wchar_t>;
         std::wstring_convert<convert_type, wchar_t> converter;
         std::string result = converter.to_bytes(wstr);
+        if (result.find(".sim") == std::string::npos)
+            result += ".sim";
         return result;
         //return filename;
     }

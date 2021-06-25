@@ -149,6 +149,7 @@
     <ClInclude Include="src\Util\Texture.h" />
     <ClInclude Include="src\Tools\Surface\FanSurface.h" />
     <ClInclude Include="src\Tools\Parameters.h" />
+    <ClInclude Include="src\Grids\DoubleGrid.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\SimulationEvent.cpp">

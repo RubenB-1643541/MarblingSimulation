@@ -11,6 +11,7 @@
 #include "../SimUtils/ShortCutHandler.h"
 #include "../FileIO/SimulationSaveLoad.h"
 #include "Grids/ColorGrid.h"
+#include "Grids/DoubleGrid.h"
 #include "Grids/FlagGrid.h"
 #include "../SimUtils/SaveStateHandler.h"
 

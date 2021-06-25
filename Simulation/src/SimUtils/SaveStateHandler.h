@@ -6,6 +6,9 @@
 #include "Tools/ToolManager.h"
 #include "Simulation.h"
 #include "../SimulationCore/GridStructures.h"
+#include <sys/stat.h>
+#include "Core/Log.h"
+#include <direct.h>
 
 struct State {
 	int n;
@@ -32,6 +35,7 @@ private:
 	static std::string _curloc;
 	static int _counter;
 	static std::vector<State> _states;
+	static std::filesystem::directory_iterator _fileit;
 
 };
 

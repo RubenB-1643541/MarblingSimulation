@@ -168,6 +168,8 @@ namespace FluidLib {
 		_controlpoints.clear();
 		for (int i = 0; i < pp->N; ++i) {
 			_controlpoints.push_back(pp->Points[i]);
+			_controlpoints[i].SetProjection(_projection);
+			_controlpoints[i].VisualTranslate(_pos);
 		}
 		Refresh();
 		//TODO LOAD PARAM

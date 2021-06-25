@@ -62,31 +62,31 @@ namespace FluidLib {
 		Grid(GLuint id, int size, bool render = false);
 		Grid(GLuint id, int size, int attr, bool render = false);
 
-		T* GetBufferPointer();
-		T* GetBufferPointer(GLint bufMask);
-		void ReleaseBufferPointer();
+		virtual T* GetBufferPointer();
+		virtual T* GetBufferPointer(GLint bufMask);
+		virtual void ReleaseBufferPointer();
 
-		inline void SetBufferId(GLuint id) { _data.id = id; }
-		inline int GetBufferId() { return _data.id; }
+		inline virtual void SetBufferId(GLuint id) { _data.id = id; }
+		inline virtual int GetBufferId() { return _data.id; }
 
 		/*
 		Sets the number of elements in the buffer
 		*/
-		inline void SetSize(int size) { _data.size = size; }
+		inline virtual void SetSize(int size) { _data.size = size; }
 		/*
 		Gives the number of elements in the buffer
 		*/
-		inline int GetSize() { return _data.size; }
+		inline virtual int GetSize() { return _data.size; }
 		
-		inline void SetElementSize(int size) { _data.elementsize = size; }
-		inline int GetElementSize() { return _data.elementsize; }
+		inline virtual void SetElementSize(int size) { _data.elementsize = size; }
+		inline virtual int GetElementSize() { return _data.elementsize; }
 
-		inline void SetElementType(GLenum type) { _data.type = type; }
-		inline GLenum GetElementType() { return _data.type; }
+		inline virtual void SetElementType(GLenum type) { _data.type = type; }
+		inline virtual GLenum GetElementType() { return _data.type; }
 
 		inline int ElementSize() { return sizeof(T); }
-		inline void SetAttrPointer(int attr) { _data.attrpointer = attr; }
-		inline void GetAttrPointer() { return _data.attrpointer; }
+		inline virtual void SetAttrPointer(int attr) { _data.attrpointer = attr; }
+		inline virtual int GetAttrPointer() { return _data.attrpointer; }
 
 		virtual void UseGrid();
 		virtual void DrawGrid();

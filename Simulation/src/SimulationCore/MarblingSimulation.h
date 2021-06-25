@@ -30,6 +30,8 @@ private:
 
 	std::clock_t _prevtime;
 
+	FluidLib::ComputeShaderController _copyto;
+	FluidLib::ComputeShaderController _copyfrom;
 
 };
 

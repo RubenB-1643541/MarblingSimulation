@@ -1,13 +1,12 @@
 #include "SaveStateHandler.h"
-#include <sys/stat.h>
-#include "Core/Log.h"
-#include <direct.h>
+
 
 
 char* SaveStateHandler::_loc = "Savestates\\";
 std::string SaveStateHandler::_curloc = "";
 int SaveStateHandler::_counter = 0;
 std::vector<State> SaveStateHandler::_states;
+std::filesystem::directory_iterator SaveStateHandler::_fileit;
 
 void SaveStateHandler::Init()
 {
@@ -28,6 +27,10 @@ void SaveStateHandler::Init()
 	++h;
 	_curloc = _loc + std::to_string(h) + "\\";
 	_mkdir(_curloc.c_str());
+	std::filesystem::path path = _curloc;
+	_curloc = std::filesystem::current_path().u8string();
+	_curloc += std::string("\\") + _loc + std::to_string(h) + "\\";
+	std::cout << _curloc << std::endl;
 }
 
 State SaveStateHandler::CreateSaveState()
@@ -46,14 +49,19 @@ State SaveStateHandler::CreateSaveState()
 std::vector<State>& SaveStateHandler::GetStates()
 {
 	_states.clear();
-	for (const auto& entry : std::filesystem::directory_iterator(_curloc.c_str())) {
-		std::string file = entry.path().generic_string();
-		std::string state = file;
-		state = state.substr(state.find("/")).erase(0, 1);
-		state = state.substr(state.find("/")).erase(0, 1);
-		int n = std::stoi(state.erase(state.find(".")));
-		_states.push_back({ n, file });
-		//files.push_back(state.substr(state.find("/")).erase(0,1));
+	try {
+		for (const auto& entry : std::filesystem::directory_iterator(_curloc)) {
+			std::string file = entry.path().generic_string();
+			std::string state = file;
+			state = state.substr(state.find_last_of("/")).erase(0, 1);
+			//state = state.substr(state.find("/")).erase(0, 1);
+			int n = std::stoi(state.erase(state.find(".")));
+			_states.push_back({ n, file });
+			//files.push_back(state.substr(state.find("/")).erase(0,1));
+		}
+	}
+	catch (std::filesystem::filesystem_error e) {
+		std::cerr << "Filesystem error at savestates" << e.what() << std::endl;
 	}
 	std::sort(_states.begin(), _states.end());
 	return _states;

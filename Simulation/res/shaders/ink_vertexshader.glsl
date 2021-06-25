@@ -51,15 +51,37 @@ void main() {
 	force = vec2(velocities[gl_VertexID]);
 	intensityout = intensity;
 	freezeintensityout = freezeintensity;
-	if(inkvals[gl_VertexID].freq > 1000)
+	//mean ink freq
+	uint i = gl_VertexID;
+	uint sum = inkvals[i].freq;
+	uint n = 1;
+	vec3 rescol = colorvals[inkvals[i].id];
+	for(int x = -5; x <= 5; ++x) {
+		for(int y = -5; y <= 5; ++y){
+			if(inkvals[i+x + width * y].id != 0) {
+				sum += inkvals[i+x + width * y].freq;
+				rescol += colorvals[inkvals[i+x + width * y].id];
+				
+			}
+			n += 1;
+		}
+	}
+	uint mean = sum / n;
+	if(mean > 1000)
 		inkfreq = 1000;
 	else
-		inkfreq = inkvals[gl_VertexID].freq;
+		inkfreq = mean;
+	inkcolor = vec3(rescol.x/n, rescol.y/n, rescol.z/n);
+
+	//if(inkvals[gl_VertexID].freq > 1000)
+	//	inkfreq = 1000;
+	//else
+	//	inkfreq = inkvals[gl_VertexID].freq;
 	//inkfreq = inkvals[gl_VertexID].freq;
 	//inkcolor = vec3(1,0,0);
 	//inkcolor = colorvals[0];
 	inkid = inkvals[gl_VertexID].id;
-	inkcolor = colorvals[inkvals[gl_VertexID].id];
+	//inkcolor = colorvals[inkvals[gl_VertexID].id];
 	watercolor = colorvals[0];
 	//oink = float(inkvals[gl_VertexID]);
 	oflags = vec4(flagvals[gl_VertexID]);

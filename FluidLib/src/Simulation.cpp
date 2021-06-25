@@ -32,9 +32,9 @@ namespace FluidLib {
 			//std::cout << "update: " << (std::clock() - _prev) / (double) CLOCKS_PER_SEC << " fps: " << _settings.fps << std::endl;
 			_prev = std::clock();
 			
-			BeforeUpdate();
-			_grids.BindGrids();
 			if (_computeshader.IsShaderSet()) {
+				BeforeUpdate();
+				_grids.BindGrids();
 				_computeshader.Use();
 				_computeshader.BindUniforms();
 				_computeshader.Dispatch();

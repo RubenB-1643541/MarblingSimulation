@@ -261,13 +261,17 @@ void SimulationApplication::CreateGrids()
 
 	FluidLib::GridManager* gridman = _sim.GetGrids();
 
-	FluidLib::Grid<IVelocity>* velgrid = new FluidLib::Grid<IVelocity>(_buffers.at("Vel")->GetId(), _sim.GetSize(), 1, true);
+	FluidLib::DoubleGrid<IVelocity>* velgrid = new FluidLib::DoubleGrid<IVelocity>(_buffers.at("Vel")->GetId(), _buffers.at("Vel2")->GetId(), _sim.GetSize(), 1, 2, true);
 	velgrid->SetElementSize(2);
 	gridman->AddGrid("Vel", velgrid);
 
-	FluidLib::Grid<IVelocity>* velgrid2 = new FluidLib::Grid<IVelocity>(_buffers.at("Vel2")->GetId(), _sim.GetSize(), 2);
-	velgrid->SetElementSize(2);
-	gridman->AddGrid("Vel2", velgrid2);
+	//FluidLib::Grid<IVelocity>* velgrid = new FluidLib::Grid<IVelocity>(_buffers.at("Vel")->GetId(), _sim.GetSize(), 1, true);
+	//velgrid->SetElementSize(2);
+	//gridman->AddGrid("Vel", velgrid);
+	//
+	//FluidLib::Grid<IVelocity>* velgrid2 = new FluidLib::Grid<IVelocity>(_buffers.at("Vel2")->GetId(), _sim.GetSize(), 2);
+	//velgrid->SetElementSize(2);
+	//gridman->AddGrid("Vel2", velgrid2);
 
 	FluidLib::Grid<IFrequency>* freqgrid = new FluidLib::Grid<IFrequency>(_buffers.at("Freq")->GetId(), _sim.GetSize(), 3);
 	gridman->AddGrid("Freq", freqgrid);
@@ -275,13 +279,13 @@ void SimulationApplication::CreateGrids()
 	FluidLib::Grid<IFrequency>* freqgrid2 = new FluidLib::Grid<IFrequency>(_buffers.at("Freq2")->GetId(), _sim.GetSize(), 4);
 	gridman->AddGrid("Freq2", freqgrid2);
 
-	FluidLib::Grid<IInk>* inkgrid = new FluidLib::ColorGrid<IInk>(_buffers.at("Ink")->GetId(), _sim.GetSize(), 5, 8, true);
+	FluidLib::ColorGrid<IInk>* inkgrid = new FluidLib::ColorGrid<IInk>(_buffers.at("Ink")->GetId(), _buffers.at("Ink2")->GetId(), _sim.GetSize(), 5, 6, 8, true);
 	inkgrid->SetElementSize(2);
 	gridman->AddGrid("Ink", inkgrid);
 
-	FluidLib::Grid<IInk>* inkgrid2 = new FluidLib::Grid<IInk>(_buffers.at("Ink2")->GetId(), _sim.GetSize(), 6, true);
-	inkgrid2->SetElementSize(2);
-	gridman->AddGrid("Ink2", inkgrid2);
+	//FluidLib::Grid<IInk>* inkgrid2 = new FluidLib::Grid<IInk>(_buffers.at("Ink2")->GetId(), _sim.GetSize(), 6, true);
+	//inkgrid2->SetElementSize(2);
+	//gridman->AddGrid("Ink2", inkgrid2);
 
 	FluidLib::Grid<Flags>* flaggrid = new FluidLib::FlagGrid<Flags>(_buffers.at("Flag")->GetId(), _sim.GetSize(), 7, true);
 	static_cast<FluidLib::FlagGrid<Flags>*>(flaggrid)->CopyFromGPU();
@@ -299,11 +303,14 @@ void SimulationApplication::CreateUniforms()
 	FluidLib::UniformVal dval; dval.floatptr = &_sim.GetSettings()->diffuse;
 	FluidLib::UniformVal intensity; intensity.floatptr = &_sim.GetSettings()->intesity;
 	FluidLib::UniformVal freezeintensity; freezeintensity.floatptr = &_sim.GetSettings()->freezeintensity;
+	FluidLib::UniformVal fastval; fastval.intptr = &_sim.GetSettings()->fast;
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, widthval, "width"));
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT, heightval, "height"));
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, aval, "a"));
 	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::FLOAT_PTR, dval, "d"));
+	shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT_PTR, fastval, "fast"));
 	//shadercontroller->AddUniform(FluidLib::Uniform(FluidLib::UniformType::INT_PTR, intensity, "intensity"));
+
 
 	FluidLib::UniformVal renderforce; renderforce.floatptr = (float*) &_sim.GetSettings()->renderforce;
 

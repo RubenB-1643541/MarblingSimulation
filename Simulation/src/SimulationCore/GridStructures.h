@@ -114,11 +114,13 @@ struct IInk {
 	//glm::vec3 color;
 	//float padding2;
 	inline void operator+=(const IInk& val) { 
-		if (id == 0 || id == val.id) {
-			ink += val.ink;
+		if (val.id != 0) {
+		//if (id == 0 || id == val.id) {
+			
 			id = val.id;
 			//color = val.color;
 		}
+		ink += val.ink;
 		//ink += val.ink;
 		//id = val.id;
 	}

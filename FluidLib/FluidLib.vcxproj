@@ -101,6 +101,7 @@
     <ClInclude Include="src\Events\ToolEvent.h" />
     <ClInclude Include="src\Grids\ColorGrid.h" />
     <ClInclude Include="src\Grids\ComputeShaderController.h" />
+    <ClInclude Include="src\Grids\DoubleGrid.h" />
     <ClInclude Include="src\Grids\FlagGrid.h" />
     <ClInclude Include="src\Grids\Grid.h" />
     <ClInclude Include="src\Grids\GridManager.h" />

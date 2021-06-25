@@ -111,7 +111,7 @@ namespace FluidLib {
 	inline void Action<T>::Execute(IPoint& p)
 	{
 		IPoint temp = _pos + p;
-		_checkfunction(temp);
+		//_checkfunction(temp);
 		if (!(IN_GRID(temp)) || !_checkfunction(temp))
 			return;
 		switch (_operation)

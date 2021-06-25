@@ -17,6 +17,7 @@ namespace FluidLib {
 		bool autosavestate = false;
 		
 		float renderforce = 0;
+		int fast = 0;
 	};
 
 

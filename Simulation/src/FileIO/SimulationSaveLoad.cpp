@@ -8,6 +8,7 @@ bool SimSave::Save()
 	if (_file == "") {
 		_file = FileDialog::Save();
 	}
+	std::cout << "FILE: " << _file << std::endl;
 	if (_file == "")
 		return false;
 	if (!StartSave()) {

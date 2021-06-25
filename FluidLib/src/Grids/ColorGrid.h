@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Grid.h"
+#include "DoubleGrid.h"
 #include <vector>
 #include "glm/gtx/transform.hpp"
 
 namespace FluidLib {
 
 	template <class T>
-	class ColorGrid : public Grid<T>
+	class ColorGrid : public DoubleGrid<T>
 	{
 	public:
 		ColorGrid();
@@ -16,9 +16,9 @@ namespace FluidLib {
 		- GLuint id: ShaderStorageBuffer Id
 		- int size: Number of elements in the buffer, not the size of the buffer
 		*/
-		ColorGrid(GLuint id, int size, bool render = false);
-		ColorGrid(GLuint id, int size, int attr, bool render = false);
-		ColorGrid(GLuint id, int size, int attr, int colattr, bool render = false);
+		ColorGrid(GLuint id, GLuint id2, int size, bool render = false);
+		ColorGrid(GLuint id, GLuint id2, int size, int attr, int attr2, bool render = false);
+		ColorGrid(GLuint id, GLuint id2, int size, int attr, int attr2, int colattr, bool render = false);
 		uint32_t GetId() { return _id; }
 		void SetId(uint32_t id) { _id = id; }
 		void AddColor(glm::vec3 col);
@@ -30,13 +30,13 @@ namespace FluidLib {
 		void RefreshColors();
 		void SetColor(int id, glm::vec3 col);
 
-		void UseGrid() override;
+		//void UseGrid() override;
 		void DrawGrid() override;
 		void WriteToFile(std::ofstream& stream, bool valsonly = false) override;
 	private:
 		void CreateColorBuffer();
 		uint32_t _id = 0;
-		std::vector<glm::vec4> _colors = { {0,0,0,1} };
+		std::vector<glm::vec4> _colors = { {0.0,0.18,0.26,1} };
 		bool _colorchange = false;
 
 		int _colattr = 0;
@@ -51,7 +51,7 @@ namespace FluidLib {
 	}
 
 	template<class T>
-	inline ColorGrid<T>::ColorGrid(GLuint id, int size, bool render) : Grid<T>(id, size, render)
+	inline ColorGrid<T>::ColorGrid(GLuint id, GLuint id2, int size, bool render) : DoubleGrid<T>(id, id2, size, render)
 	{
 		CreateColorBuffer();
 		//SetBufferId(id);
@@ -60,7 +60,7 @@ namespace FluidLib {
 	}
 
 	template<class T>
-	inline ColorGrid<T>::ColorGrid(GLuint id, int size, int attr, bool render) : Grid<T>(id, size, attr, render)
+	inline ColorGrid<T>::ColorGrid(GLuint id, GLuint id2, int size, int attr, int attr2, bool render) : DoubleGrid<T>(id, id2, size, attr, attr2, render)
 	{
 		CreateColorBuffer();
 		//SetBufferId(id);
@@ -70,7 +70,7 @@ namespace FluidLib {
 	}
 
 	template<class T>
-	inline ColorGrid<T>::ColorGrid(GLuint id, int size, int attr, int colattr, bool render) : Grid<T>(id, size, attr, render)
+	inline ColorGrid<T>::ColorGrid(GLuint id, GLuint id2, int size, int attr, int attr2, int colattr, bool render) : DoubleGrid<T>(id, id2, size, attr, attr2, render)
 	{
 		_colattr = colattr;
 		CreateColorBuffer();
@@ -105,11 +105,11 @@ namespace FluidLib {
 		_colors[id] = ncol;
 	}
 
-	template<class T>
-	inline void ColorGrid<T>::UseGrid()
-	{
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, _data.attrpointer, _data.id);
-	}
+	//template<class T>
+	//inline void ColorGrid<T>::UseGrid()
+	//{
+	//	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, _data.attrpointer, _data.id);
+	//}
 
 	template<class T>
 	inline void ColorGrid<T>::DrawGrid()
@@ -125,19 +125,20 @@ namespace FluidLib {
 				else
 					glNamedBufferSubData(_colid, (_colors.size()-1) * sizeof(glm::vec4), sizeof(glm::vec4), &_colors[_colors.size()-1]);
 				_colorchange = false;
-				//GLint bufMask = GL_MAP_WRITE_BIT;
-				//glBindBuffer(GL_SHADER_STORAGE_BUFFER, _colid);
-				//glm::vec4* cols = (glm::vec4*)glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, _colors.size() * sizeof(glm::vec4), bufMask);
-				//for (int i = 0; i < _colors.size(); ++i) {
-				//	std::cout << cols[i].x << " " << cols[i].y << " " << cols[i].z << std::endl;
-				//}
-				//glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 			}
 
-			glBindBuffer(GL_ARRAY_BUFFER, _data.id );
-			glVertexAttribIPointer(0, _data.elementsize, _data.type, 0, (void*)0);
-			//glVertexAttributePointer(_data.elementsize, _data.type, 0, (void*)0);
-			glEnableVertexAttribArray(_data.attrpointer);
+			if (_second) {
+				glBindBuffer(GL_ARRAY_BUFFER, _data2.id);
+				glVertexAttribIPointer(0, _data2.elementsize, _data2.type, 0, (void*)0);
+				//glVertexAttributePointer(_data.elementsize, _data.type, 0, (void*)0);
+				glEnableVertexAttribArray(_data2.attrpointer);
+			}
+			else {
+				glBindBuffer(GL_ARRAY_BUFFER, _data.id);
+				glVertexAttribIPointer(0, _data.elementsize, _data.type, 0, (void*)0);
+				//glVertexAttributePointer(_data.elementsize, _data.type, 0, (void*)0);
+				glEnableVertexAttribArray(_data.attrpointer);
+			}
 			//Load colors
 			//TODO
 			//glBindBuffer(GL_UNIFORM_BUFFER, _colid);

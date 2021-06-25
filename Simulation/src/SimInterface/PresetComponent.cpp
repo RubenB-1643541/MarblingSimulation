@@ -192,6 +192,7 @@ void PresetComponent::CreatePreset()
 {
 	Preset preset;
 	preset.name = _namebuffer;
+	std::remove_if(preset.name.begin(), preset.name.end(), isspace);
 	preset.surface = _selectedsurface;
 	preset.movement = _selectedmovement;
 	preset.action = _selectedaction;

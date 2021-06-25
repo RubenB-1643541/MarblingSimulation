@@ -26,6 +26,21 @@ bool Exporter::Export(bool askfile)
 			int colid = inkvals[i * width + j].id;
 			glm::vec4 col = colors[colid];
 			float freq = inkvals[i * width + j].ink;
+			float sum = inkvals[i * width + j].ink;
+			int n = 1;
+			for (int x = -5; x <= 5; ++x) {
+				for (int y = -5; y <= 5; ++y) {
+					if ((j + x) >= 0 && (i + y) >= 0 && (j + x) < width && (i + y) < height) {
+						if (inkvals[(i + y) * width + j + x].id != 0) {
+							sum += inkvals[(i + y) * width + j + x].ink;
+							col += colors[inkvals[(i + y) * width + j + x].id];
+						}
+						n += 1;
+					}
+				}
+			}
+			freq = sum / n;
+			col = glm::vec4(col.r / n, col.g / n, col.b / n, 1);
 			float scale = 0;
 			if (freq > 1000)
 				scale = 1;
@@ -36,8 +51,10 @@ bool Exporter::Export(bool askfile)
 			//else if (freq == 0)
 			//	scale = 0.1;
 
-			if (colid == 0)
+			if (colid == 0) {
 				scale = 1;
+				col = colors[colid];
+			}
 			//mix =  v1 * (1 - a) + v2 * a
 			pixels[index++] = int(255.99 * (watercolor.r * (1-(scale * intensity)) + col.r * scale * intensity));
 			pixels[index++] = int(255.99 * (watercolor.g * (1-(scale * intensity)) + col.g * scale * intensity));

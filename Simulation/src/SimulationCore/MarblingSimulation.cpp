@@ -17,6 +17,7 @@ void MarblingSimulation::OnInit()
 {
 	//_settings.fps = 30;
 	_prevtime = std::clock();
+
 	CreateTools();
 }
 
@@ -50,41 +51,60 @@ void MarblingSimulation::BeforeUpdate()
 	INFO("FrameTime: {0} - fps: {1}", (std::clock() - _prevtime) / (double)CLOCKS_PER_SEC, _settings.fps);
 	_prevtime = std::clock();
 	//Copy freq to freq2
-	//GLuint src, des;
-	//src = _grids.GetGrid("Freq")->GetBufferData().id;
-	//des = _grids.GetGrid("Freq2")->GetBufferData().id;
-	//int size = _grids.GetGrid("Freq2")->GetBufferData().size * sizeof(IFrequency);
-	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+	static_cast<FluidLib::DoubleGrid<IInk>*>(_grids.GetGrid("Ink"))->CopyFirstToSecond();
+	static_cast<FluidLib::DoubleGrid<IVelocity>*>(_grids.GetGrid("Vel"))->CopyFirstToSecond();
 
-	//src = _grids.GetGrid("Vel")->GetBufferData().id;
-	//des = _grids.GetGrid("Vel2")->GetBufferData().id;
-	//int size = _grids.GetGrid("Vel2")->GetBufferData().size * sizeof(IVelocity);
-	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
-	//
-	//src = _grids.GetGrid("Ink")->GetBufferData().id;
-	//des = _grids.GetGrid("Ink2")->GetBufferData().id;
-	//size = _grids.GetGrid("Ink2")->GetBufferData().size * sizeof(IInk);
-	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+	if (!_settings.fast) {
+		
+		//_grids.BindGrids();
+		//_copyto.Use();
+		//_copyto.Dispatch();
+		//GLuint src, des;
+		//src = _grids.GetGrid("Freq")->GetBufferData().id;
+		//des = _grids.GetGrid("Freq2")->GetBufferData().id;
+		//int size = _grids.GetGrid("Freq2")->GetBufferData().size * sizeof(IFrequency);
+		//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+
+		//src = _grids.GetGrid("Vel")->GetBufferData().id;
+		//des = _grids.GetGrid("Vel2")->GetBufferData().id;
+		//int size = _grids.GetGrid("Vel2")->GetBufferData().size * sizeof(IVelocity);
+		//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+
+		//src = _grids.GetGrid("Ink")->GetBufferData().id;
+		//des = _grids.GetGrid("Ink2")->GetBufferData().id;
+		//int size = _grids.GetGrid("Ink2")->GetBufferData().size * sizeof(IInk);
+		//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+	}
 }
 
 void MarblingSimulation::AfterUpdate()
 {
 	//Copy freq2 to freq
-	//GLuint src, des;
-	//src = _grids.GetGrid("Freq2")->GetBufferData().id;
-	//des = _grids.GetGrid("Freq")->GetBufferData().id;
-	//int size = _grids.GetGrid("Freq")->GetBufferData().size * sizeof(IFrequency);
-	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+	//static_cast<FluidLib::DoubleGrid<IInk>*>(_grids.GetGrid("Ink"))->CopyFirstToSecond();
+	//static_cast<FluidLib::DoubleGrid<IInk>*>(_grids.GetGrid("Vel"))->CopyFirstToSecond();
+	//static_cast<FluidLib::DoubleGrid<IInk>*>(_grids.GetGrid("Ink"))->CopySecondToFirst();
+	//static_cast<FluidLib::DoubleGrid<IInk>*>(_grids.GetGrid("Vel"))->CopySecondToFirst();
 
-	//src = _grids.GetGrid("Vel2")->GetBufferData().id;
-	//des = _grids.GetGrid("Vel")->GetBufferData().id;
-	//int size = _grids.GetGrid("Vel")->GetBufferData().size * sizeof(IVelocity);
-	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
-	//
-	//src = _grids.GetGrid("Ink2")->GetBufferData().id;
-	//des = _grids.GetGrid("Ink")->GetBufferData().id;
-	//size = _grids.GetGrid("Ink")->GetBufferData().size * sizeof(IInk);
-	//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+
+	if (!_settings.fast) {
+	
+		//GLuint src, des;
+		//src = _grids.GetGrid("Freq2")->GetBufferData().id;
+		//des = _grids.GetGrid("Freq")->GetBufferData().id;
+		//int size = _grids.GetGrid("Freq")->GetBufferData().size * sizeof(IFrequency);
+		//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+
+		//src = _grids.GetGrid("Vel2")->GetBufferData().id;
+		//des = _grids.GetGrid("Vel")->GetBufferData().id;
+		//int size = _grids.GetGrid("Vel")->GetBufferData().size * sizeof(IVelocity);
+		//glCopyNamedBufferSubData(2, 3, NULL, NULL, size);
+		//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+
+		//src = _grids.GetGrid("Ink2")->GetBufferData().id;
+		//des = _grids.GetGrid("Ink")->GetBufferData().id;
+		//int size = _grids.GetGrid("Ink")->GetBufferData().size * sizeof(IInk);
+		//glCopyNamedBufferSubData(src, des, NULL, NULL, size);
+	}
 	
 	//INFO("UpdateTime {0}", (std::clock() - _prevtime) / (double)CLOCKS_PER_SEC);
 }
@@ -93,8 +113,6 @@ void MarblingSimulation::OnDraw()
 {
 
 }
-
-
 
 void MarblingSimulation::CreateTools()
 {

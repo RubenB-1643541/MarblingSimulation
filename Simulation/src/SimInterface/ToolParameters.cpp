@@ -86,10 +86,12 @@ void ToolParameters::SurfaceParams()
 		ImGui::SetNextTreeNodeOpen(true);
 	FluidLib::Surface* surface = _active->GetSurface();
 	if (surface != nullptr && ImGui::TreeNode("Surface (Ctrl)")) {
-		ImGui::Checkbox("Auto rotate", surface->GetAutoRotatePtr());
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Rotate surface to normal of the movement patron");
-		ImGui::SliderFloat("Rotation", surface->GetRotationPtr(), 0.0f, 10.0f);
+		if (_active->GetName() != "Select") {
+			ImGui::Checkbox("Auto rotate", surface->GetAutoRotatePtr());
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Rotate surface to normal of the movement patron");
+			ImGui::SliderFloat("Rotation", surface->GetRotationPtr(), 0.0f, 10.0f);
+		}
 
 		//if (_active->GetName() == "Dripping") {
 		//	FluidLib::DrippingTool* drip = static_cast<FluidLib::DrippingTool*>(_active);

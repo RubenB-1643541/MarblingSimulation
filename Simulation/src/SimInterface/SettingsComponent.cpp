@@ -54,6 +54,12 @@ void SettingsComponent::OnDraw()
 			ImGui::Checkbox("Edit Frozen", &_settings->editfreeze);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("Use actions on frozen parts");
+			static bool fast;
+			ImGui::Checkbox("Fast computation", &fast);
+			if (fast)
+				_settings->fast = 1;
+			else
+				_settings->fast = 0;
 		}
 		else {
 			ImGui::Text("No Settings");
